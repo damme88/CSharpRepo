@@ -74,6 +74,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Base\RelayCommand.cs" />
+    <Compile Include="BasicInfo.xaml.cs">
+      <DependentUpon>BasicInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CalculateDialog.xaml.cs">
       <DependentUpon>CalculateDialog.xaml</DependentUpon>
     </Compile>
@@ -84,6 +87,10 @@
     <Compile Include="ViewModel\CalculateViewModel.cs" />
     <Compile Include="ViewModel\InputInfoViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Page Include="BasicInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CalculateDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -82,6 +82,24 @@ namespace WPFDemo
             }
         }
 
+        private string textInfo = "";
+        public string TextInfo
+        {
+            get
+            {
+                return textInfo;
+            }
+
+            set
+            {
+                if (value != textInfo)
+                {
+                    textInfo = value;
+                    OnPropertiyChange("TextInfo");
+                }
+            }
+        }
+
         public void RetBtnFunction(object objt)
         {
             if (val1 != string.Empty && val2 != string.Empty)
