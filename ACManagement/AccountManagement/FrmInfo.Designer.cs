@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmInfo));
             this.dataGrdInfo = new System.Windows.Forms.DataGridView();
             this.btnCancel = new System.Windows.Forms.Button();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -36,16 +35,13 @@
             this.btnUpdate = new System.Windows.Forms.ToolStripButton();
             this.btnDelete = new System.Windows.Forms.ToolStripButton();
             this.txtFind = new System.Windows.Forms.ToolStripTextBox();
-            this.btnFind = new System.Windows.Forms.ToolStripButton();
+            this.lbFind = new System.Windows.Forms.ToolStripLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrdInfo)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGrdInfo
             // 
-            this.dataGrdInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGrdInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGrdInfo.Location = new System.Drawing.Point(0, 28);
             this.dataGrdInfo.Name = "dataGrdInfo";
@@ -60,6 +56,7 @@
             this.btnCancel.Size = new System.Drawing.Size(100, 25);
             this.btnCancel.TabIndex = 12;
             this.btnCancel.Text = "Cancel";
+            this.btnCancel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
@@ -70,12 +67,13 @@
             this.btnUpdate,
             this.btnDelete,
             this.txtFind,
-            this.btnFind});
+            this.lbFind});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(654, 25);
             this.toolStrip1.TabIndex = 15;
             this.toolStrip1.Text = "toolBar";
+            this.toolStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStrip1_ItemClicked);
             // 
             // btnAdd
             // 
@@ -109,16 +107,14 @@
             // 
             this.txtFind.Name = "txtFind";
             this.txtFind.Size = new System.Drawing.Size(100, 25);
+            this.txtFind.ToolTipText = "Find information";
+            this.txtFind.TextChanged += new System.EventHandler(this.txtFind_Change);
             // 
-            // btnFind
+            // lbFind
             // 
-            this.btnFind.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnFind.Image = ((System.Drawing.Image)(resources.GetObject("btnFind.Image")));
-            this.btnFind.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnFind.Name = "btnFind";
-            this.btnFind.Size = new System.Drawing.Size(34, 22);
-            this.btnFind.Text = "Find";
-            this.btnFind.Click += new System.EventHandler(this.btnFind_Click);
+            this.lbFind.Name = "lbFind";
+            this.lbFind.Size = new System.Drawing.Size(30, 22);
+            this.lbFind.Text = "Find";
             // 
             // FrmInfo
             // 
@@ -132,6 +128,7 @@
             this.Name = "FrmInfo";
             this.ShowIcon = false;
             this.Text = "Show Information";
+            this.Load += new System.EventHandler(this.FrmInfo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGrdInfo)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -149,7 +146,7 @@
         private System.Windows.Forms.ToolStripButton btnUpdate;
         private System.Windows.Forms.ToolStripButton btnDelete;
         private System.Windows.Forms.ToolStripTextBox txtFind;
-        private System.Windows.Forms.ToolStripButton btnFind;
+        private System.Windows.Forms.ToolStripLabel lbFind;
     }
 }
 

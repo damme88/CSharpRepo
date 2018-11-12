@@ -8,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ObjectData;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 
 namespace AccountManagement
 {
     public partial class FormData : Form
     {
-        ServiceReference1.Service1Client obj = new ServiceReference1.Service1Client();
         private int type_form;
 
         public int TypeForm
@@ -30,6 +31,10 @@ namespace AccountManagement
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            MySqlConnection conn = ConnectionDB.GetConnectionDB();
+            conn.Open();
+
+
             AccountInfo objInfo = new AccountInfo(); // add type reference
 
             if (txtAddress.Text.Length > 0 && txtNickName.Text.Length > 0 && txtPassword.Text.Length > 0)
@@ -42,12 +47,12 @@ namespace AccountManagement
 
                 if (type_form == 0)
                 {
-                    string strRet = obj.InsertAccountInfo(objInfo);
+                    string strRet = ConnectionDB.InsertAccountInfo(objInfo);
                 }
                 else if (type_form == 1)
                 {
                     objInfo.Id = Convert.ToInt16(txtId.Text);
-                    string strRet = obj.UpdateAccountInfo(objInfo);
+                    string strRet = ConnectionDB.UpdateAccountInfo(objInfo);
                 }
 
                 

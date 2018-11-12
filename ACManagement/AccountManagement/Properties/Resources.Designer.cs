@@ -83,9 +83,9 @@ namespace AccountManagement.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon infor {
+        internal static System.Drawing.Icon info {
             get {
-                object obj = ResourceManager.GetObject("infor", resourceCulture);
+                object obj = ResourceManager.GetObject("info", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
