@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="TApp.RibbonControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TApp"
+             mc:Ignorable="d" 
+             d:DesignHeight="35" d:DesignWidth="300">
+    <Grid>
+        <DockPanel>
+            <ToolBarTray DockPanel.Dock="Top">
+                <ToolBar>
+                    <Button Content="New" Command="{Binding NewCmd}"></Button>
+                    <Button Content="Open" Command="{Binding OpenCmd}"></Button>
+                    <Button Content="Save" Command="{Binding SaveCmd}"></Button>
+                    <Button Content="Setting" Command="{Binding SettingCmd}"></Button>
+                </ToolBar>
+            </ToolBarTray>
+        </DockPanel>
+    </Grid>
+</UserControl>
