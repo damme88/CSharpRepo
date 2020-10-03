@@ -15,7 +15,7 @@ using namespace System::Windows::Media;
 using namespace System::Runtime::InteropServices;
 
 namespace TBaseWrap {
-
+    TAppCore*   m_pAPPCore = TAppCore::GetInstance();;
     LRESULT WINAPI WindMsgProc(HWND _hWnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
     {
         switch (_msg)
@@ -25,7 +25,30 @@ namespace TBaseWrap {
                 SetFocus(_hWnd);
 
             return 0;
-
+        case WM_MOUSEMOVE:
+        {
+            UINT nFlag = DWORD(_wParam);
+            INT xp = GET_X_LPARAM(_lParam);
+            INT yp = GET_Y_LPARAM(_lParam);
+            m_pAPPCore->OnMouseMove(nFlag, xp, yp);
+            break;
+        }
+        case WM_RBUTTONDOWN:
+        {
+            UINT nFlag = DWORD(_wParam);
+            INT xp = GET_X_LPARAM(_lParam);
+            INT yp = GET_Y_LPARAM(_lParam);
+            m_pAPPCore->OnRButtonDown(nFlag, xp, yp);
+            break;
+        }
+        case WM_RBUTTONUP:
+        {
+            UINT nFlag = DWORD(_wParam);
+            INT xp = GET_X_LPARAM(_lParam);
+            INT yp = GET_Y_LPARAM(_lParam);
+            m_pAPPCore->OnRButtonUp(nFlag, xp, yp);
+            break;
+        }
         default:
             return DefWindowProc(_hWnd, _msg, _wParam, _lParam);
         }
@@ -36,23 +59,16 @@ namespace TBaseWrap {
     public:
         GlWrapperHwnd()
         {
-            m_pAPPCore = TAppCore::GetInstance();
         }
 
         ~GlWrapperHwnd()
         {
-            if (m_pAPPCore != NULL)
-            {
-                delete m_pAPPCore;
-                m_pAPPCore = NULL;
-            }
         }
     protected:
         HINSTANCE   m_hInstance;
         HWND        m_hWnd;
         LPCWSTR     m_WndName;
         LPCWSTR     m_ClassName;
-        TAppCore*   m_pAPPCore;
 
         virtual void OnRenderSizeChanged(SizeChangedInfo^ szInfo) override
         {
@@ -174,6 +190,11 @@ namespace TBaseWrap {
         void UpdateColorBkgn(int red, int green, int blue)
         {
             m_pAPPCore->SetColorBackground(red, green, blue);
+        }
+
+        void OnMouseMove(UINT nFlag, INT xParam, INT yParam)
+        {
+            m_pAPPCore->OnMouseMove(nFlag, xParam, yParam);
         }
     private:
         TAppCore*   m_pAPPCore;

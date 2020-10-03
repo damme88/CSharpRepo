@@ -5,17 +5,87 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TApp"
              mc:Ignorable="d" 
-             d:DesignHeight="35" d:DesignWidth="300">
+             d:DesignHeight="150" d:DesignWidth="450">
     <Grid>
-        <DockPanel>
-            <ToolBarTray DockPanel.Dock="Top">
-                <ToolBar>
-                    <Button Content="New" Command="{Binding NewCmd}"></Button>
-                    <Button Content="Open" Command="{Binding OpenCmd}"></Button>
-                    <Button Content="Save" Command="{Binding SaveCmd}"></Button>
-                    <Button Content="Setting" Command="{Binding SettingCmd}"></Button>
-                </ToolBar>
-            </ToolBarTray>
-        </DockPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Ribbon x:Name="RibbonWin"  SelectedIndex="0">
+            <Ribbon.HelpPaneContent>
+                <RibbonButton SmallImageSource="Images\sample.png" />
+            </Ribbon.HelpPaneContent>
+            <Ribbon.QuickAccessToolBar>
+                <RibbonQuickAccessToolBar>
+                    <RibbonButton x:Name ="New" 
+                                  SmallImageSource="Images\sample.png"
+                                  Command="{Binding NewCmd}"/>
+                    <RibbonButton x:Name ="Open" 
+                                  SmallImageSource="Images\sample.png"
+                                  Command="{Binding OpenCmd}"/>
+                    <RibbonButton x:Name ="Save" 
+                                  SmallImageSource="Images\sample.png"
+                                  Command="{Binding SaveCmd}"/>
+                    <RibbonButton x:Name ="Undo" SmallImageSource="Images\sample.png" />
+                    <RibbonButton x:Name ="Redo" SmallImageSource="Images\sample.png" />
+                    <RibbonSplitButton x:Name ="Print" SmallImageSource="Images\sample.png">
+                        <RibbonSplitMenuItem Header="Printer Writer" />
+                        <RibbonSplitMenuItem Header="Print Image" />
+                        <RibbonSplitMenuItem Header="Print Device" />
+                    </RibbonSplitButton>
+                    <RibbonSplitButton x:Name="About" SmallImageSource="Images\sample.png" >
+                        <RibbonSplitMenuItem Header="Version" />
+                        <RibbonSplitMenuItem Header="Info" />
+                        <RibbonSplitMenuItem Header="Document" />
+                    </RibbonSplitButton>
+                </RibbonQuickAccessToolBar>
+            </Ribbon.QuickAccessToolBar>
+            <!-- Application Menu, located at the left-hand side (down arrow) -->
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu KeyTip="F">
+                    <RibbonApplicationMenuItem 
+                        Header="Options" 
+                        ImageSource="Images\sample.png" 
+                        Command="{Binding OptionCmd}"/>
+                    <RibbonApplicationMenuItem 
+                        Header="Exit" 
+                        ImageSource="Images\sample.png"
+                        Command="{Binding ExitCmd}"/>
+                </RibbonApplicationMenu>
+            </Ribbon.ApplicationMenu>
+            <!-- Ribbon Tab #1: Home -->
+            <RibbonTab Header="Home" KeyTip="H" >
+                <!-- Home  group-->
+                <RibbonGroup x:Name="HomeGroup" Header="Home">
+                    <RibbonButton LargeImageSource="Images\sample.png" Label="Select" KeyTip="V"/>
+                    <RibbonButton SmallImageSource="Images\sample.png" Label="Show Axis" KeyTip="X" />
+                    <RibbonButton SmallImageSource="Images\sample.png" Label="View 3D" KeyTip="C" />
+                    <RibbonButton SmallImageSource="Images\sample.png" 
+                                  Label="Setting" 
+                                  KeyTip="S"
+                                  Command="{Binding SettingCmd}"/>
+                </RibbonGroup>
+                <!-- Employee And Payroll group-->
+                <RibbonGroup x:Name="ViewGroup" Header="View Style">
+                    <RibbonMenuButton LargeImageSource="Images\sample.png" Label="View style" KeyTip="V">
+                        <RibbonMenuItem ImageSource="Images\sample.png" Header="Top" KeyTip="T"/>
+                        <RibbonMenuItem ImageSource="Images\sample.png" Header="Bottom" KeyTip="S"/>
+                        <RibbonMenuItem ImageSource="Images\sample.png" Header="Left" KeyTip="S"/>
+                        <RibbonMenuItem ImageSource="Images\sample.png" Header="Right" KeyTip="S"/>
+                        <RibbonMenuItem ImageSource="Images\sample.png" Header="front" KeyTip="S"/>
+                        <RibbonMenuItem ImageSource="Images\sample.png" Header="Back" KeyTip="S"/>
+                        <RibbonMenuItem ImageSource="Images\sample.png" Header="ISO" KeyTip="S"/>
+                    </RibbonMenuButton>
+                    <RibbonButton SmallImageSource="Images\sample.png" Label="Reset View" KeyTip="X" />
+                    <RibbonButton SmallImageSource="Images\sample.png" Label="Bird Eyes View" KeyTip="C" />
+                </RibbonGroup>
+            </RibbonTab>
+            <!-- Ribbon Tab #2: -->
+            <RibbonTab Header="Insert" KeyTip="I">
+            </RibbonTab>
+            <!-- Ribbon Tab #3: -->
+            <RibbonTab Header="PageLayout" KeyTip="L">
+            </RibbonTab>
+        </Ribbon>
     </Grid>
 </UserControl>

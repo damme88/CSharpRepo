@@ -39,6 +39,5 @@
 // gl.h
 #include <gl/gl.h>
 #include <gl/glu.h>
+#include <gl/glut.h>
 
-#pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "glu32.lib")

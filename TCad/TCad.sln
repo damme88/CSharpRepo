@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TApp", "TApp\TApp.csproj", "{B1299EFE-0329-4122-A7D9-6F9B27056E62}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TBaseWrap", "TBaseWrap\TBaseWrap.vcxproj", "{4CC0F9CC-1E82-404F-921D-8C117A48EF78}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2DAD7858-2948-45CE-A16F-55E3A354B5FD} = {2DAD7858-2948-45CE-A16F-55E3A354B5FD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TCore", "TCore\TCore.vcxproj", "{2DAD7858-2948-45CE-A16F-55E3A354B5FD}"
 EndProject

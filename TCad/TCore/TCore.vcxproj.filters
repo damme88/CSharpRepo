@@ -33,6 +33,12 @@
     <ClCompile Include="TViewCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PCam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="TCore.def">
@@ -56,6 +62,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TViewCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PCam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

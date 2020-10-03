@@ -10,6 +10,25 @@ using TApp.Base;
 
 namespace TApp.ViewModel
 {
+    class UserName
+    {
+        public UserName(string name, string age)
+        {
+            _name = name;
+            _age = age;
+        }
+        public string _name;
+        public string _age;
+
+        public string Name
+        {
+            get { return _name; }
+        }
+        public string Age 
+        {
+            get { return _age; }
+        }
+    }
     class SettingDlgViewModel : TBaseVM
     {
         public RelayCommand CmdColorBox { set; get; }
@@ -21,12 +40,28 @@ namespace TApp.ViewModel
             _blueText = "0";
             _bkgnColor = new SolidColorBrush(Colors.Black);
             CmdColorBox = new RelayCommand(new Action<object>(OnColorBox));
+            _lvItems = new List<UserName>();
+            _lvItems.Add(new UserName("Pham 1", "25"));
+            _lvItems.Add(new UserName("Pham 2", "27"));
+
         }
 
         string _redText;
         string _greenText;
         string _blueText;
-
+        List<UserName> _lvItems;
+        public List<UserName> LVItems
+        {
+            get { return _lvItems; }
+            set
+            {
+                if (_lvItems != value)
+                {
+                    _lvItems = value;
+                }
+                OnPropertyChange("LVItems");
+            }
+        }
         public string RedText
         {
             get { return _redText; }

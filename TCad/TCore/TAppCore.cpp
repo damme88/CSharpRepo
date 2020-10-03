@@ -43,6 +43,39 @@ void TAppCore::OnSize(INT& nWidth, INT& nHeight)
     }
 }
 
+void TAppCore::OnMouseMove(INT nFlag, INT x, INT y)
+{
+    if (m_pView != NULL)
+    {
+        CPoint point;
+        point.x = x;
+        point.y = y;
+        m_pView->OnMouseMove(nFlag, point);
+    }
+}
+
+void TAppCore::OnRButtonUp(INT nFlag, INT x, INT y)
+{
+    if (m_pView != NULL)
+    {
+        CPoint point;
+        point.x = x;
+        point.y = y;
+        m_pView->OnRButtonUp(nFlag, point);
+    }
+}
+
+void TAppCore::OnRButtonDown(INT nFlag, INT x, INT y)
+{
+    if (m_pView != NULL)
+    {
+        CPoint point;
+        point.x = x;
+        point.y = y;
+        m_pView->OnRButtonDown(nFlag, point);
+    }
+}
+
 void TAppCore::SetColorBackground(int red, int green, int blue)
 {
     if (m_pView != NULL)

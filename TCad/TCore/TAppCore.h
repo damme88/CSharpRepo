@@ -10,6 +10,10 @@ public:
     BOOL InitOpenGL(HWND hwnd);
     void Render();
     void OnSize(INT& nWidth, INT& nHeight);
+    void OnMouseMove(INT nFlag, INT x, INT y);
+    void OnRButtonUp(INT nFlag, INT x, INT y);
+    void OnRButtonDown(INT nFlag, INT x, INT y);
+
     static TAppCore* GetInstance()
     {
         if (instance_ == NULL)

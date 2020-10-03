@@ -5,50 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:int="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         xmlns:local="clr-namespace:TApp"
+        xmlns:Frm="clr-namespace:TApp.Dialog"
         mc:Ignorable="d"
         Loaded="Window_Loaded" KeyDown="Window_KeyDown"
         Title="TCad - Phattrienphanmem123Az" Height="800" Width="1200">
+    <Window.Resources>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <DockPanel>
-                    <Menu DockPanel.Dock="Top">
-                        <MenuItem Header="_File">
-                            <MenuItem Header="_New"/>
-                            <MenuItem Header="_Open" Command="{Binding RibbonVM.OpenCmd}"/>
-                            <MenuItem Header="Save"/>
-                            <Separator/>
-                            <MenuItem Header="Exit"/>
-                        </MenuItem>
-                        <MenuItem Header="Edit">
-                            <MenuItem Header="Undo"/>
-                            <MenuItem Header="Redo"/>
-                            <MenuItem Header="Copy"/>
-                            <MenuItem Header="Cut"/>
-                            <MenuItem Header="Paste"/>
-                        </MenuItem>
-                        <MenuItem Header="Help">
-                            <MenuItem Header="About"/>
-                            <MenuItem Header="Document"/>
-                        </MenuItem>
-                    </Menu>
-                </DockPanel>
-            </Grid>
-            <Grid Grid.Row="1">
-                <local:RibbonControl x:Name="Rbcontrol"></local:RibbonControl>
-            </Grid>
+            <local:RibbonControl x:Name="Rbcontrol" Margin="0,5">
+            </local:RibbonControl>
         </Grid>
         <Grid Grid.Row="1">
-            <Border Name="glView"></Border>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="5"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="100"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <TabControl Name="TTabCtrl" ItemsSource="{Binding ListItems}" SelectedItem="{Binding SelectedItem}">
+                    </TabControl>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <StackPanel Orientation="Horizontal" Margin="2">
+                        <Button Width="50" Content="OK" Height="25" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                        <Button Width="50" Content="Cancel" Height="25" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" ></GridSplitter>
+            <Grid Grid.Column="2">
+                <Border Name="glView"></Border>
+            </Grid>
         </Grid>
         <Grid Grid.Row="2">
             <DockPanel>

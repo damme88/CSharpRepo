@@ -62,16 +62,32 @@
     </ApplicationDefinition>
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Base\TBaseVM.cs" />
+    <Compile Include="Dialog\FrmLineObject.xaml.cs">
+      <DependentUpon>FrmLineObject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\FrmSample.xaml.cs">
+      <DependentUpon>FrmSample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialog\SettingDlg.xaml.cs">
       <DependentUpon>SettingDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="RibbonControl.xaml.cs">
       <DependentUpon>RibbonControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\FrmLineObjectVM.cs" />
+    <Compile Include="ViewModel\FrmSampleVM.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\RibbonViewModel.cs" />
     <Compile Include="ViewModel\SettingDlgViewModel.cs" />
     <Compile Include="WrapApp.cs" />
+    <Page Include="Dialog\FrmLineObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\FrmSample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialog\SettingDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -119,6 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\sample.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TBaseWrap\TBaseWrap.vcxproj">

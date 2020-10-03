@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using TApp.Dialog;
 using TApp.ViewModel;
 
 namespace TApp
@@ -25,12 +27,14 @@ namespace TApp
     {
         private DispatcherTimer updateTimer = new DispatcherTimer();
         private MainViewModel _mainVM = null;
+        HwndHost _mainHost;
         public MainWindow()
         {
             InitializeComponent();
             _mainVM = new MainViewModel();
             this.DataContext = _mainVM;
             Rbcontrol.DataContext = _mainVM.RibbonVM;
+            _mainHost = new TBaseWrap.GlWrapperHwnd();
         }
 
         public override void BeginInit()
@@ -42,8 +46,7 @@ namespace TApp
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            HwndHost host = new TBaseWrap.GlWrapperHwnd();
-            glView.Child = host;
+            glView.Child = _mainHost;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -75,7 +78,6 @@ namespace TApp
                 null != glView.Child)
             {
                 glView.Child.InvalidateVisual();
-                _mainVM.UpdateData();
             }
         }
     }

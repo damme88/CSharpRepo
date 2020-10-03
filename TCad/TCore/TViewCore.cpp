@@ -15,6 +15,12 @@ TViewCore::TViewCore()
     red_ = 0.0;
     green_ = 0.0;
     blue_ = 0.0;
+
+    cx_ = 0;
+    cy_ = 0;
+    rendering_rate_ = 0.5f;
+    is_ldown_ = false;
+    is_rdown_ = false;
 }
 
 TViewCore::~TViewCore()
@@ -102,23 +108,18 @@ BOOL TViewCore::InitializeOpenGL(HWND hwnd)
 
 void TViewCore::Renderscene()
 {
-    if (m_hDC == NULL || m_hRC == NULL)
-        return;
-
-    wglMakeCurrent(m_hDC, m_hRC);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     glClearColor(red_, green_, blue_, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     glLoadIdentity();
+    p_cameral_.ViewDirection();
 
-    glTranslatef(0.0f, 0.0f, -2.6f);
-    glBegin(GL_TRIANGLES);
-    glColor3f(1.0f, 0.0f, 0.0f);	glVertex3f(-1.0f, -1.0f, 0.0f);
-    glColor3f(0.0f, 1.0f, 0.0f);	glVertex3f(0.0f, 1.0f, 0.0f);
-    glColor3f(0.0f, 0.0f, 1.0f);	glVertex3f(1.0f, -1.0f, 0.0f);
-    glEnd();
-
+    glTranslatef(0.0f, 0.0f, 0.0f);
+    MakeAxis();
+    //glutWireCube(10.0);
     glFlush();
-    SwapBuffers(m_hDC);
+    ::glFinish();
+    ::SwapBuffers(m_hDC);
 }
 
 
@@ -133,13 +134,72 @@ void TViewCore::OnSize(const INT& nWidth, const INT& nHeight)
     if (iWidth == 0 || iHeight == 0)
         return;
 
+    cx_ = iWidth;
+    cy_ = iHeight;
+
     wglMakeCurrent(m_hDC, m_hRC);
     glViewport(0, 0, iWidth, iHeight);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    //glOrtho(-1.0, 1.0, -1.0, 1.0, 1.0, 100.0);
-    gluPerspective( 67.5, ((double)(iWidth) / (double)(iHeight)), 1.0, 500.0);
+    SetViewFrustum();
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+}
+
+void TViewCore::SetViewFrustum()
+{
+    double left_ = -(double)cx_ *0.5 / rendering_rate_;
+    double right_ = (double)cx_ *0.5 / rendering_rate_;
+    double top_ = (double)cy_ *0.5 / rendering_rate_;
+    double bottom_ = -(double)cy_ *0.5 / rendering_rate_;
+
+    double zfar = 20000 / rendering_rate_;
+    zfar = max(20000, rendering_rate_);
+    glOrtho(left_, right_, bottom_, top_, -zfar, zfar);
+}
+
+void TViewCore::OnMouseMove(UINT nFlags, CPoint point)
+{
+    if (is_rdown_ == true)
+    {
+        p_cameral_.CalAngle(point, cx_, cy_);
+    }
+
+    if (is_ldown_)
+    {
+        ms_down_pt_ = point;
+        p_cameral_.SetDownPt(ms_down_pt_);
+    }
+}
+
+void TViewCore::OnRButtonUp(UINT nFlags, CPoint point)
+{
+    ms_down_pt_ = CPoint(0, 0);
+    p_cameral_.SetDownPt(ms_down_pt_);
+    is_rdown_ = false;
+}
+
+void TViewCore::OnRButtonDown(UINT nFlags, CPoint point)
+{
+    ms_down_pt_ = point;
+    p_cameral_.SetDownPt(ms_down_pt_);
+    is_rdown_ = true;
+}
+
+void TViewCore::MakeAxis()
+{
+    glLineWidth(1.0f);
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex3f(-1.0*VALUE_AXIS, 0.0f, 0.0f);
+    glVertex3f(VALUE_AXIS, 0.0f, 0.0f);
+
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glVertex3f(0.0f, VALUE_AXIS, 0.0f);
+    glVertex3f(0.0f, -1.0*VALUE_AXIS, 0.0f);
+
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(0.0f, 0.0f, VALUE_AXIS);
+    glVertex3f(0.0f, 0.0f, -1 * VALUE_AXIS);
+    glEnd();
 }

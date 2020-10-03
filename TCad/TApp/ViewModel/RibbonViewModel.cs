@@ -19,25 +19,59 @@ namespace TApp.ViewModel
 
     class RibbonViewModel : TBaseVM
     {
-        public RibbonViewModel()
+        public enum CommandType
         {
-            NewCmd = new RelayCommand(new Action<object>(ImpNew));
-            OpenCmd = new RelayCommand(new Action<object>(ImpOpen));
-            SaveCmd = new RelayCommand(new Action<object>(ImpSave));
-            SettingCmd = new RelayCommand(new Action<object>(ImpSetting));
-            _bkgnColor = new BackgrounColor();
+            CMD_NONE = 0,
+            CMD_LINE_FRM = 1,
         }
 
+        public RibbonViewModel(Action parentAction)
+        {
+            ExitCmd = new RelayCommand(new Action<object>(DoExit));
+            NewCmd = new RelayCommand(new Action<object>(ImpNew));
+            OpenCmd = new RelayCommand(new Action<object>(DoOpen));
+            SaveCmd = new RelayCommand(new Action<object>(ImpSave));
+            SettingCmd = new RelayCommand(new Action<object>(DoSetting));
+            _bkgnColor = new BackgrounColor();
+            LineCmd = new RelayCommand(new Action<object>(DrawLine));
+
+            _pMainMethod = parentAction;
+            _commandType = CommandType.CMD_NONE;
+        }
+
+        #region Members
+
+        public RelayCommand ExitCmd { set; get; }
+
         private BackgrounColor _bkgnColor;
+        private readonly Action _pMainMethod;
+        private CommandType _commandType;
 
         public RelayCommand NewCmd { set; get; }
         public RelayCommand OpenCmd { set; get; }
         public RelayCommand SaveCmd { set; get; }
         public RelayCommand SettingCmd { set; get; }
+        public RelayCommand LineCmd { set; get; }
 
+        #endregion
+
+        #region PROPERTY
         public BackgrounColor BkgnColor
         {
             get { return _bkgnColor; }
+        }
+
+        public int ComdType
+        {
+            get { return (int)_commandType; }
+        }
+
+        #endregion
+
+        #region FUNCTION
+        public void DoExit(object obj)
+        {
+            ;// Application.Current.Shutdown();
         }
 
         public void ImpNew(object obj)
@@ -45,7 +79,7 @@ namespace TApp.ViewModel
             MessageBox.Show("Hello WPF");
         }
 
-        public void ImpOpen(object obj)
+        public void DoOpen(object obj)
         {
             OpenFileDialog fileDlg = new OpenFileDialog();
             fileDlg.Filter = "Text Files (*.txt)|*.txt|Stl Files (*.stl)|*.stl|All Files(*.*)|*.*";
@@ -62,7 +96,7 @@ namespace TApp.ViewModel
 
         }
 
-        public void ImpSetting(object obj)
+        public void DoSetting(object obj)
         {
             SettingDlg setting_dlg = new SettingDlg();
             if (setting_dlg.ShowDialog() == true)
@@ -74,5 +108,13 @@ namespace TApp.ViewModel
                 WrapApp.Instance.WrappGl.UpdateColorBkgn(_bkgnColor._red, _bkgnColor._green, _bkgnColor._blue);
             }
         }
+
+        public void DrawLine(object obj)
+        {
+            _commandType = CommandType.CMD_LINE_FRM;
+            _pMainMethod.Invoke();
+        }
+
+        #endregion
     }
 }

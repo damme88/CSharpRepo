@@ -4,9 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TApp.Dialog"
+        xmlns:ViewModle ="clr-namespace:TApp.ViewModel"
         mc:Ignorable="d"
         Title="Setting Info" Height="300" Width="300"
         ResizeMode="NoResize">
+    <Window.Resources>
+        <DataTemplate x:Key="UserTemplate">
+            <WrapPanel>
+                <TextBlock Text="Name:"/>
+                <TextBlock Text="{Binding Name}"/>
+                <TextBlock Text="Age:"/>
+                <TextBlock Text="{Binding Age}"/>
+            </WrapPanel>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -38,6 +49,8 @@
                              HorizontalAlignment="Left" 
                              Margin="5"
                              Background="{Binding BkgnColor}"></TextBox>
+                    <ListView Margin="10" Width="150" Height="100" HorizontalAlignment="Left" Name="LView" ItemsSource="{Binding LVItems}" ItemTemplate="{StaticResource UserTemplate}">
+                    </ListView>
                 </StackPanel>
             </Grid>
         </Grid>
