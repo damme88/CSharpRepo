@@ -75,7 +75,7 @@ namespace BTea
 
         public List<DrinkObject> GetDataDrink()
         {
-            string query = "SELECT * FROM drinkTbl";
+            string query = "SELECT * FROM drinktbl";
 
             List<DrinkObject> drObjectList = new List<DrinkObject>();
 
@@ -96,10 +96,10 @@ namespace BTea
                    string sPrice = dataReader["Price"]  + "";
                    string sNote  = dataReader["Note"]   + "";
                    DrinkObject drObj = new DrinkObject();
-                   drObj.DRId       = sId;
-                   drObj.DRName     = sName;
-                   drObj.DRPrice    = sPrice;
-                   drObj.DRNote     = sNote;
+                   drObj.BId       = sId;
+                   drObj.BName     = sName;
+                   drObj.BPrice    = Convert.ToDouble(sPrice);
+                   drObj.BNote     = sNote;
 
                    drObjectList.Add(drObj);
                 }
@@ -121,9 +121,9 @@ namespace BTea
                 MySqlCommand cmd = new MySqlCommand("AddDrinkItem", _connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new MySqlParameter("inName", drItem.DRName));
-                cmd.Parameters.Add(new MySqlParameter("inPrice", drItem.DRPrice));
-                cmd.Parameters.Add(new MySqlParameter("inNote", drItem.DRNote));
+                cmd.Parameters.Add(new MySqlParameter("inName", drItem.BName));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", drItem.BPrice));
+                cmd.Parameters.Add(new MySqlParameter("inNote", drItem.BNote));
 
                 try
                 {
@@ -148,11 +148,11 @@ namespace BTea
                 MySqlCommand cmd = new MySqlCommand("EditDrinkItem", _connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                int drId = Convert.ToInt32(drItem.DRId);
+                int drId = Convert.ToInt32(drItem.BId);
                 cmd.Parameters.Add(new MySqlParameter("inId", drId));
-                cmd.Parameters.Add(new MySqlParameter("inName", drItem.DRName));
-                cmd.Parameters.Add(new MySqlParameter("inPrice", drItem.DRPrice));
-                cmd.Parameters.Add(new MySqlParameter("inNote", drItem.DRNote));
+                cmd.Parameters.Add(new MySqlParameter("inName", drItem.BName));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", drItem.BPrice));
+                cmd.Parameters.Add(new MySqlParameter("inNote", drItem.BNote));
                 int result = 0;
                 try
                 {
@@ -207,6 +207,194 @@ namespace BTea
             }
             CloseDB();
             return bRet;
+        }
+
+        public List<ToppingObject> GetDataTopping()
+        {
+            string query = "SELECT * FROM toppingtbl";
+
+            List<ToppingObject> tpObjectList = new List<ToppingObject>();
+
+            //Open connection
+            if (this.ConnectionDB() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+
+                //Create a data reader and Execute the command
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store them in the list
+                while (dataReader.Read())
+                {
+                    string sId = dataReader["Id"] + "";
+                    string sName = dataReader["Name"] + "";
+                    string sPrice = dataReader["Price"] + "";
+                    string sNote = dataReader["Note"] + "";
+                    ToppingObject tpObj = new ToppingObject();
+                    tpObj.BId = sId;
+                    tpObj.BName = sName;
+                    tpObj.BPrice = Convert.ToDouble(sPrice);
+                    tpObj.BNote = sNote;
+
+                    tpObjectList.Add(tpObj);
+                }
+
+                //close Data Reader
+                dataReader.Close();
+
+                //close Connection
+                CloseDB();
+            }
+            return tpObjectList;
+        }
+
+        public bool AddToppingItem(ToppingObject tpItem)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("AddToppingItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new MySqlParameter("inName", tpItem.BName));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", tpItem.BPrice));
+                cmd.Parameters.Add(new MySqlParameter("inNote", tpItem.BNote));
+
+                try
+                {
+                    int result = cmd.ExecuteNonQuery();
+                    bRet = true;
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                }
+            }
+
+            CloseDB();
+            return bRet;
+        }
+
+        public bool EditToppingItem(ToppingObject tpItem)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("EditToppingItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                int tpId = Convert.ToInt32(tpItem.BId);
+                cmd.Parameters.Add(new MySqlParameter("inId", tpId));
+                cmd.Parameters.Add(new MySqlParameter("inName", tpItem.BName));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", tpItem.BPrice));
+                cmd.Parameters.Add(new MySqlParameter("inNote", tpItem.BNote));
+                int result = 0;
+                try
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                }
+
+                if (result == 1)
+                {
+                    bRet = true;
+                }
+                else
+                {
+                    bRet = false;
+                }
+            }
+
+            CloseDB();
+            return bRet;
+        }
+
+        public bool DeleteToppingItem(int Id)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("DeleteToppingItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new MySqlParameter("inId", Id));
+
+                int result = 0;
+                try
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                }
+
+                if (result == 1)
+                {
+                    bRet = true;
+                }
+                else
+                {
+                    bRet = false;
+                }
+            }
+            CloseDB();
+            return bRet;
+        }
+
+        //Order Btea Item
+        public List<BillObject> GetDataBillObject()
+        {
+            string query = "SELECT * FROM billtbl";
+
+            List<BillObject> billObjectList = new List<BillObject>();
+
+            //Open connection
+            if (this.ConnectionDB() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+
+                //Create a data reader and Execute the command
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store them in the list
+                while (dataReader.Read())
+                {
+                    string sId = dataReader["Id"] + "";
+                    string sName = dataReader["Name"] + "";
+                    string sPrice = dataReader["Price"] + "";
+                    string sCreator = dataReader["Creator"] + "";
+                    string sDate = dataReader["Date"] + "";
+                    string sPhone = dataReader["Phone"] + "";
+                    string sAddress = dataReader["Address"] + "";
+                    string sOrderItem = dataReader["OrderItem"] + "";
+                    string sNote = dataReader["Note"] + "";
+
+                    BillObject billObj = new BillObject();
+                    billObj.BillId = Convert.ToInt32(sId);
+                    billObj.BillName = sName;
+                    billObj.BillPrice = Convert.ToDouble(sPrice);
+                    billObj.BillCreator = sCreator;
+                    billObj.BillDate = Convert.ToDateTime(sDate);
+                    billObj.BillPhone = sPhone;
+                    billObj.BillAddress = sAddress;
+                    billObj.BillNote = sNote;
+
+                    billObj.BillOrderItem = sOrderItem;
+                    billObjectList.Add(billObj);
+                }
+
+                //close Data Reader
+                dataReader.Close();
+
+                //close Connection
+                CloseDB();
+            }
+            return billObjectList;
         }
     }
 }

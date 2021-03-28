@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,30 +7,21 @@ using System.Windows.Data;
 
 namespace BTea.convert
 {
-    class ImgConvert : IValueConverter
+    class DateTimeConvert : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            string path = Environment.CurrentDirectory;
-            string val = (string)value;
-
-            path += "\\img_data\\" + value + ".png";
-
-            if (File.Exists(path))
+            if (value == null)
+                return null;
+            DateTime dtTime = (DateTime)value;
+            if (dtTime != null)
             {
-                return path;
-            }
-            else
-            {
-                path = Environment.CurrentDirectory;
-                path += "\\img_data\\sample.png";
-                if (File.Exists(path))
-                {
-                    return path;
-                }
+                string dateString = dtTime.ToString("dd-MMM-yyyy");
+                return   dateString;
             }
             return string.Empty;
         }
+
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();

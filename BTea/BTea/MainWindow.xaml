@@ -10,6 +10,7 @@
         ResizeMode="CanMinimize">
     <Window.Resources>
         <local2:ImgConvert x:Key="ImgConvert"/>
+        <local2:DateTimeConvert x:Key="DateConvert"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -95,52 +96,136 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Margin="5">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <StackPanel Orientation="Vertical">
-                        <Label FontWeight="Bold" FontSize="14" Margin="5">Danh sách</Label>
-                        <RadioButton Margin="5" FontSize="14" IsChecked="{Binding DrinkCheck}">Đồ uống</RadioButton>
-                        <RadioButton Margin="5" FontSize="14" IsChecked="{Binding FoodCheck}">Đồ nhâm nhi</RadioButton>
-                        <RadioButton Margin="5" FontSize="14" IsChecked="{Binding ToppingCheck}">Topping</RadioButton>
-                        <RadioButton Margin="5" FontSize="14" IsChecked="{Binding FoodOtherCheck}">Đồ lặt vặt</RadioButton>
-                    </StackPanel>
-                </Grid>
-                <Grid Grid.Column="1">
-                    <StackPanel>
-                        <ListView  Height="600" Margin="5" Name="BTeaList" 
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <StackPanel Orientation="Horizontal">
+                            <Label FontWeight="Bold" FontSize="14">Menu:</Label>
+                            <RadioButton GroupName="BTeaGroup" Margin="6" FontSize="14" IsChecked="{Binding DrinkCheck}">Đồ uống</RadioButton>
+                            <RadioButton GroupName="BTeaGroup" Margin="6" FontSize="14" IsChecked="{Binding FoodCheck}">Đồ nhâm nhi</RadioButton>
+                            <RadioButton GroupName="BTeaGroup" Margin="6" FontSize="14" IsChecked="{Binding ToppingCheck}">Topping</RadioButton>
+                            <RadioButton GroupName="BTeaGroup" Margin="6" FontSize="14" IsChecked="{Binding FoodOtherCheck}">Đồ lặt vặt</RadioButton>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Tìm kiếm:" Margin="5" FontSize="14" FontWeight="Bold"></TextBlock>
+                                <TextBox Width="450" Height="30" Margin="5" Text="{Binding FindItem, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <ListView  Height="600" Margin="5" HorizontalAlignment="Left" Name="BTeaList" 
                                    ItemsSource="{Binding DataList}"
                                    SelectedItem="{Binding BTeaSelectedItem}"
                                    ScrollViewer.VerticalScrollBarVisibility="Visible"
                                    ScrollViewer.CanContentScroll="False">
+                                <ListView.View>
+                                    <GridView ColumnHeaderContainerStyle="{StaticResource GrdViewHeaderStyle}">
+                                        <GridViewColumn Header="Hình ảnh" Width="120">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Image Source="{Binding ImgId,Converter={StaticResource ImgConvert}}"  Height="100" Width="100"></Image>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="tên" Width="200">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock  Text="{Binding Name}" FontSize="14" FontWeight="Bold" Foreground="Blue" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="giá" Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock  Text="{Binding Price}" FontSize="14" FontWeight="Bold" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="ghi chú" Width="100">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Note}" FontSize="14"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Kích thước :" FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
+                        <ComboBox Width="150" Height="30" ItemsSource="{Binding SizeItems}" SelectedItem="{Binding SelectedSizeItem}" IsEnabled="{Binding StateSize}" Margin="5" HorizontalAlignment="Left"></ComboBox>
+                        <TextBlock Text="Tỉ lệ đường :" FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
+                        <ComboBox Width="150" Height="30" ItemsSource="{Binding SugarItems}"  SelectedItem="{Binding SelectedSugarItem}" IsEnabled="{Binding StateSugarRate}" Margin="5" HorizontalAlignment="Left"></ComboBox>
+                        <TextBlock Text="Tỉ lệ đá :" FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
+                        <ComboBox Width="150" Height="30" ItemsSource="{Binding IceItems}"  SelectedItem="{Binding SelectedIceItem}" IsEnabled="{Binding StateIceRate}" Margin="5" HorizontalAlignment="Left"></ComboBox>
+                        <TextBlock Text="Topping :" FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
+                        <ListBox Width="150" Height="300" ItemsSource="{Binding ToppingItems}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox Margin="2" IsChecked="{Binding IsSelected, Mode=TwoWay}"/>
+                                        <TextBlock Margin="2" Text="{Binding Content}" FontSize="12" FontWeight="Bold"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <Button  Width="145" Height="50" 
+                                    Margin="5" Content="Chọn" 
+                                    Command="{Binding CmdSelectItem}"
+                                    FontSize="14"
+                                    FontWeight="Bold"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="400"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="List Order" FontSize="14" FontWeight="Bold" Width="200" Height="20" Margin="2"></TextBlock>
+                        <ListView  Height="300" Width="600" Margin="5" HorizontalAlignment="Left"
+                                   ItemsSource="{Binding DataOrderList}"
+                                   SelectedItem="{Binding BTeaOrderSelectedItem}"
+                                   ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                   ScrollViewer.CanContentScroll="False">
                             <ListView.View>
                                 <GridView ColumnHeaderContainerStyle="{StaticResource GrdViewHeaderStyle}">
-                                    <GridViewColumn Header="Hình ảnh" Width="120">
+                                    <GridViewColumn Header="Tên" Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Image Source="{Binding ImgId,Converter={StaticResource ImgConvert}}"  Height="100" Width="100"></Image>
+                                                <TextBlock  Text="{Binding OrderName}" FontSize="12"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="tên" Width="250">
+                                    <GridViewColumn Header="giá" Width="80">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock  Text="{Binding Name}" FontSize="14" FontWeight="Bold" Foreground="Blue" />
+                                                <TextBlock  Text="{Binding OrderPrice}" FontSize="12"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="giá" Width="100">
+                                    <GridViewColumn Header="Note" Width="350">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock  Text="{Binding Price}" FontSize="14" FontWeight="Bold" />
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn Header="ghi chú" Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Note}" FontSize="14"/>
+                                                <TextBox Text="{Binding OrderNote}" FontSize="12"
+                                                         IsReadOnly="True" 
+                                                         TextWrapping="Wrap" 
+                                                         Width="230"
+                                                         AcceptsReturn="True"
+                                                         Height="50"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -148,49 +233,48 @@
                             </ListView.View>
                         </ListView>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Tìm kiếm:" Margin="5" FontSize="14" FontWeight="Bold"></TextBlock>
-                            <TextBox Width="450" Height="30" Margin="5" Text="{Binding FindItem, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Button Width="80" Height="30" 
-                                    Margin="5" Content="Chọn" 
-                                    Command="{Binding CmdSelectItem}"
-                                    FontSize="14"
-                                    FontWeight="Bold"/>
+                            <TextBlock Text="Tong gia tri:" Margin="5"></TextBlock>
+                            <TextBox Text="{Binding BillSumPrice}"  Width="250" Height="30" IsReadOnly="True" Margin="10,0,0,0"></TextBox>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-            </Grid>
-            <Grid Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Tên sản phẩm :" FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
-                        <TextBox Width="200" Height="30" IsReadOnly="True" Margin="5" HorizontalAlignment="Left"></TextBox>
-                        <TextBlock Text="Kích thước :"  FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
-                        <ComboBox Width="200" Height="30" Margin="5" HorizontalAlignment="Left"></ComboBox>
-                        <TextBlock Text="Tỉ lệ đường :" FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
-                        <ComboBox Width="200" Height="30" Margin="5" HorizontalAlignment="Left"></ComboBox>
-                        <TextBlock Text="Topping :" FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
-                        <ListView Width="200" Height="200" HorizontalAlignment="Left" Margin="5"></ListView>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Width="50" Height="30" Content="Select" HorizontalAlignment="Left" Margin="5"></Button>
-                            <Button Width="50" Height="30" Content="Clear" HorizontalAlignment="Left" Margin="5"></Button>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
+                            <TextBlock Text="Ten Hoa Don" Width="100" Height="20" Margin="5"></TextBlock>
+                            <TextBox Width="100" Height="30" Text="{Binding BillName}"/>
+                            <TextBlock Text="Nguoi tao" Width="100" Height="20" Margin="5"></TextBlock>
+                            <TextBox Width="100" Height="30" Text="{Binding BillCreator}"/>
+                            <TextBlock Text="Ngay tao" Width="100" Height="20" Margin="5"></TextBlock>
+                            <DatePicker Width="100" Height="30" Margin="5" Text="{Binding BillStartDate, Converter={StaticResource DateConvert}}"></DatePicker>
                         </StackPanel>
-                    </StackPanel>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <StackPanel Orientation="Vertical">
+                            <CheckBox Width="100" Height="20" Content="Them thong tin" IsChecked="{Binding BillMoreInfo}"></CheckBox>
+                            <TextBlock Text="So dt:" Width="100" Height="20" Margin="5"></TextBlock>
+                            <TextBox Width="100" Height="30" Text="{Binding BillPhone}"  IsEnabled="{Binding BillMoreInfo}"/>
+                            <TextBlock Text="Dia chi" Width="100" Height="20" Margin="5"></TextBlock>
+                            <TextBox Width="100" Height="30" Text="{Binding BillAddress}"  IsEnabled="{Binding BillMoreInfo}"/>
+                            <TextBlock Text="Ghi chu" Width="100" Height="20" Margin="5"></TextBlock>
+                            <TextBox Width="100" Height="30" Margin="5" Text="{Binding BillNote}" IsEnabled="{Binding BillMoreInfo}"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Column="2">
+                        <StackPanel Orientation="Vertical"/>
+                    </Grid>
                 </Grid>
-                <Grid Grid.Column="1">
-                    <StackPanel Orientation="Vertical">
-                        <ListView Width="250" Height="400" HorizontalAlignment="Left" Margin="5"></ListView>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Width="80" Height="30"  Margin="5" Content="Save"></Button>
-                            <Button Width="80" Height="30" Margin="5" Content="Clear"></Button>
-                            <Button Width="80" Height="30" Margin="5" Content="Luu Tam"></Button>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Width="80" Height="30"  Margin="5" Content="Print"></Button>
-                        </StackPanel>
+                <Grid Grid.Row="2">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Width="80" Height="30"  Margin="5" Content="Tao hoa don"></Button>
+                        <Button Width="80" Height="30" Margin="5" Content="Xoa hoa don"></Button>
+                        <Button Width="80" Height="30" Margin="5" Content="Luu Tam"></Button>
+                        <Button Width="80" Height="30" Margin="5" Content="In"></Button>
                     </StackPanel>
                 </Grid>
             </Grid>

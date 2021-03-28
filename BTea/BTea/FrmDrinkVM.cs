@@ -116,10 +116,10 @@ namespace BTea
                 DrinkObject drinkItem = new DrinkObject();
 
                 string drId = _drId.Replace("DR", "");
-                drinkItem.DRId = drId;
-                drinkItem.DRName = _drinkName;
-                drinkItem.DRPrice = _drinkPrice;
-                drinkItem.DRNote = _drinkNote;
+                drinkItem.BId = drId;
+                drinkItem.BName = _drinkName;
+                drinkItem.BPrice = Convert.ToDouble(_drinkPrice);
+                drinkItem.BNote = _drinkNote;
                 bool bRet = DBConnection.GetInstance().EditDrinkItem(drinkItem);
                 _pDrinkMethod.Invoke();
             }
@@ -130,9 +130,9 @@ namespace BTea
                 _drinkPrice != string.Empty)
             {
                 DrinkObject drinkItem = new DrinkObject();
-                drinkItem.DRName = _drinkName;
-                drinkItem.DRPrice = _drinkPrice;
-                drinkItem.DRNote = _drinkNote;
+                drinkItem.BName = _drinkName;
+                drinkItem.BPrice = Convert.ToDouble(_drinkPrice);
+                drinkItem.BNote = _drinkNote;
                 bool bRet = DBConnection.GetInstance().AddDrinkItem(drinkItem);
                 _pDrinkMethod.Invoke();
             }

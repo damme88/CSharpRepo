@@ -1,12 +1,12 @@
-﻿<Window x:Class="BTea.FrmDrink"
+﻿<Window x:Class="BTea.FrmTopping"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BTea"
         mc:Ignorable="d"
-        Title="Drink" Height="370" Width="250"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Title="Topping" Height="370" Width="250">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -15,17 +15,17 @@
         <Grid Grid.Row="0">
             <StackPanel>
                 <TextBlock Margin="10,10,0,0">Tên Sản Phẩm:</TextBlock>
-                <TextBox Text="{Binding DrinkName}" Width="200" Height="30" HorizontalAlignment="Left" Margin="10"></TextBox>
+                <TextBox Text="{Binding ToppingName}" Width="200" Height="30" HorizontalAlignment="Left" Margin="10"></TextBox>
                 <TextBlock Margin="10,0,0,0">Giá:</TextBlock>
-                <TextBox Text="{Binding DrinkPrice}" Width="200" Height="30" HorizontalAlignment="Left" Margin="10"></TextBox>
+                <TextBox Text="{Binding ToppingPrice}" Width="200" Height="30" HorizontalAlignment="Left" Margin="10"></TextBox>
                 <TextBlock Margin="10,0,0,0">Ghi Chú:</TextBlock>
-                <TextBox Text="{Binding DrinkNote}" Width="200" Height="50" HorizontalAlignment="Left" Margin="10"></TextBox>
+                <TextBox Text="{Binding ToppingNote}" Width="200" Height="50" HorizontalAlignment="Left" Margin="10"></TextBox>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
             <StackPanel Orientation="Horizontal">
-                <Button Visibility="{Binding DrinkStateAdd}" Width="60" Height="30" Content="Thêm" Command="{Binding CmdDrinkAdd}" Margin="5"></Button>
-                <Button Visibility="{Binding DrinkStateEdit}" Width="60" Height="30" Content="Sửa" Command="{Binding CmdDrinkEdit}" Margin="5"></Button>
+                <Button Visibility="{Binding ToppingStateAdd}" Width="60" Height="30" Content="Thêm" Command="{Binding CmdToppingAdd}" Margin="5"></Button>
+                <Button Visibility="{Binding ToppingStateEdit}" Width="60" Height="30" Content="Sửa" Command="{Binding CmdToppingEdit}" Margin="5"></Button>
                 <Button Width="60" Height="30" Content="Hủy" Margin="5" Click="Button_Close"></Button>
             </StackPanel>
         </Grid>

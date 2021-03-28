@@ -6,54 +6,42 @@ using System.Threading.Tasks;
 
 namespace BTea
 {
-    class DrinkObject
+    class DrinkObject : BTBaseObject
     {
-        private string drId;
-        private string drName;
-        private string drPrice;
-        private string drNote;
         public DrinkObject()
         {
-            drId    = string.Empty;
-            drName  = string.Empty;
-            drPrice = string.Empty;
-            drNote  = string.Empty;
-        }
-        #region Properties
-        public string DRId
-        {
-            get { return drId; }
-            set
-            {
-                drId = value;
-            }
+            _tpListObj = new List<ToppingObject>();
         }
 
-        public string DRName
+        private List<ToppingObject> _tpListObj;
+
+        private int _size;
+        private int _surgarRate;
+        private int _iceRate;
+
+        #region PROPERTY
+        public List<ToppingObject> TPListObj
         {
-            get { return drName; }
-            set
-            {
-                drName = value;
-            }
+            get { return _tpListObj; }
+            set { _tpListObj = value; }
         }
 
-        public string DRPrice
+        public int DrinkSize
         {
-            get { return drPrice; }
-            set
-            {
-                drPrice = value;
-            }
+            get { return _size; }
+            set { _size = value; }
         }
 
-        public string DRNote
+        public int SugarRate
         {
-            get { return drNote; }
-            set
-            {
-                drNote = value;
-            }
+            get { return _surgarRate; }
+            set { _surgarRate = value; }
+        }
+
+        public int IceRate
+        {
+            get { return _iceRate; }
+            set { _iceRate = value; }
         }
         #endregion
     }

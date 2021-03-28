@@ -12,7 +12,7 @@ namespace BTea
         {
 
         }
-        public int ImgId { get; set; }
+        public string ImgId { get; set; }
         public string Name { get; set; }
         public string Price { get; set; }
         public string Note { get; set; }

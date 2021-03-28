@@ -61,6 +61,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -79,11 +80,39 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BillItems.cs" />
+    <Compile Include="BTeaOrderObject.cs" />
+    <Compile Include="convert\DateTimeConvert.cs" />
+    <Compile Include="FrmBillMain.xaml.cs">
+      <DependentUpon>FrmBillMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FrmBillMainVM.cs" />
+    <Compile Include="FrmTopping.xaml.cs">
+      <DependentUpon>FrmTopping.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FrmToppingMain.xaml.cs">
+      <DependentUpon>FrmToppingMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FrmToppingMainVM.cs" />
+    <Compile Include="FrmToppingVM.cs" />
+    <Compile Include="ToppingObject.cs" />
+    <Page Include="FrmBillMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FrmDrink.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FrmDrinkMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FrmTopping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FrmToppingMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -97,6 +126,8 @@
     </Compile>
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Base\TBaseVM.cs" />
+    <Compile Include="BillObject.cs" />
+    <Compile Include="BTBaseObject.cs" />
     <Compile Include="BTeaItem.cs" />
     <Compile Include="convert\ImgConvert.cs" />
     <Compile Include="DBConnection.cs" />

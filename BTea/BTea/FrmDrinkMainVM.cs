@@ -162,10 +162,10 @@ namespace BTea
             {
                 DrinkItem drItem = new DrinkItem();
                 DrinkObject drObject = data_list[i];
-                drItem.Id = CodeDrink + drObject.DRId;
-                drItem.Name = drObject.DRName;
-                drItem.Price = drObject.DRPrice;
-                drItem.Note = drObject.DRNote;
+                drItem.Id = CodeDrink + drObject.BId;
+                drItem.Name = drObject.BName;
+                drItem.Price = drObject.BPrice.ToString();
+                drItem.Note = drObject.BNote;
 
                 _drinkItem.Add(drItem);
             }

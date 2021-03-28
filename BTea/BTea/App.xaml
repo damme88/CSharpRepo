@@ -20,5 +20,19 @@
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="FontSize" Value="14" />
         </Style>
+        <Style x:Key="ListBoxCheckbox" TargetType="ListBoxItem">
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <CheckBox Margin="5,2"
+                                          IsChecked="{TemplateBinding IsSelected}">
+                            <ContentPresenter />
+                        </CheckBox>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>
