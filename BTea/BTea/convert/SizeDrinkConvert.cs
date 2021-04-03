@@ -11,13 +11,13 @@ namespace BTea.convert
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            string sSize = "";
+            string sSize = "X";
             string val = (string)value;
             if (val == "0")
             {
                 sSize = "M";
             }
-            else
+            else if (val=="1")
             {
                 sSize = "L";
             }

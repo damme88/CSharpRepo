@@ -34,6 +34,7 @@ namespace BTea
     {
         public FrmOrderBTeaItemVM()
         {
+            double sumPrice = 0.0;
             _orderItems = new ObservableCollection<OrderBTeaItem>();
 
             List<BTeaOrderObject> listOrder =  DBConnection.GetInstance().GetDataOrderObject();
@@ -45,16 +46,30 @@ namespace BTea
                 objItem.OrderItemId = obj.BOrderId;
                 objItem.OrderItemName = obj.BOrderName;
                 objItem.OrderItemPrice = obj.BOrderPrice.ToString("#,##0.00;(#,##0.00)");
-                objItem.OrderItemSize = obj.BOrderSize.ToString();
-                objItem.OrderItemSRate = obj.BOrderSugarRate.ToString();
-                objItem.OrderItemIRate = obj.BOrderIceRate.ToString();
-                objItem.OrderItemTopping = obj.BOrderTopping.ToString();
+
+                if (obj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
+                {
+                    objItem.OrderItemSize = obj.BOrderSize.ToString();
+                    objItem.OrderItemSRate = obj.BOrderSugarRate.ToString();
+                    objItem.OrderItemIRate = obj.BOrderIceRate.ToString();
+                    objItem.OrderItemTopping = obj.BOrderTopping.ToString();
+                }
+                else
+                {
+                    objItem.OrderItemSize = "";
+                    objItem.OrderItemSRate = "";
+                    objItem.OrderItemIRate = "";
+                    objItem.OrderItemTopping = "X";
+                }
                 objItem.OrderItemBillId = obj.BOrderBillId.ToString();
                 objItem.OrderItemOrderDate = obj.BOrderDate.ToString("dd-MMM-yyyy");
 
                 _orderItems.Add(objItem);
+
+                sumPrice += obj.BOrderPrice;
             }
 
+            _sumPriceItems = sumPrice.ToString("#,##0.00;(#,##0.00)");
             if (_orderItems.Count > 0)
             {
                 _selectedOrderItem = _orderItems[0];
@@ -67,7 +82,15 @@ namespace BTea
         private ObservableCollection<OrderBTeaItem> _orderItems;
         private OrderBTeaItem _selectedOrderItem;
         private int _orderItemsCount = 0;
+        private string _sumPriceItems;
         #region PROPERTY
+
+        public string SumPriceItems
+        {
+            get { return _sumPriceItems; }
+            set { _sumPriceItems = value; OnPropertyChange("SumPriceItems"); }
+        }
+
         public int OrderItemsCount
         {
             get { return _orderItemsCount; }

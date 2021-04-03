@@ -47,7 +47,7 @@ namespace BTea
         public void BillDetailInfo(object sender)
         {
             frmOrderItemBill _frmItemBill = new frmOrderItemBill();
-            frmOrderItemBillVM _frmItemVM = new frmOrderItemBillVM(_orderItemList);
+            frmOrderItemBillVM _frmItemVM = new frmOrderItemBillVM(_orderItemList, BillName);
             _frmItemBill.DataContext = _frmItemVM;
             _frmItemBill.ShowDialog();
         }

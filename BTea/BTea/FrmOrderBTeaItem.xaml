@@ -19,11 +19,15 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <Button Command="{Binding CmdEditBill}" Style="{StaticResource BtnBase}" Content="Sửa"></Button>
-                <Button Command="{Binding CmdDeleteBill}" Style="{StaticResource BtnBase}" Content="Xóa"></Button>
-                <TextBlock Text="So luong:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <TextBlock Text="Số Lượng:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
                 <TextBox Width="100" Height="30" HorizontalAlignment="Center"
                          Text="{Binding OrderItemsCount}"
+                         VerticalAlignment="Center"
+                         VerticalContentAlignment ="Center"
+                         Margin="5" IsReadOnly="True"></TextBox>
+                <TextBlock Text="Tổng giá trị:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <TextBox Width="100" Height="30" HorizontalAlignment="Center" VerticalContentAlignment="Center"
+                         Text="{Binding SumPriceItems}"
                          VerticalAlignment="Center" Margin="5" IsReadOnly="True"></TextBox>
             </StackPanel>
         </Grid>

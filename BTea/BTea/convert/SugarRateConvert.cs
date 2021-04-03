@@ -11,7 +11,7 @@ namespace BTea.convert
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            string sSize = "";
+            string sSize = "X";
             string val = (string)value;
             if (val =="1")
             {
@@ -25,7 +25,7 @@ namespace BTea.convert
             {
                 sSize = "70%";
             }
-            else
+            else if (val == "0")
             {
                 sSize = "100%";
             }

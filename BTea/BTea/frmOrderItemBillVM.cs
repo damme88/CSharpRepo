@@ -10,7 +10,7 @@ namespace BTea
 {
     class frmOrderItemBillVM : TBaseVM
     {
-        public frmOrderItemBillVM(List<string> idItems)
+        public frmOrderItemBillVM(List<string> idItems, string billName)
         {
             _idItemList = idItems;
 
@@ -24,8 +24,7 @@ namespace BTea
                 {
                     BTeaOrderObject orderObj = listOrder[j];
                     string idBill = _idItemList[i];
-                    string idOrderList = orderObj.BOrderId;
-                    if (idBill == idOrderList)
+                    if (idBill == orderObj.BOrderId && orderObj.BOrderBillId == billName)
                     {
                         billItems.Add(orderObj);
                     }

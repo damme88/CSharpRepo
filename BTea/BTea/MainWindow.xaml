@@ -26,9 +26,11 @@
                         <MenuItem Header="About"></MenuItem>
                         <MenuItem Header="Close"></MenuItem>
                     </MenuItem>
-                    <MenuItem Header="Setting">
-                        <MenuItem Header="Setting1"></MenuItem>
-                        <MenuItem Header="Setting2"></MenuItem>
+                    <MenuItem Header="Document">
+                        <MenuItem Header="Huong dan su dung"></MenuItem>
+                        <MenuItem Header="Ebook pha che 1"></MenuItem>
+                        <MenuItem Header="Ebook pha che 2"></MenuItem>
+                        <MenuItem Header="Ebook pha che 3"></MenuItem>
                     </MenuItem>
                 </Menu>
             </DockPanel>
@@ -169,7 +171,7 @@
                         <TextBlock Text="Tỉ lệ đá :" FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
                         <ComboBox Width="150" Height="30" ItemsSource="{Binding IceItems}"  SelectedItem="{Binding SelectedIceItem}" IsEnabled="{Binding StateIceRate}" Margin="5" HorizontalAlignment="Left"></ComboBox>
                         <TextBlock Text="Topping :" FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
-                        <ListBox Width="150" Height="200" ItemsSource="{Binding ToppingItems}">
+                        <ListBox IsEnabled="{Binding StateTopping}" Width="150" Height="200" ItemsSource="{Binding ToppingItems}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">

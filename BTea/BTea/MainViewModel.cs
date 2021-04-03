@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TApp.Base;
 
 namespace BTea
@@ -114,10 +115,6 @@ namespace BTea
             _dataOrderObjectList = new List<BTBaseObject>();
 
             CreateBillName();
-            string strDay = _billStartDate.Day.ToString();
-            string strMonth = _billStartDate.Month.ToString();
-            string strYear = _billStartDate.Year.ToString();
-            _billName += "_" + strDay + strMonth + strYear;
         }
 
         #region Member
@@ -205,6 +202,12 @@ namespace BTea
 
         public void DoMakeBill(object obj)
         {
+            if (_dataOrderObjectList.Count == 0)
+            {
+                MessageBox.Show("Chưa có sản phẩm nào được order!", "Thông Báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             BillObject billObject = new BillObject();
             billObject.BillName = _billName;
             billObject.BillPrice = Convert.ToDouble(_billPrice);
@@ -215,6 +218,7 @@ namespace BTea
             billObject.BillNote = _billNote;
 
             string strOrderItem = "";
+            bool bAddItemOrder = false;
             for (int i = 0; i < _dataOrderObjectList.Count; i++)
             {
                 BTBaseObject orderBaseObj = _dataOrderObjectList[i];
@@ -240,20 +244,48 @@ namespace BTea
                             strTp = strTp + strId + ",";
                         }
                         orderObject.BOrderTopping = strTp;
-                        orderObject.BOrderBillId = _billName;
-                        orderObject.BOrderDate = _billStartDate;
                     }
                 }
 
+                orderObject.BOrderBillId = _billName;
+                orderObject.BOrderDate = _billStartDate;
+
                 bool bRet2 = DBConnection.GetInstance().AddOrderItem(orderObject);
+                if (bRet2 == false)
+                {
+                    bAddItemOrder = false;
+                    break;
+                }
+                else
+                {
+                    bAddItemOrder = true;
+                }
             }
 
             billObject.BillOrderItem = strOrderItem;
             bool bRet = DBConnection.GetInstance().AddBillItem(billObject);
 
+            if (bRet == true && bAddItemOrder == true)
+            {
+                MessageBox.Show("Thành công!", "Thông Báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                CreateBillName();
+                OnPropertyChange("BillName");
+            }
+            else
+            {
+                MessageBox.Show("Thất bại", "Thông Báo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            _dataOrderList.Clear();
             _billPhone = "";
             _billAddress = "";
             _billNote = "";
+            _billPrice = "0.000";
+            _billStartDate = DateTime.Now;
+            OnPropertyChange("BillPhone");
+            OnPropertyChange("BillAddress");
+            OnPropertyChange("BillNote");
+            OnPropertyChange("BillStartDate");
         }
 
         public void DoClearBill(object obj)
@@ -564,6 +596,11 @@ namespace BTea
                 billIdx = data_list.Count + 1;
             }
             _billName = "HOA_DON_" + billIdx.ToString();
+
+            string strDay = _billStartDate.Day.ToString();
+            string strMonth = _billStartDate.Month.ToString();
+            string strYear = _billStartDate.Year.ToString();
+            _billName += "_" + strDay + strMonth + strYear;
         }
         #endregion
 
