@@ -19,6 +19,15 @@ namespace BTea
             bPrice = 0.0;
             bNote = string.Empty;
         }
+
+        public enum BTeaType
+        {
+            DRINK_TYPE = 0,
+            FOOD_TYPE = 1,
+            TOPPING_TYPE = 2,
+            OTHER_TYPE = 3,
+        }
+
         #region Properties
         public string BId
         {
@@ -55,6 +64,8 @@ namespace BTea
                 bNote = value;
             }
         }
+
+        public BTeaType Type { set; get; }
         #endregion
     }
 }

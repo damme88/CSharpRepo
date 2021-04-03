@@ -5,28 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BTea"
         mc:Ignorable="d"
-        Title="Drink" Height="370" Width="250"
+        Title="Drink" Height="300" Width="300"
         ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel>
                 <TextBlock Margin="10,10,0,0">Tên Sản Phẩm:</TextBlock>
-                <TextBox Text="{Binding DrinkName}" Width="200" Height="30" HorizontalAlignment="Left" Margin="10"></TextBox>
+                <TextBox Text="{Binding DrinkName}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
                 <TextBlock Margin="10,0,0,0">Giá:</TextBlock>
-                <TextBox Text="{Binding DrinkPrice}" Width="200" Height="30" HorizontalAlignment="Left" Margin="10"></TextBox>
+                <TextBox Text="{Binding DrinkPrice}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
                 <TextBlock Margin="10,0,0,0">Ghi Chú:</TextBlock>
-                <TextBox Text="{Binding DrinkNote}" Width="200" Height="50" HorizontalAlignment="Left" Margin="10"></TextBox>
+                <TextBox Text="{Binding DrinkNote}" Width="250" Height="50" HorizontalAlignment="Left" Margin="5"></TextBox>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
             <StackPanel Orientation="Horizontal">
-                <Button Visibility="{Binding DrinkStateAdd}" Width="60" Height="30" Content="Thêm" Command="{Binding CmdDrinkAdd}" Margin="5"></Button>
-                <Button Visibility="{Binding DrinkStateEdit}" Width="60" Height="30" Content="Sửa" Command="{Binding CmdDrinkEdit}" Margin="5"></Button>
-                <Button Width="60" Height="30" Content="Hủy" Margin="5" Click="Button_Close"></Button>
+                <Button Visibility="{Binding DrinkStateAdd}" Style="{StaticResource BtnBase}" Content="Thêm" Command="{Binding CmdDrinkAdd}"></Button>
+                <Button Visibility="{Binding DrinkStateEdit}" Style="{StaticResource BtnBase}" Content="Sửa" Command="{Binding CmdDrinkEdit}"></Button>
+                <Button Style="{StaticResource BtnBase}" Content="Hủy" Click="Button_Close"></Button>
             </StackPanel>
         </Grid>
     </Grid>

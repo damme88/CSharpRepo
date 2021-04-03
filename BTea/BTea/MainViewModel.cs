@@ -17,7 +17,6 @@ namespace BTea
             OrderPrice = "";
             OrderNote = "";
         }
-
         public string OrderName { set; get; }
         public string OrderPrice { set; get; }
         public string OrderNote { set; get; }
@@ -34,10 +33,15 @@ namespace BTea
     {
         public MainViewModel()
         {
+            _statusBarText = "Ready";
             DrinkCmd = new RelayCommand(new Action<object>(DoDrink));
             ToppingCmd = new RelayCommand(new Action<object>(DoTopping));
             BillCmd = new RelayCommand(new Action<object>(DoBill));
+            RevenueCmd = new RelayCommand(new Action<object>(DoRevenue));
             CmdSelectItem = new RelayCommand(new Action<object>(DoSelectItem));
+            MakeBillCmd = new RelayCommand(new Action<object>(DoMakeBill));
+            ClearBillCmd = new RelayCommand(new Action<object>(DoClearBill));
+            SaveBillCmd = new RelayCommand(new Action<object>(DoSaveBill));
             _drinkCheck = true;
             _foodCheck = false;
             _toppingCheck = false;
@@ -84,7 +88,7 @@ namespace BTea
 
             SelectedIceItem = _iceItems[0];
 
-
+            _billPrice = "0.0000";
             _toppingItemList = new List<ToppingItemCheck>();
             List<ToppingObject> data_topping = DBConnection.GetInstance().GetDataTopping();
             for (int i = 0; i < data_topping.Count; ++i)
@@ -103,19 +107,33 @@ namespace BTea
 
             _billMoreInfo = false;
             _billCreator = "BuiTea";
-            _startDate = DateTime.Now;
+            _billStartDate = DateTime.Now;
+            _statusBarDateInfo = "Ngày: " + _billStartDate.ToString("dd-MM-yyyy");
 
             _dataOrderList = new ObservableCollection<BTeaOrderItems>();
+            _dataOrderObjectList = new List<BTBaseObject>();
+
+            CreateBillName();
+            string strDay = _billStartDate.Day.ToString();
+            string strMonth = _billStartDate.Month.ToString();
+            string strYear = _billStartDate.Year.ToString();
+            _billName += "_" + strDay + strMonth + strYear;
         }
 
         #region Member
         public RelayCommand DrinkCmd { set; get; }
         public RelayCommand ToppingCmd { set; get; }
         public RelayCommand BillCmd { set; get; }
+        public RelayCommand RevenueCmd { set; get; }
         public RelayCommand CmdSelectItem { set; get; }
+        public RelayCommand MakeBillCmd { set; get; }
+        public RelayCommand ClearBillCmd { set; get; }
+        public RelayCommand SaveBillCmd { set; get; }
+
         private FrmDrinkMainVM _frmDrinkVm;
         private FrmToppingMainVM _frmToppingVm;
         private FrmBillMainVM _frmBillVm;
+        private FrmOrderBTeaItemVM _frmOderVM;
 
         private ObservableCollection<BTeaItem> _dataList;
         private ObservableCollection<BTeaItem> _originDataList;
@@ -138,10 +156,18 @@ namespace BTea
 
         private bool _billMoreInfo;
         private string _billName;
-        private string _billCreator;
-        private DateTime _startDate;
         private string _billPrice;
+        private string _billCreator;
+        private DateTime _billStartDate;
+        private string _billPhone;
+        private string _billAddress;
+        private string _billNote;
+
         private ObservableCollection<BTeaOrderItems> _dataOrderList;
+        private List<BTBaseObject> _dataOrderObjectList;
+
+        private string _statusBarText;
+        private string _statusBarDateInfo { set; get; }
         #endregion
 
         #region Method
@@ -167,6 +193,77 @@ namespace BTea
             _frmBillVm = new FrmBillMainVM();
             frmBillMain.DataContext = _frmBillVm;
             frmBillMain.ShowDialog();
+        }
+
+        public void DoRevenue(object obj)
+        {
+            FrmOrderBTeaItem frmOrderItem = new FrmOrderBTeaItem();
+            _frmOderVM = new FrmOrderBTeaItemVM();
+            frmOrderItem.DataContext = _frmOderVM;
+            frmOrderItem.ShowDialog();
+        }
+
+        public void DoMakeBill(object obj)
+        {
+            BillObject billObject = new BillObject();
+            billObject.BillName = _billName;
+            billObject.BillPrice = Convert.ToDouble(_billPrice);
+            billObject.BillCreator = _billCreator;
+            billObject.BillDate = _billStartDate;
+            billObject.BillPhone = _billPhone;
+            billObject.BillAddress = _billAddress;
+            billObject.BillNote = _billNote;
+
+            string strOrderItem = "";
+            for (int i = 0; i < _dataOrderObjectList.Count; i++)
+            {
+                BTBaseObject orderBaseObj = _dataOrderObjectList[i];
+                BTeaOrderObject orderObject = new BTeaOrderObject();
+                orderObject.BOrderId = orderBaseObj.BId;
+                orderObject.BOrderName = orderBaseObj.BName;
+                orderObject.BOrderPrice = orderBaseObj.BPrice;
+
+                strOrderItem = strOrderItem + orderObject.BOrderId + ",";
+                if (orderBaseObj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
+                {
+                    DrinkObject drObj = orderBaseObj as DrinkObject;
+                    if (drObj != null)
+                    {
+                        orderObject.BOrderSize = drObj.DrinkSize;
+                        orderObject.BOrderSugarRate = drObj.SugarRate;
+                        orderObject.BOrderIceRate = drObj.IceRate;
+
+                        string strTp = "";
+                        for (int ii = 0; ii < drObj.TPListObj.Count; ii++)
+                        {
+                            string strId = drObj.TPListObj[ii].BId;
+                            strTp = strTp + strId + ",";
+                        }
+                        orderObject.BOrderTopping = strTp;
+                        orderObject.BOrderBillId = _billName;
+                        orderObject.BOrderDate = _billStartDate;
+                    }
+                }
+
+                bool bRet2 = DBConnection.GetInstance().AddOrderItem(orderObject);
+            }
+
+            billObject.BillOrderItem = strOrderItem;
+            bool bRet = DBConnection.GetInstance().AddBillItem(billObject);
+
+            _billPhone = "";
+            _billAddress = "";
+            _billNote = "";
+        }
+
+        public void DoClearBill(object obj)
+        {
+
+        }
+
+        public void DoSaveBill(object obj)
+        {
+
         }
 
         public void DoSelectItem(object obj)
@@ -276,11 +373,11 @@ namespace BTea
 
 
             //Make order item;
-            BTeaOrderItems orderObj = new BTeaOrderItems();
+            BTeaOrderItems orderObjItem = new BTeaOrderItems();
             BTBaseObject btBaseObj = btObject;
-            orderObj.OrderName = btBaseObj.BName;
-            orderObj.OrderPrice = btBaseObj.BPrice.ToString();
-            if (_drinkCheck == true)
+            orderObjItem.OrderName = btBaseObj.BName;
+            orderObjItem.OrderPrice = btBaseObj.BPrice.ToString("#,##0.00;(#,##0.00)");
+            if (_drinkCheck == true) 
             {
                 DrinkObject drObj = (DrinkObject)btBaseObj;
                 if (drObj != null)
@@ -351,14 +448,16 @@ namespace BTea
                     strNote += "Đá: " + IceStr + " ";
                     if (tpContent != string.Empty)
                     {
-                        strNote += "Topping: " + tpContent;
+                        strNote += "\nTopping: " + tpContent;
                     }
                     
-                    orderObj.OrderNote = strNote;
+                    orderObjItem.OrderNote = strNote;
                 }
             }
 
-            _dataOrderList.Add(orderObj);
+            _dataOrderList.Add(orderObjItem);
+            _dataOrderObjectList.Add(btObject);
+
             OnPropertyChange("DataOrderList");
 
             double sumPrice = 0.0;
@@ -370,7 +469,7 @@ namespace BTea
                 sumPrice += oPrice;
             }
 
-            _billPrice = sumPrice.ToString();
+            _billPrice = sumPrice.ToString("#,##0.00;(#,##0.00)");
             OnPropertyChange("BillSumPrice");
         }
 
@@ -386,7 +485,7 @@ namespace BTea
                     DrinkObject drObject = data_list[i];
                     bItem.ImgId = "DR" + drObject.BId;
                     bItem.Name = drObject.BName;
-                    bItem.Price = drObject.BPrice.ToString();
+                    bItem.Price = drObject.BPrice.ToString("#,##0.00;(#,##0.00)");
                     bItem.Note = drObject.BNote;
 
                     _dataList.Add(bItem);
@@ -409,6 +508,11 @@ namespace BTea
                     _dataList.Add(bItem);
                     _originDataList.Add(bItem);
                 }
+            }
+
+            if (_dataList.Count > 0)
+            {
+                _bTeaSelectedItem = _dataList[0];
             }
             return _dataList;
         }
@@ -441,13 +545,57 @@ namespace BTea
                     _dataList.Add(item);
                 }
                 findList.Clear();
+
+                if (_dataList.Count > 0)
+                {
+                    _bTeaSelectedItem = _dataList[0];
+                    OnPropertyChange("BTeaSelectedItem");
+                }
                 OnPropertyChange("DataList");
             }
+        }
+
+        public void CreateBillName()
+        {
+            List<BillObject> data_list = DBConnection.GetInstance().GetDataBillObject();
+            int billIdx = 1;
+            if (data_list.Count > 0)
+            {
+                billIdx = data_list.Count + 1;
+            }
+            _billName = "HOA_DON_" + billIdx.ToString();
         }
         #endregion
 
         #region Property
+        public string StatusBarDateInfo
+        {
+            get { return _statusBarDateInfo; }
+            set { _statusBarDateInfo = value; OnPropertyChange("StatusBarDateInfo"); }
+        }
 
+        public string StatusBarText
+        {
+            get { return _statusBarText; }
+            set { _statusBarText = value;  OnPropertyChange("StatusBarText"); }
+        }
+        public string BillNote
+        {
+            get { return _billNote; }
+            set { _billNote = value; OnPropertyChange("BillNote"); }
+        }
+
+        public string BillAddress
+        {
+            get { return _billAddress; }
+            set { _billAddress = value; OnPropertyChange("BillAddress"); }
+        }
+
+        public string BillPhone
+        {
+            get { return _billPhone; }
+            set { _billPhone = value; OnPropertyChange("BillPhone"); }
+        }
         public string BillSumPrice
         {
             get { return _billPrice; }
@@ -464,9 +612,9 @@ namespace BTea
         }
         public DateTime BillStartDate
         {
-            get { return _startDate; }
+            get { return _billStartDate; }
             set
-            { _startDate = value;
+            { _billStartDate = value;
                 OnPropertyChange("BillStartDate");
             }
         }

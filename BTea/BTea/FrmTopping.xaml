@@ -6,27 +6,27 @@
         xmlns:local="clr-namespace:BTea"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Topping" Height="370" Width="250">
+        Title="Topping" Height="300" Width="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel>
-                <TextBlock Margin="10,10,0,0">Tên Sản Phẩm:</TextBlock>
-                <TextBox Text="{Binding ToppingName}" Width="200" Height="30" HorizontalAlignment="Left" Margin="10"></TextBox>
-                <TextBlock Margin="10,0,0,0">Giá:</TextBlock>
-                <TextBox Text="{Binding ToppingPrice}" Width="200" Height="30" HorizontalAlignment="Left" Margin="10"></TextBox>
-                <TextBlock Margin="10,0,0,0">Ghi Chú:</TextBlock>
-                <TextBox Text="{Binding ToppingNote}" Width="200" Height="50" HorizontalAlignment="Left" Margin="10"></TextBox>
+                <TextBlock Margin="5">Tên Sản Phẩm:</TextBlock>
+                <TextBox Text="{Binding ToppingName}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
+                <TextBlock Margin="5">Giá:</TextBlock>
+                <TextBox Text="{Binding ToppingPrice}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
+                <TextBlock Margin="5">Ghi Chú:</TextBlock>
+                <TextBox Text="{Binding ToppingNote}" Width="250" Height="50" HorizontalAlignment="Left" Margin="5"></TextBox>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
             <StackPanel Orientation="Horizontal">
-                <Button Visibility="{Binding ToppingStateAdd}" Width="60" Height="30" Content="Thêm" Command="{Binding CmdToppingAdd}" Margin="5"></Button>
-                <Button Visibility="{Binding ToppingStateEdit}" Width="60" Height="30" Content="Sửa" Command="{Binding CmdToppingEdit}" Margin="5"></Button>
-                <Button Width="60" Height="30" Content="Hủy" Margin="5" Click="Button_Close"></Button>
+                <Button Visibility="{Binding ToppingStateAdd}" Style="{StaticResource BtnBase}"  Content="Thêm" Command="{Binding CmdToppingAdd}"></Button>
+                <Button Visibility="{Binding ToppingStateEdit}" Style="{StaticResource BtnBase}" Content="Sửa" Command="{Binding CmdToppingEdit}"></Button>
+                <Button Style="{StaticResource BtnBase}" Content="Hủy" Click="Button_Close"></Button>
             </StackPanel>
         </Grid>
     </Grid>

@@ -164,7 +164,7 @@ namespace BTea
                 DrinkObject drObject = data_list[i];
                 drItem.Id = CodeDrink + drObject.BId;
                 drItem.Name = drObject.BName;
-                drItem.Price = drObject.BPrice.ToString();
+                drItem.Price = drObject.BPrice.ToString("#,##0.00;(#,##0.00)");
                 drItem.Note = drObject.BNote;
 
                 _drinkItem.Add(drItem);

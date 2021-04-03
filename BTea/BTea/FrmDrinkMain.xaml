@@ -14,9 +14,9 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <Button Command="{Binding CmdAddDrink}" Width="50" Height="30" Content="Thêm" Margin="5"></Button>
-                <Button Command="{Binding CmdEditDrink}" Width="50" Height="30" Content="Sửa" Margin="5"></Button>
-                <Button Command="{Binding CmdDeleteDrink}" Width="50" Height="30" Content="Xóa" Margin="5"></Button>
+                <Button Command="{Binding CmdAddDrink}" Style="{StaticResource BtnBase}" Content="Thêm"></Button>
+                <Button Command="{Binding CmdEditDrink}" Style="{StaticResource BtnBase}" Content="Sửa"></Button>
+                <Button Command="{Binding CmdDeleteDrink}" Style="{StaticResource BtnBase}" Content="Xóa"></Button>
                 <TextBlock Text="So luong:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
                 <TextBox Width="100" Height="30" HorizontalAlignment="Center"
                          Text="{Binding DrinkCount}"

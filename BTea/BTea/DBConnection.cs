@@ -396,5 +396,127 @@ namespace BTea
             }
             return billObjectList;
         }
+
+        public bool AddBillItem(BillObject billItem)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("AddBillItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new MySqlParameter("inName", billItem.BillName));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", billItem.BillPrice));
+                cmd.Parameters.Add(new MySqlParameter("inCreator", billItem.BillCreator));
+                cmd.Parameters.Add(new MySqlParameter("inDate", billItem.BillDate));
+                cmd.Parameters.Add(new MySqlParameter("inPhone", billItem.BillPhone));
+                cmd.Parameters.Add(new MySqlParameter("inAddress", billItem.BillAddress));
+                cmd.Parameters.Add(new MySqlParameter("inOrderItem", billItem.BillOrderItem));
+                cmd.Parameters.Add(new MySqlParameter("inNote", billItem.BillNote));
+
+                try
+                {
+                    int result = cmd.ExecuteNonQuery();
+                    bRet = true;
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                }
+            }
+
+            CloseDB();
+            return bRet;
+        }
+
+        public List<BTeaOrderObject> GetDataOrderObject()
+        {
+            string query = "SELECT * FROM bteaordertbl";
+
+            List<BTeaOrderObject> OderList = new List<BTeaOrderObject>();
+
+            //Open connection
+            if (this.ConnectionDB() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+
+                //Create a data reader and Execute the command
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store them in the list
+                while (dataReader.Read())
+                {
+                    string sId = dataReader["Id"] + "";
+                    string sName = dataReader["Name"] + "";
+                    string sPrice = dataReader["Price"] + "";
+                    string sSugar = dataReader["SugarRate"] + "";
+                    string sIce = dataReader["IceRate"] + "";
+                    string sTopping = dataReader["Topping"] + "";
+                    string sBillId = dataReader["BillId"] + "";
+                    string sOrderDate = dataReader["OrderDate"] + "";
+
+                    BTeaOrderObject OrderObj = new BTeaOrderObject();
+                    OrderObj.BOrderId = sId;
+                    OrderObj.BOrderName = sName;
+                    OrderObj.BOrderPrice = Convert.ToDouble(sPrice);
+                    OrderObj.BOrderSugarRate = Convert.ToInt32(sSugar);
+                    OrderObj.BOrderIceRate = Convert.ToInt32(sIce);
+                    OrderObj.BOrderTopping = sTopping;
+                    OrderObj.BOrderBillId = sBillId;
+                    OrderObj.BOrderDate = Convert.ToDateTime(sOrderDate);
+
+                    if (sId.Contains("DR"))
+                    {
+                        OrderObj.Type = BTBaseObject.BTeaType.DRINK_TYPE;
+                    }
+                    else if (sId.Contains("TP"))
+                    {
+                        OrderObj.Type = BTBaseObject.BTeaType.TOPPING_TYPE;
+                    }
+
+                    OderList.Add(OrderObj);
+                }
+
+                //close Data Reader
+                dataReader.Close();
+
+                //close Connection
+                CloseDB();
+            }
+            return OderList;
+        }
+
+        public bool AddOrderItem(BTeaOrderObject bOrderItem)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("AddBteaOrderItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new MySqlParameter("inId", bOrderItem.BOrderId));
+                cmd.Parameters.Add(new MySqlParameter("inName", bOrderItem.BOrderName));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", bOrderItem.BOrderPrice));
+                cmd.Parameters.Add(new MySqlParameter("inSize", bOrderItem.BOrderSize));
+                cmd.Parameters.Add(new MySqlParameter("inSugarRate", bOrderItem.BOrderSugarRate));
+                cmd.Parameters.Add(new MySqlParameter("inIceRate", bOrderItem.BOrderIceRate));
+                cmd.Parameters.Add(new MySqlParameter("inTopping", bOrderItem.BOrderTopping));
+                cmd.Parameters.Add(new MySqlParameter("inBillId", bOrderItem.BOrderBillId));
+                cmd.Parameters.Add(new MySqlParameter("inOrderDate", bOrderItem.BOrderDate));
+                try
+                {
+                    int result = cmd.ExecuteNonQuery();
+                    bRet = true;
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                }
+            }
+
+            CloseDB();
+            return bRet;
+        }
     }
 }

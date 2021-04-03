@@ -11,6 +11,7 @@ namespace BTea
         public DrinkObject()
         {
             _tpListObj = new List<ToppingObject>();
+            Type = BTBaseObject.BTeaType.DRINK_TYPE;
         }
 
         private List<ToppingObject> _tpListObj;

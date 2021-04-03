@@ -10,7 +10,7 @@ namespace BTea
     {
         public ToppingObject()
         {
-
+            Type = BTBaseObject.BTeaType.TOPPING_TYPE;
         }
     }
 }

@@ -82,11 +82,21 @@
     </ApplicationDefinition>
     <Compile Include="BillItems.cs" />
     <Compile Include="BTeaOrderObject.cs" />
-    <Compile Include="convert\DateTimeConvert.cs" />
+    <Compile Include="convert\IceRateConvert.cs" />
+    <Compile Include="convert\SizeDrinkConvert.cs" />
+    <Compile Include="convert\SugarRateConvert.cs" />
     <Compile Include="FrmBillMain.xaml.cs">
       <DependentUpon>FrmBillMain.xaml</DependentUpon>
     </Compile>
     <Compile Include="FrmBillMainVM.cs" />
+    <Compile Include="FrmOrderBTeaItem.xaml.cs">
+      <DependentUpon>FrmOrderBTeaItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FrmOrderBTeaItemVM.cs" />
+    <Compile Include="frmOrderItemBill.xaml.cs">
+      <DependentUpon>frmOrderItemBill.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="frmOrderItemBillVM.cs" />
     <Compile Include="FrmTopping.xaml.cs">
       <DependentUpon>FrmTopping.xaml</DependentUpon>
     </Compile>
@@ -105,6 +115,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FrmDrinkMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FrmOrderBTeaItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="frmOrderItemBill.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -145,6 +163,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="StyleDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

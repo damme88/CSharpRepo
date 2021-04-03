@@ -7,21 +7,22 @@ using System.Windows.Data;
 
 namespace BTea.convert
 {
-    class DateTimeConvert : IValueConverter
+    class SizeDrinkConvert : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value == null)
-                return null;
-            DateTime dtTime = (DateTime)value;
-            if (dtTime != null)
+            string sSize = "";
+            string val = (string)value;
+            if (val == "0")
             {
-                string dateString = dtTime.ToString("dd-MMM-yyyy");
-                return   dateString;
+                sSize = "M";
             }
-            return string.Empty;
+            else
+            {
+                sSize = "L";
+            }
+            return sSize;
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();

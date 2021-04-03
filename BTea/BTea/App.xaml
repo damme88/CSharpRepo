@@ -4,35 +4,12 @@
              xmlns:local="clr-namespace:BTea"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <Style x:Key="GrdViewHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
-                        <TextBlock x:Name="ContentHeader" 
-                                   Text="{TemplateBinding Content}" 
-                                   Width="{TemplateBinding Width}" 
-                                   TextAlignment="Left" Margin="5"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="FontSize" Value="14" />
-        </Style>
-        <Style x:Key="ListBoxCheckbox" TargetType="ListBoxItem">
-            <Setter Property="OverridesDefaultStyle" Value="true" />
-            <Setter Property="SnapsToDevicePixels" Value="true" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ListBoxItem">
-                        <CheckBox Margin="5,2"
-                                          IsChecked="{TemplateBinding IsSelected}">
-                            <ContentPresenter />
-                        </CheckBox>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary 
+                  Source="StyleDictionary.xaml">
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

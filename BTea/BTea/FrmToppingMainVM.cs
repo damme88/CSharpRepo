@@ -164,7 +164,7 @@ namespace BTea
                 ToppingObject tpObject = data_list[i];
                 tpItem.Id = CodeTopping + tpObject.BId;
                 tpItem.Name = tpObject.BName;
-                tpItem.Price = tpObject.BPrice.ToString();
+                tpItem.Price = tpObject.BPrice.ToString("#,##0.00;(#,##0.00)");
                 tpItem.Note = tpObject.BNote;
 
                 _toppingItem.Add(tpItem);
