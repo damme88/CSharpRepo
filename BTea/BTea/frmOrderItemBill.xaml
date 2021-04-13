@@ -22,21 +22,29 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="giá" Width="80">
+                    <GridViewColumn Header="Số lượng" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock  Text="{Binding OrderNum}" FontSize="12"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Giá (VND)" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock  Text="{Binding OrderPrice}" FontSize="12"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Note" Width="350">
+                    <GridViewColumn Header="Ghi chú" Width="350">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox Text="{Binding OrderNote}" FontSize="12"
                                                          IsReadOnly="True" 
                                                          TextWrapping="Wrap" 
                                                          Width="200"
-                                                         Height="100"/>
+                                                         AcceptsReturn="True"
+                                                         Height="50"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

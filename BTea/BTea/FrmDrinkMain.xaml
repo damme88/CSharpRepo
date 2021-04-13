@@ -35,7 +35,7 @@
                     <GridView>
                         <GridViewColumn Header="Mã" Width="50" DisplayMemberBinding="{Binding Id}"/>
                         <GridViewColumn Header="Tên" Width="250" DisplayMemberBinding="{Binding Name}"/>
-                        <GridViewColumn Header="Giá" Width="80" DisplayMemberBinding="{Binding Price}"/>
+                        <GridViewColumn Header="Giá (VND)" Width="80" DisplayMemberBinding="{Binding Price}"/>
                         <GridViewColumn Header="Ghi chú" Width="100" DisplayMemberBinding="{Binding Note}"/>
                     </GridView>
                 </ListView.View>

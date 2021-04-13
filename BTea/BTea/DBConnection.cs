@@ -209,6 +209,278 @@ namespace BTea
             return bRet;
         }
 
+        public List<FoodObject> GetDataFood()
+        {
+            string query = "SELECT * FROM foodtbl";
+
+            List<FoodObject> fObjectList = new List<FoodObject>();
+
+            //Open connection
+            if (this.ConnectionDB() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+
+                //Create a data reader and Execute the command
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store them in the list
+                while (dataReader.Read())
+                {
+                    string sId = dataReader["Id"] + "";
+                    string sName = dataReader["Name"] + "";
+                    string sPrice = dataReader["Price"] + "";
+                    string sNote = dataReader["Note"] + "";
+                    FoodObject foodObj = new FoodObject();
+                    foodObj.BId = sId;
+                    foodObj.BName = sName;
+                    foodObj.BPrice = Convert.ToDouble(sPrice);
+                    foodObj.BNote = sNote;
+
+                    fObjectList.Add(foodObj);
+                }
+
+                //close Data Reader
+                dataReader.Close();
+
+                //close Connection
+                CloseDB();
+            }
+            return fObjectList;
+        }
+
+        public bool AddFoodItem(FoodObject foodItem)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("AddFoodItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new MySqlParameter("inName", foodItem.BName));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", foodItem.BPrice));
+                cmd.Parameters.Add(new MySqlParameter("inNote", foodItem.BNote));
+
+                try
+                {
+                    int result = cmd.ExecuteNonQuery();
+                    bRet = true;
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                }
+            }
+
+            CloseDB();
+            return bRet;
+        }
+
+        public bool EditFoodItem(FoodObject foodItem)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("EditFoodItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                int tpId = Convert.ToInt32(foodItem.BId);
+                cmd.Parameters.Add(new MySqlParameter("inId", tpId));
+                cmd.Parameters.Add(new MySqlParameter("inName", foodItem.BName));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", foodItem.BPrice));
+                cmd.Parameters.Add(new MySqlParameter("inNote", foodItem.BNote));
+                int result = 0;
+                try
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                }
+
+                if (result == 1)
+                {
+                    bRet = true;
+                }
+                else
+                {
+                    bRet = false;
+                }
+            }
+
+            CloseDB();
+            return bRet;
+        }
+
+        public bool DeleteFoodItem(int Id)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("DeleteFoodItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new MySqlParameter("inId", Id));
+
+                int result = 0;
+                try
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                }
+
+                if (result == 1)
+                {
+                    bRet = true;
+                }
+                else
+                {
+                    bRet = false;
+                }
+            }
+            CloseDB();
+            return bRet;
+        }
+
+        public List<OtherFoodObject> GetDataOtherFood()
+        {
+            string query = "SELECT * FROM otherfoodtbl";
+
+            List<OtherFoodObject> OtherfObjectList = new List<OtherFoodObject>();
+
+            //Open connection
+            if (this.ConnectionDB() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+
+                //Create a data reader and Execute the command
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store them in the list
+                while (dataReader.Read())
+                {
+                    string sId = dataReader["Id"] + "";
+                    string sName = dataReader["Name"] + "";
+                    string sPrice = dataReader["Price"] + "";
+                    string sNote = dataReader["Note"] + "";
+                    OtherFoodObject otherfoodObj = new OtherFoodObject();
+                    otherfoodObj.BId = sId;
+                    otherfoodObj.BName = sName;
+                    otherfoodObj.BPrice = Convert.ToDouble(sPrice);
+                    otherfoodObj.BNote = sNote;
+
+                    OtherfObjectList.Add(otherfoodObj);
+                }
+
+                //close Data Reader
+                dataReader.Close();
+
+                //close Connection
+                CloseDB();
+            }
+            return OtherfObjectList;
+        }
+
+        public bool AddOtherFoodItem(OtherFoodObject otherfoodItem)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("AddOtherFoodItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new MySqlParameter("inName", otherfoodItem.BName));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", otherfoodItem.BPrice));
+                cmd.Parameters.Add(new MySqlParameter("inNote", otherfoodItem.BNote));
+
+                try
+                {
+                    int result = cmd.ExecuteNonQuery();
+                    bRet = true;
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                }
+            }
+
+            CloseDB();
+            return bRet;
+        }
+
+        public bool EditOtherFoodItem(OtherFoodObject otherfoodItem)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("EditOtherFoodItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                int tpId = Convert.ToInt32(otherfoodItem.BId);
+                cmd.Parameters.Add(new MySqlParameter("inId", tpId));
+                cmd.Parameters.Add(new MySqlParameter("inName", otherfoodItem.BName));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", otherfoodItem.BPrice));
+                cmd.Parameters.Add(new MySqlParameter("inNote", otherfoodItem.BNote));
+                int result = 0;
+                try
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                }
+
+                if (result == 1)
+                {
+                    bRet = true;
+                }
+                else
+                {
+                    bRet = false;
+                }
+            }
+
+            CloseDB();
+            return bRet;
+        }
+
+        public bool DeleteOtherFoodItem(int Id)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("DeleteOtherFoodItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new MySqlParameter("inId", Id));
+
+                int result = 0;
+                try
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                }
+
+                if (result == 1)
+                {
+                    bRet = true;
+                }
+                else
+                {
+                    bRet = false;
+                }
+            }
+            CloseDB();
+            return bRet;
+        }
+
         public List<ToppingObject> GetDataTopping()
         {
             string query = "SELECT * FROM toppingtbl";
@@ -449,6 +721,7 @@ namespace BTea
                 {
                     string sId = dataReader["Id"] + "";
                     string sName = dataReader["Name"] + "";
+                    string sNum = dataReader["Number"] + "";
                     string sPrice = dataReader["Price"] + "";
                     string sSugar = dataReader["SugarRate"] + "";
                     string sIce = dataReader["IceRate"] + "";
@@ -459,6 +732,7 @@ namespace BTea
                     BTeaOrderObject OrderObj = new BTeaOrderObject();
                     OrderObj.BOrderId = sId;
                     OrderObj.BOrderName = sName;
+                    OrderObj.BOrderNum = Convert.ToInt32(sNum);
                     OrderObj.BOrderPrice = Convert.ToDouble(sPrice);
                     OrderObj.BOrderSugarRate = Convert.ToInt32(sSugar);
                     OrderObj.BOrderIceRate = Convert.ToInt32(sIce);
@@ -474,7 +748,14 @@ namespace BTea
                     {
                         OrderObj.Type = BTBaseObject.BTeaType.TOPPING_TYPE;
                     }
-
+                    else if (sId.Contains("F"))
+                    {
+                        OrderObj.Type = BTBaseObject.BTeaType.FOOD_TYPE;
+                    }
+                    else if (sId.Contains("OF"))
+                    {
+                        OrderObj.Type = BTBaseObject.BTeaType.OTHER_TYPE;
+                    }
                     OderList.Add(OrderObj);
                 }
 
@@ -497,6 +778,7 @@ namespace BTea
 
                 cmd.Parameters.Add(new MySqlParameter("inId", bOrderItem.BOrderId));
                 cmd.Parameters.Add(new MySqlParameter("inName", bOrderItem.BOrderName));
+                cmd.Parameters.Add(new MySqlParameter("inNumber", bOrderItem.BOrderNum));
                 cmd.Parameters.Add(new MySqlParameter("inPrice", bOrderItem.BOrderPrice));
                 cmd.Parameters.Add(new MySqlParameter("inSize", bOrderItem.BOrderSize));
                 cmd.Parameters.Add(new MySqlParameter("inSugarRate", bOrderItem.BOrderSugarRate));

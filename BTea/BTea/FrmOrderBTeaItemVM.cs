@@ -14,6 +14,7 @@ namespace BTea
         public string OrderItemId { get; set; }
         public string OrderItemName { get; set; }
 
+        public string OrderItemNum { get; set; }
         public string OrderItemPrice { get; set; }
 
         public string OrderItemSize { get; set; }
@@ -46,7 +47,7 @@ namespace BTea
                 objItem.OrderItemId = obj.BOrderId;
                 objItem.OrderItemName = obj.BOrderName;
                 objItem.OrderItemPrice = obj.BOrderPrice.ToString("#,##0.00;(#,##0.00)");
-
+                objItem.OrderItemNum = obj.BOrderNum.ToString();
                 if (obj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
                 {
                     objItem.OrderItemSize = obj.BOrderSize.ToString();

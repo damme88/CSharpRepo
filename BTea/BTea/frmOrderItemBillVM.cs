@@ -36,6 +36,7 @@ namespace BTea
                 BTeaOrderObject obj = billItems[k];
                 BTeaOrderItems objItem = new BTeaOrderItems();
                 objItem.OrderName = obj.BOrderName;
+                objItem.OrderNum = obj.BOrderNum.ToString();
                 objItem.OrderPrice = obj.BOrderPrice.ToString("#,##0.00;(#,##0.00)");
 
                 if (obj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
@@ -92,7 +93,7 @@ namespace BTea
                         sIce = "70%";
                     }
 
-                    Note1 = "Size: " + sSize + "\n" + "Duong: " + sSugar + "\n" + "Da: " + sIce + "\n";
+                    Note1 = "Size: " + sSize + ";" + "Duong: " + sSugar + ";" + "Da: " + sIce + "\n";
 
                     string sTopping = obj.BOrderTopping;
                     string[] itemsTp = sTopping.Split(',');

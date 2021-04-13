@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="So luong:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <TextBlock Text="Số lượng:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
                 <TextBox Width="100" Height="30" HorizontalAlignment="Center"
                          Text="{Binding BillCount}"
                          VerticalContentAlignment="Center" Margin="5" IsReadOnly="True"></TextBox>
@@ -32,17 +32,17 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Mã" Width="50" DisplayMemberBinding="{Binding BillId}"/>
-                        <GridViewColumn Header="Tên" Width="100" DisplayMemberBinding="{Binding BillName}"/>
-                        <GridViewColumn Header="Giá" Width="80" DisplayMemberBinding="{Binding BillPrice}"/>
-                        <GridViewColumn Header="Nguoi tao" Width="80" DisplayMemberBinding="{Binding BillCreator}"/>
-                        <GridViewColumn Header="Ngay tao" Width="100" DisplayMemberBinding="{Binding BillDate}"/>
-                        <GridViewColumn Header="Sdt khach" Width="100" DisplayMemberBinding="{Binding BillPhone}"/>
-                        <GridViewColumn Header="Dia chi khach" Width="120" DisplayMemberBinding="{Binding BillAddress}"/>
-                        <GridViewColumn Header="Ghi chú" Width="150" DisplayMemberBinding="{Binding BillNote}"/>
-                        <GridViewColumn Header="List Order" Width="150">
+                        <GridViewColumn Header="Tên" Width="150" DisplayMemberBinding="{Binding BillName}"/>
+                        <GridViewColumn Header="Giá (VND)" Width="80" DisplayMemberBinding="{Binding BillPrice}"/>
+                        <GridViewColumn Header="Người tạo" Width="80" DisplayMemberBinding="{Binding BillCreator}"/>
+                        <GridViewColumn Header="Ngày tạo" Width="100" DisplayMemberBinding="{Binding BillDate}"/>
+                        <GridViewColumn Header="Sdt khách" Width="100" DisplayMemberBinding="{Binding BillPhone}"/>
+                        <GridViewColumn Header="Địa chỉ khách" Width="150" DisplayMemberBinding="{Binding BillAddress}"/>
+                        <GridViewColumn Header="Ghi chú" Width="100" DisplayMemberBinding="{Binding BillNote}"/>
+                        <GridViewColumn Header="Danh sách Order" Width="150">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="Detail" Width="120" Height="30" Command="{Binding BillDetailCmd}"></Button>
+                                    <Button Content="Danh sách" Style="{StaticResource BtnBase}" Command="{Binding BillDetailCmd}"></Button>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

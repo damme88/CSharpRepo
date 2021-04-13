@@ -16,7 +16,7 @@
             <StackPanel>
                 <TextBlock Margin="10,10,0,0">Tên Sản Phẩm:</TextBlock>
                 <TextBox Text="{Binding DrinkName}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
-                <TextBlock Margin="10,0,0,0">Giá:</TextBlock>
+                <TextBlock Margin="10,0,0,0">Giá (VND):</TextBlock>
                 <TextBox Text="{Binding DrinkPrice}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
                 <TextBlock Margin="10,0,0,0">Ghi Chú:</TextBlock>
                 <TextBox Text="{Binding DrinkNote}" Width="250" Height="50" HorizontalAlignment="Left" Margin="5"></TextBox>

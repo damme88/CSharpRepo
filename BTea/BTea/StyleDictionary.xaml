@@ -8,6 +8,18 @@
         <Setter Property="FontFamily" Value="Aria"/>
         <Setter Property="Margin" Value="5"/>
     </Style>
+    <Style x:Key="BtnBase100" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="FontFamily" Value="Aria"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+    <Style x:Key="BtnBase180" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="180"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="FontFamily" Value="Aria"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
     <Style x:Key="Btn150Bold" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="150"/>
         <Setter Property="Height" Value="30"/>

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:BTea"
         xmlns:local_convert="clr-namespace:BTea.convert"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         Title="Danh sách Đã Bán" Height="600" Width="1200">
     <Window.Resources>
         <local_convert:SizeDrinkConvert x:Key="SizeConvert"/>
@@ -29,6 +30,7 @@
                 <TextBox Width="100" Height="30" HorizontalAlignment="Center" VerticalContentAlignment="Center"
                          Text="{Binding SumPriceItems}"
                          VerticalAlignment="Center" Margin="5" IsReadOnly="True"></TextBox>
+                <TextBlock Text="VND" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
@@ -43,7 +45,8 @@
                     <GridView>
                         <GridViewColumn Header="Mã" Width="50" DisplayMemberBinding="{Binding OrderItemId}"/>
                         <GridViewColumn Header="Tên" Width="200" DisplayMemberBinding="{Binding OrderItemName}"/>
-                        <GridViewColumn Header="Giá" Width="80" DisplayMemberBinding="{Binding OrderItemPrice}"/>
+                        <GridViewColumn Header="Số lượng" Width="80" DisplayMemberBinding="{Binding OrderItemNum}"/>
+                        <GridViewColumn Header="Giá (VND)" Width="80" DisplayMemberBinding="{Binding OrderItemPrice}"/>
                         <GridViewColumn Header="Size" Width="80" DisplayMemberBinding="{Binding OrderItemSize, Converter={StaticResource SizeConvert}}"/>
                         <GridViewColumn Header="Tỉ lệ đường" Width="100" DisplayMemberBinding="{Binding OrderItemSRate, Converter={StaticResource SugarConvert}}"/>
                         <GridViewColumn Header="Tỉ lệ đá" Width="100" DisplayMemberBinding="{Binding OrderItemIRate, Converter={StaticResource IceConvert}}"/>
