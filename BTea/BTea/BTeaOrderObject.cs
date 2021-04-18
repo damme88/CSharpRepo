@@ -23,7 +23,7 @@ namespace BTea
         public string BOrderTopping { set; get; }
         public string BOrderBillId { set; get; }
         public DateTime BOrderDate { set; get; }
-
+        public int BOrderKm { set; get; }
         public BTBaseObject.BTeaType Type { set; get; }
     }
 }

@@ -31,7 +31,7 @@ namespace BTea
         private string _billAddress;
         private string _billOrderItem;
         private string _billNote;
-
+        private int _kmValue;
         List<BTBaseObject> _btList;
         #endregion
 
@@ -118,6 +118,14 @@ namespace BTea
             }
         }
 
+        public int KMValue
+        {
+            get { return _kmValue; }
+            set
+            {
+                _kmValue = value;
+            }
+        }
         #endregion
     }
 }

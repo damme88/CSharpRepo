@@ -7,6 +7,7 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Windows;
 using System.Data;
+using System.Configuration;
 
 namespace BTea
 {
@@ -15,12 +16,12 @@ namespace BTea
         private DBConnection()
         {
             _instance = null;
+            _mServer = ConfigurationManager.AppSettings["server"].ToString();
+            _mDBName = ConfigurationManager.AppSettings["dbname"].ToString();
+            _mUserName = ConfigurationManager.AppSettings["username"].ToString();
+            _mPassword = ConfigurationManager.AppSettings["password"].ToString();
+            _mPort = ConfigurationManager.AppSettings["port"].ToString();
 
-            _mServer = "127.0.0.1";
-            _mDBName = "bteadb";
-            _mUserName = "root";
-            _mPassword = "123456";
-            _mPort = "3306";
             string connectionString = "Server=" + _mServer +
                                ";Database=" + _mDBName +
                                ";port=" + _mPort +
@@ -645,6 +646,7 @@ namespace BTea
                     string sAddress = dataReader["Address"] + "";
                     string sOrderItem = dataReader["OrderItem"] + "";
                     string sNote = dataReader["Note"] + "";
+                    string sKm = dataReader["KM"] + "";
 
                     BillObject billObj = new BillObject();
                     billObj.BillId = Convert.ToInt32(sId);
@@ -655,6 +657,7 @@ namespace BTea
                     billObj.BillPhone = sPhone;
                     billObj.BillAddress = sAddress;
                     billObj.BillNote = sNote;
+                    billObj.KMValue = Convert.ToInt32(sKm);
 
                     billObj.BillOrderItem = sOrderItem;
                     billObjectList.Add(billObj);
@@ -685,7 +688,7 @@ namespace BTea
                 cmd.Parameters.Add(new MySqlParameter("inAddress", billItem.BillAddress));
                 cmd.Parameters.Add(new MySqlParameter("inOrderItem", billItem.BillOrderItem));
                 cmd.Parameters.Add(new MySqlParameter("inNote", billItem.BillNote));
-
+                cmd.Parameters.Add(new MySqlParameter("inKM", billItem.KMValue));
                 try
                 {
                     int result = cmd.ExecuteNonQuery();
@@ -728,6 +731,7 @@ namespace BTea
                     string sTopping = dataReader["Topping"] + "";
                     string sBillId = dataReader["BillId"] + "";
                     string sOrderDate = dataReader["OrderDate"] + "";
+                    string sOrderKm = dataReader["Km"] + "";
 
                     BTeaOrderObject OrderObj = new BTeaOrderObject();
                     OrderObj.BOrderId = sId;
@@ -739,6 +743,7 @@ namespace BTea
                     OrderObj.BOrderTopping = sTopping;
                     OrderObj.BOrderBillId = sBillId;
                     OrderObj.BOrderDate = Convert.ToDateTime(sOrderDate);
+                    OrderObj.BOrderKm = Convert.ToInt32(sOrderKm);
 
                     if (sId.Contains("DR"))
                     {
@@ -786,6 +791,7 @@ namespace BTea
                 cmd.Parameters.Add(new MySqlParameter("inTopping", bOrderItem.BOrderTopping));
                 cmd.Parameters.Add(new MySqlParameter("inBillId", bOrderItem.BOrderBillId));
                 cmd.Parameters.Add(new MySqlParameter("inOrderDate", bOrderItem.BOrderDate));
+                cmd.Parameters.Add(new MySqlParameter("inKm", bOrderItem.BOrderKm));
                 try
                 {
                     int result = cmd.ExecuteNonQuery();

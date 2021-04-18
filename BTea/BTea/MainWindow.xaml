@@ -22,14 +22,15 @@
             <DockPanel>
                 <Menu DockPanel.Dock="Top">
                     <MenuItem Header="File">
-                        <MenuItem Header="About"></MenuItem>
-                        <MenuItem Header="Close"></MenuItem>
+                        <MenuItem Header="Thông tin" Command="{Binding FileAboutCmd}"></MenuItem>
+                        <MenuItem Header="Cài đặt chung" Command="{Binding FileSettingCmd}"></MenuItem>
+                        <MenuItem Header="Đóng ứng dụng" Command="{Binding FileCloseCmd}"></MenuItem>
                     </MenuItem>
-                    <MenuItem Header="Document">
-                        <MenuItem Header="Huong dan su dung"></MenuItem>
-                        <MenuItem Header="Ebook pha che 1"></MenuItem>
-                        <MenuItem Header="Ebook pha che 2"></MenuItem>
-                        <MenuItem Header="Ebook pha che 3"></MenuItem>
+                    <MenuItem Header="Tài liệu">
+                        <MenuItem Header="Hướng dẫn sử dụng" Command="{Binding FileGuideCmd}"></MenuItem>
+                        <MenuItem Header="Ebook 1" Command="{Binding FileEB1Cmd}"></MenuItem>
+                        <MenuItem Header="Ebook 2" Command="{Binding FileEB2Cmd}"></MenuItem>
+                        <MenuItem Header="Ebook 3" Command="{Binding FileEB3Cmd}"></MenuItem>
                     </MenuItem>
                 </Menu>
             </DockPanel>
@@ -44,13 +45,13 @@
                                 Margin="1"
                                 ToolTip="Đồ uống"
                                 Command="{Binding DrinkCmd}">
-                        <Image Source="/Images/drink_icon.png"></Image>
+                            <Image Source="/Images/drink_icon.png"></Image>
                         </Button>
                         <Button Width="32" Height="32" 
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Margin="1"
-                                ToolTip="đồ nhâm nhi"
+                                ToolTip="Đồ nhâm nhi"
                                 Command="{Binding FoodCmd}">
                             <Image Source="/Images/food_icon.png"></Image>
                         </Button>
@@ -58,9 +59,9 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Margin="1"
-                                ToolTip="đồ lat vat"
+                                ToolTip="Đồ ăn vặt"
                                 Command="{Binding OtherFoodCmd}">
-                            <Image Source="/Images/sample.png"></Image>
+                            <Image Source="/Images/other_food.png"></Image>
                         </Button>
                         <Button Width="32" Height="32" 
                                 HorizontalAlignment="Left"
@@ -70,19 +71,11 @@
                                 Command="{Binding ToppingCmd}">
                             <Image Source="/Images/topping_icon.png"></Image>
                         </Button>
-                        <!--<Button Width="32" Height="32" 
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Margin="1"
-                                ToolTip="Đồ tổng hợp"
-                                Command="{Binding OtherCmd}">
-                            <Image Source="/Images/sample.png"></Image>
-                        </Button>-->
                         <Button Width="32" Height="32" 
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Margin="1"
-                                ToolTip="Doanh thu"
+                                ToolTip="Sản phẩm đã bán"
                                 Command="{Binding RevenueCmd}">
                             <Image Source="/Images/revenue_icon.png"></Image>
                         </Button>
@@ -90,7 +83,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Margin="1"
-                                ToolTip="hóa đơn đã bán "
+                                ToolTip="Hóa đơn đã bán "
                                 Command="{Binding BillCmd}">
                             <Image Source="/Images/bill_icon.png"></Image>
                         </Button>
@@ -128,7 +121,7 @@
                                 <TextBlock Text="Tìm kiếm:" Margin="5" FontSize="14" FontWeight="Bold"></TextBlock>
                                 <TextBox Width="450" Height="30" Margin="5" Text="{Binding FindItem, UpdateSourceTrigger=PropertyChanged}"/>
                             </StackPanel>
-                            <ListView  Height="500" Margin="5" HorizontalAlignment="Left" Name="BTeaList" 
+                            <ListView  Height="550" Margin="5" HorizontalAlignment="Left" Name="BTeaList" 
                                    ItemsSource="{Binding DataList}"
                                    SelectedItem="{Binding BTeaSelectedItem}"
                                    ScrollViewer.VerticalScrollBarVisibility="Visible"
@@ -149,7 +142,7 @@
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
-                                        <GridViewColumn Header="Giá (VND)" Width="80">
+                                        <GridViewColumn Header="Giá (VND)" Width="90">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock  Text="{Binding Price, StringFormat='#,##0.00;(#,##0.00)'}" FontSize="14" FontWeight="Bold" />
@@ -177,6 +170,11 @@
                             <TextBox Text="{Binding OrderItemNum}" FontSize="14" FontWeight="Bold" Width="50" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBox>
                             <Button Command="{Binding OrderItemPlusCmd}" Width="30" Height="30" Content="+" FontSize="20" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5"></Button>
                         </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="KM(%):" FontWeight="Bold" VerticalAlignment="Center" Margin="2"></TextBlock>
+                            <TextBox Text="{Binding OrderItemKM}" IsEnabled="{Binding KMCheckItemStatus}" FontSize="14" FontWeight="Bold" Width="60" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBox>
+                            <CheckBox IsChecked="{Binding KMCheckItemStatus}" VerticalAlignment="Center"></CheckBox>
+                        </StackPanel>
                         <TextBlock Text="Kích thước :" FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
                         <ComboBox Width="150" Height="30" ItemsSource="{Binding SizeItems}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedSizeItem}" IsEnabled="{Binding StateSize}" Margin="5" HorizontalAlignment="Left"></ComboBox>
                         <TextBlock Text="Tỉ lệ đường :" FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
@@ -194,8 +192,8 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Button  Width="145" Height="120" 
-                                    Margin="5,15,0,0" Content="Chọn" 
+                        <Button  Width="145" Height="60" 
+                                    Margin="5,20,0,0" Content="Chọn" 
                                     Command="{Binding CmdSelectItem}"
                                     FontSize="20"
                                     FontWeight="Bold"/>
@@ -212,48 +210,55 @@
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="List Order" FontSize="14" FontWeight="Bold" Width="200" Height="20" Margin="2"></TextBlock>
                         <StackPanel Orientation="Horizontal">
-                            <ListView  Height="300" Width="500" Margin="5" HorizontalAlignment="Left"
+                            <ListView  Height="280" Width="500" Margin="5" HorizontalAlignment="Left"
                                    ItemsSource="{Binding DataOrderList}"
                                    SelectedItem="{Binding BTeaOrderSelectedItem}"
                                    ScrollViewer.VerticalScrollBarVisibility="Visible"
                                    ScrollViewer.CanContentScroll="False">
-                            <ListView.View>
-                                <GridView ColumnHeaderContainerStyle="{StaticResource GrdViewHeaderStyle}">
-                                    <GridViewColumn Header="Tên" Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock  Text="{Binding OrderName}" FontSize="14"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn Header="Số lượng" Width="70">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock  Text="{Binding OrderNum}" FontSize="14"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn Header="Giá (VND)" Width="80">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock  Text="{Binding OrderPrice}" FontSize="14"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn Header="Ghi Chú" Width="300">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBox Text="{Binding OrderNote}" FontSize="12"
+                                <ListView.View>
+                                    <GridView ColumnHeaderContainerStyle="{StaticResource GrdViewHeaderStyle}">
+                                        <GridViewColumn Header="Tên" Width="150">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock  Text="{Binding OrderName}" FontSize="14"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Số lượng" Width="70">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock  Text="{Binding OrderNum}" FontSize="14"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Giá (VND)" Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock  Text="{Binding OrderPrice}" FontSize="14"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="KM(%)" Width="60">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock  Text="{Binding OrderKm}" FontSize="14"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Ghi Chú" Width="300">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Text="{Binding OrderNote}" FontSize="12"
                                                          IsReadOnly="True" 
                                                          TextWrapping="Wrap" 
                                                          Width="230"
                                                          AcceptsReturn="True"
                                                          Height="50"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                </GridView>
-                            </ListView.View>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
                             </ListView>
                             <StackPanel Orientation="Vertical">
                                 <Button IsEnabled="{Binding IsEnableOrderItem}" Command="{Binding EditOrderItemCmd}" Style="{StaticResource BtnBase100}" Content="Sửa thông tin" FontWeight="Bold"></Button>
@@ -261,9 +266,11 @@
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Tổng Giá Trị:" Margin="5" FontFamily="Aria" FontSize="14" FontWeight="Bold"></TextBlock>
-                            <TextBox Text="{Binding BillSumPrice, StringFormat='#,##0.0000;(#,##0.0000)'}"  Width="250" Height="30" IsReadOnly="True" Margin="10,0,0,0"></TextBox>
-                            <TextBlock Text="VND" Margin="5" FontFamily="Aria" FontWeight="Bold"></TextBlock>
+                            <TextBlock Text="Tổng Giá Trị (VND):" Margin="5" FontFamily="Aria" FontSize="14" FontWeight="Bold"></TextBlock>
+                            <TextBox Text="{Binding BillSumPrice, StringFormat='#,##0.0000;(#,##0.0000)'}"  Width="150" Height="30" IsReadOnly="True" Margin="10,0,0,0"></TextBox>
+                            <TextBlock Text="KM(%):"  FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="35,5,5,5"></TextBlock>
+                            <TextBox Width="50" Height="30" FontSize="14" Text="{Binding KMSumBill, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding KMCheckBillStatus}"></TextBox>
+                            <CheckBox Margin="5" VerticalAlignment="Center" IsChecked="{Binding KMCheckBillStatus}"></CheckBox>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -299,10 +306,16 @@
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="2">
-                    <StackPanel Orientation="Horizontal">
-                        <Button Style="{StaticResource Btn150Bold}" Content="Tạo Hóa Đơn" Command="{Binding MakeBillCmd}"/>
-                        <Button Style="{StaticResource Btn150Bold}" Content="Xóa Hóa Đơn" Command="{Binding ClearBillCmd}"/>
-                        <Button Style="{StaticResource Btn150Bold}" Content="Lưu Tạm" Command="{Binding SaveBillCmd}"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="51*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="76*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3">
+                        <Button Style="{StaticResource BtnBase}" Content="Tạo Hóa Đơn" Command="{Binding MakeBillCmd}"/>
+                        <Button Style="{StaticResource BtnBase}" Content="Xóa Hóa Đơn" Command="{Binding ClearBillCmd}"/>
+                        <Button Style="{StaticResource BtnBase}" Content="Lưu Tạm" Command="{Binding SaveBillCmd}"/>
+                        <Button Style="{StaticResource BtnBase}" Content="In" Command="{Binding PrintBillCmd}"/>
                     </StackPanel>
                 </Grid>
             </Grid>
@@ -311,16 +324,16 @@
             <DockPanel Height="30" VerticalAlignment="Bottom">
                 <StatusBar DockPanel.Dock="Bottom">
                     <StatusBar.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="600" />
-                                        <ColumnDefinition Width="400" />
+                        <ItemsPanelTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="600" />
+                                    <ColumnDefinition Width="400" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                </Grid>
-                            </ItemsPanelTemplate>
-                        </StatusBar.ItemsPanel>
+                            </Grid>
+                        </ItemsPanelTemplate>
+                    </StatusBar.ItemsPanel>
                     <StatusBarItem Grid.Column="0">
                         <TextBlock Text="{Binding StatusBarText}"  Width="200" Margin="5,0,0,0"/>
                     </StatusBarItem>

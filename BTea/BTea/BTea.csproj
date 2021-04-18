@@ -60,6 +60,7 @@
       <HintPath>..\DB Net\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
@@ -81,6 +82,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BillItems.cs" />
+    <Compile Include="BSetting.xaml.cs">
+      <DependentUpon>BSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BSettingVM.cs" />
     <Compile Include="BTeaOrderObject.cs" />
     <Compile Include="convert\IceRateConvert.cs" />
     <Compile Include="convert\SizeDrinkConvert.cs" />
@@ -118,6 +123,10 @@
     </Compile>
     <Compile Include="FrmOtherFoodMainVM.cs" />
     <Compile Include="FrmOtherFoodVM.cs" />
+    <Compile Include="FrmPrintBill.xaml.cs">
+      <DependentUpon>FrmPrintBill.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPrintBillVM.cs" />
     <Compile Include="FrmTopping.xaml.cs">
       <DependentUpon>FrmTopping.xaml</DependentUpon>
     </Compile>
@@ -127,7 +136,12 @@
     <Compile Include="FrmToppingMainVM.cs" />
     <Compile Include="FrmToppingVM.cs" />
     <Compile Include="OtherFoodObject.cs" />
+    <Compile Include="TConst.cs" />
     <Compile Include="ToppingObject.cs" />
+    <Page Include="BSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FrmBillMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -165,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FrmOtherFoodMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FrmPrintBill.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -254,6 +272,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\revenue_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\other_food.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

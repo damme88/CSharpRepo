@@ -37,7 +37,8 @@ namespace BTea
                 BTeaOrderItems objItem = new BTeaOrderItems();
                 objItem.OrderName = obj.BOrderName;
                 objItem.OrderNum = obj.BOrderNum.ToString();
-                objItem.OrderPrice = obj.BOrderPrice.ToString("#,##0.00;(#,##0.00)");
+                objItem.OrderPrice = obj.BOrderPrice.ToString(TConst.K_MONEY_FORMAT);
+                objItem.OrderKm = obj.BOrderKm.ToString();
 
                 if (obj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
                 {

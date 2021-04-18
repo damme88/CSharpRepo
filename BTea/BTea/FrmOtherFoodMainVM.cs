@@ -164,7 +164,7 @@ namespace BTea
                 OtherFoodObject otherFoodObject = data_list[i];
                 otherItem.Id = CodeOtherFood + otherFoodObject.BId;
                 otherItem.Name = otherFoodObject.BName;
-                otherItem.Price = otherFoodObject.BPrice.ToString("#,##0.00;(#,##0.00)");
+                otherItem.Price = otherFoodObject.BPrice.ToString(TConst.K_MONEY_FORMAT);
                 otherItem.Note = otherFoodObject.BNote;
 
                 _OtherFoodItem.Add(otherItem);

@@ -135,7 +135,7 @@ namespace BTea
 
         public string OrderSinglePrice
         {
-            get { return _orderSinglePrice.ToString("#,##0.00;(#,##0.00)"); }
+            get { return _orderSinglePrice.ToString(TConst.K_MONEY_FORMAT); }
             set
             {
                 double val = Convert.ToDouble(value);

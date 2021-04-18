@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,8 +65,9 @@ namespace BTea
 
         public string OrderName { set; get; }
         public string OrderNum { set; get; }
-        public string OrderPrice { set; get; }
+        public string OrderPrice { set; get; } // full price (include *number)
         public string OrderNote { set; get; }
+        public string OrderKm { set; get; }
 
         public void MakeNoteSumary()
         {
@@ -92,7 +94,7 @@ namespace BTea
                 }
             }
         }
-        public double MakeSumaryPrice()
+        public double MakeSummaryPrice()
         {
             double fullPrice = 0.0;
             int number = Convert.ToInt32(OrderNum);
@@ -101,12 +103,24 @@ namespace BTea
             {
                 double drPrice = 0.0;
                 DrinkObject drObj = _orderObject as DrinkObject;
+                string slPrice = ConfigurationManager.AppSettings["lprice"].ToString();
+
+                double lPrice = 0.0;
+                try
+                {
+                    lPrice = Convert.ToDouble(slPrice);
+                }
+                catch
+                {
+                    lPrice = 10000;
+                }
+
                 if (drObj != null)
                 {
                     drPrice = drObj.BPrice;
                     if (drObj.DrinkSize == 1) // SIZE L
                     {
-                        drPrice += 10000;
+                        drPrice += lPrice;
                     }
 
                     double tpPrice = 0.0;
@@ -125,8 +139,39 @@ namespace BTea
                 fullPrice = _orderObject.BPrice * number;
             }
 
-            OrderPrice = fullPrice.ToString("#,##0.00;(#,##0.00)");
+            int kmValue = Convert.ToInt32(OrderKm);
+            double offVal = fullPrice * kmValue / 100;
+            fullPrice = fullPrice - offVal;
+            OrderPrice = fullPrice.ToString(TConst.K_MONEY_FORMAT);
             return fullPrice;
+        }
+
+        public string MakePrintDescription()
+        {
+            string strDes = "";
+            BTBaseObject.BTeaType type = _orderObject.Type;
+            if (type == BTBaseObject.BTeaType.DRINK_TYPE)
+            {
+                DrinkObject drObj = (DrinkObject)_orderObject;
+                if (drObj != null)
+                {
+                    string sizeStr = drObj.SizeToString();
+                    string SuStr = drObj.SugarToString();
+                    string IceStr = drObj.IceToString();
+                    string strNote = "";
+                    strNote += "\nSize: " + sizeStr + "\n";
+                    strNote += "Đường: " + SuStr + "\n";
+                    strNote += "Đá: " + IceStr + "\n";
+                    string strTopping = drObj.ToppingToStringSingleLine();
+                    strDes = _orderObject.BName + strNote + strTopping;
+                }
+            }
+            else
+            {
+                strDes = _orderObject.BName;
+            }
+
+            return strDes;
         }
 
         public bool CheckDuplicate(BTeaOrderItems obj)
@@ -135,7 +180,6 @@ namespace BTea
 
             bool bCheck1 = false;
             if (this.OrderName == obj.OrderName &&
-                this.OrderPrice == obj.OrderPrice &&
                 this.OrderNote == obj.OrderNote)
             {
                 bCheck1 = true;
@@ -214,6 +258,7 @@ namespace BTea
             FoodCmd = new RelayCommand(new Action<object>(DoFood));
             OtherFoodCmd = new RelayCommand(new Action<object>(DoOtherFood));
             BillCmd = new RelayCommand(new Action<object>(DoBill));
+            PrintBillCmd = new RelayCommand(new Action<object>(PrintBill));
             RevenueCmd = new RelayCommand(new Action<object>(DoRevenue));
             CmdSelectItem = new RelayCommand(new Action<object>(DoSelectItem));
             MakeBillCmd = new RelayCommand(new Action<object>(DoMakeBill));
@@ -222,6 +267,20 @@ namespace BTea
             OrderItemPlusCmd = new RelayCommand(new Action<object>(DoPlusOrderItem));
             EditOrderItemCmd = new RelayCommand(new Action<object>(DoEditOderItem));
             RemoveOrderItemCmd = new RelayCommand(new Action<object>(DoRemoveOderItem));
+
+            //Command for file menu
+            FileAboutCmd  = new RelayCommand(new Action<object>(DoAboutMenu));
+            FileSettingCmd = new RelayCommand(new Action<object>(DoSettingMenu));
+            FileCloseCmd = new RelayCommand(new Action<object>(DoCloseMenu));
+            FileEB1Cmd = new RelayCommand(new Action<object>(DoEbook1Menu));
+            FileEB2Cmd = new RelayCommand(new Action<object>(DoEbook2Menu));
+            FileEB3Cmd = new RelayCommand(new Action<object>(DoEbook3Menu));
+
+            _kmCheckItem = false;
+            _kmCheckBill = false;
+            _orderItemKM = 0;
+            _kMSumBill = 0;
+
             _drinkCheck = true;
             _foodCheck = false;
             _toppingCheck = false;
@@ -395,6 +454,7 @@ namespace BTea
         public RelayCommand OtherFoodCmd { set; get; }
         public RelayCommand ToppingCmd { set; get; }
         public RelayCommand BillCmd { set; get; }
+        public RelayCommand PrintBillCmd { set; get; }
         public RelayCommand RevenueCmd { set; get; }
         public RelayCommand CmdSelectItem { set; get; }
         public RelayCommand MakeBillCmd { set; get; }
@@ -406,6 +466,13 @@ namespace BTea
 
         public RelayCommand EditOrderItemCmd { set; get; }
         public RelayCommand RemoveOrderItemCmd { set; get; }
+
+        public RelayCommand FileAboutCmd { set; get; }
+        public RelayCommand FileSettingCmd { set; get; }
+        public RelayCommand FileCloseCmd { set; get; }
+        public RelayCommand FileEB1Cmd { set; get; }
+        public RelayCommand FileEB2Cmd { set; get; }
+        public RelayCommand FileEB3Cmd { set; get; }
 
         private int _orderItemNum;
         private FrmDrinkMainVM _frmDrinkVm;
@@ -451,9 +518,42 @@ namespace BTea
         private string _statusBarDateInfo { set; get; }
 
         private bool _isEnableOrderItem;
+
+        private bool _kmCheckItem;
+        private bool _kmCheckBill;
+        private int _orderItemKM;
+        private int _kMSumBill;
         #endregion
 
         #region Method
+        public void DoAboutMenu(object obj)
+        {
+
+        }
+        public void DoSettingMenu(object obj)
+        {
+            BSetting settingDlg = new BSetting();
+            BSettingVM _settingVM = new BSettingVM();
+            settingDlg.DataContext = _settingVM;
+            settingDlg.ShowDialog();
+        }
+        public void DoCloseMenu(object obj)
+        {
+
+        }
+        public void DoEbook2Menu(object obj)
+        {
+
+        }
+        public void DoEbook3Menu(object obj)
+        {
+
+        }
+        public void DoEbook1Menu(object obj)
+        {
+
+        }
+
         public void UpdateOrderItemCmd()
         {
             BTBaseObject obj = _bteaOderItem.OrderObject;
@@ -496,7 +596,7 @@ namespace BTea
                         }
 
                         //Calucate price and note again
-                        _bteaOderItem.MakeSumaryPrice();
+                        _bteaOderItem.MakeSummaryPrice();
                         _bteaOderItem.MakeNoteSumary();
                     }
                 }
@@ -522,7 +622,7 @@ namespace BTea
                 double oPrice = Convert.ToDouble(strPrice);
                 sumPrice += oPrice;
             }
-            _billPrice = sumPrice.ToString("#,##0.00;(#,##0.00)");
+            _billPrice = sumPrice.ToString(TConst.K_MONEY_FORMAT);
             OnPropertyChange("BillSumPrice");
         }
 
@@ -592,6 +692,36 @@ namespace BTea
             frmBillMain.ShowDialog();
         }
 
+        public void PrintBill(object obj)
+        {
+            FrmPrintBill printDlg = new FrmPrintBill();
+            FrmPrintBillVM _printVM = new FrmPrintBillVM();
+            int totalNumber = 0;
+            for (int i = 0; i < _dataOrderList.Count; ++i)
+            {
+                BTeaOrderItems orderItem = _dataOrderList[i];
+                PrintBillIData dataItem = new PrintBillIData();
+
+                dataItem.NumberProduct = orderItem.OrderNum;
+                dataItem.SumPrice = orderItem.OrderPrice;
+                dataItem.NameProduct = orderItem.MakePrintDescription();
+
+                try
+                {
+                    totalNumber += Convert.ToInt32(orderItem.OrderNum);
+                }
+                catch
+                {
+                    totalNumber = 0;
+                }
+
+                _printVM.AddData(dataItem);
+            }
+            _printVM.SetInfo(_billName, _billCreator, _billStartDate.ToString(), _billPrice, totalNumber.ToString());
+            printDlg.DataContext = _printVM;
+            printDlg.ShowDialog();
+        }
+
         public void DoRevenue(object obj)
         {
             FrmOrderBTeaItem frmOrderItem = new FrmOrderBTeaItem();
@@ -616,6 +746,7 @@ namespace BTea
             billObject.BillPhone = _billPhone;
             billObject.BillAddress = _billAddress;
             billObject.BillNote = _billNote;
+            billObject.KMValue = _kMSumBill;
 
             string strOrderItem = "";
             bool bAddItemOrder = false;
@@ -625,7 +756,7 @@ namespace BTea
                 BTeaOrderObject orderObject = new BTeaOrderObject();
                 orderObject.BOrderId = orderBaseObj.BId;
                 orderObject.BOrderName = orderBaseObj.BName;
-                orderObject.BOrderPrice = _dataOrderList[i].MakeSumaryPrice();
+                orderObject.BOrderPrice = _dataOrderList[i].MakeSummaryPrice();
                 orderObject.BOrderNum = Convert.ToInt32(_dataOrderList[i].OrderNum);
                 strOrderItem = strOrderItem + orderObject.BOrderId + ",";
                 orderObject.Type = orderBaseObj.Type;
@@ -650,6 +781,7 @@ namespace BTea
 
                 orderObject.BOrderBillId = _billName;
                 orderObject.BOrderDate = _billStartDate;
+                orderObject.BOrderKm = Convert.ToInt32(_dataOrderList[i].OrderKm);
 
                 bool bRet2 = DBConnection.GetInstance().AddOrderItem(orderObject);
                 if (bRet2 == false)
@@ -776,17 +908,20 @@ namespace BTea
             orderObjItem.OrderName = btObject.BName;
             orderObjItem.OrderNum = _orderItemNum.ToString();
             orderObjItem.OrderObject = btObject;
+            orderObjItem.OrderKm = _orderItemKM.ToString();
 
-            orderObjItem.MakeSumaryPrice();
+            orderObjItem.MakeSummaryPrice();
             orderObjItem.MakeNoteSumary();
 
             bool bCheckExist = false;
+            int idxDuplicate = -1;
             for (int ik = 0; ik < _dataOrderList.Count; ik++)
             {
                 BTeaOrderItems orderItem = _dataOrderList[ik];
                 bCheckExist = orderItem.CheckDuplicate(orderObjItem);
                 if (bCheckExist == true)
                 {
+                    idxDuplicate = ik;
                     break;
                 }
             }
@@ -804,7 +939,7 @@ namespace BTea
                     double oPrice = Convert.ToDouble(strPrice);
                     sumPrice += oPrice;
                 }
-                _billPrice = sumPrice.ToString("#,##0.00;(#,##0.00)");
+                _billPrice = sumPrice.ToString(TConst.K_MONEY_FORMAT);
 
                 IsEnableOrderItem = true;
                 //Update GUI
@@ -814,8 +949,36 @@ namespace BTea
             }
             else
             {
-                string content = "1 Sản phẩm y hệt đã tổn tại!.\nHãy tăng số lượng thay vì thêm trùng lặp.";
-                MessageBox.Show(content, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                string content = "Thông tin sản phẩm này đã được order!.\nBạn có muốn tăng thêm số lượng?";
+                MessageBoxResult msg = MessageBox.Show(content, "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                if (msg == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        int nNumber = Convert.ToInt32(orderObjItem.OrderNum);
+                        double nPrice = Convert.ToDouble(orderObjItem.OrderPrice);
+
+                        BTeaOrderItems orderItem = _dataOrderList[idxDuplicate];
+                        int tNumber = Convert.ToInt32(orderItem.OrderNum);
+                        double tPrice = Convert.ToDouble(orderItem.OrderPrice);
+
+                        orderItem.OrderNum = (nNumber + tNumber).ToString();
+                        orderItem.OrderPrice = (nPrice + tPrice).ToString(TConst.K_MONEY_FORMAT);
+
+                        double currentBillPrice = Convert.ToDouble(_billPrice);
+                        currentBillPrice += nPrice;
+
+                        CollectionViewSource.GetDefaultView(_dataOrderList).Refresh();
+                        OnPropertyChange("DataOrderList");
+
+                        _billPrice = currentBillPrice.ToString(TConst.K_MONEY_FORMAT);
+                        OnPropertyChange("BillSumPrice");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi hệ thống!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
             }
             
         }
@@ -832,7 +995,7 @@ namespace BTea
                     DrinkObject drObject = data_list[i];
                     bItem.ImgId = "DR" + drObject.BId;
                     bItem.Name = drObject.BName;
-                    bItem.Price = drObject.BPrice.ToString("#,##0.00;(#,##0.00)");
+                    bItem.Price = drObject.BPrice.ToString(TConst.K_MONEY_FORMAT);
                     bItem.Note = drObject.BNote;
 
                     _dataList.Add(bItem);
@@ -849,7 +1012,7 @@ namespace BTea
                     FoodObject fObject = data_list[i];
                     bItem.ImgId = "TP" + fObject.BId;
                     bItem.Name = fObject.BName;
-                    bItem.Price = fObject.BPrice.ToString("#,##0.00;(#,##0.00)");
+                    bItem.Price = fObject.BPrice.ToString(TConst.K_MONEY_FORMAT);
                     bItem.Note = fObject.BNote;
 
                     _dataList.Add(bItem);
@@ -864,9 +1027,9 @@ namespace BTea
                 {
                     BTeaItem bItem = new BTeaItem();
                     OtherFoodObject fObject = data_list[i];
-                    bItem.ImgId = "FO" + fObject.BId;
+                    bItem.ImgId = "OF" + fObject.BId;
                     bItem.Name = fObject.BName;
-                    bItem.Price = fObject.BPrice.ToString("#,##0.00;(#,##0.00)");
+                    bItem.Price = fObject.BPrice.ToString(TConst.K_MONEY_FORMAT);
                     bItem.Note = fObject.BNote;
 
                     _dataList.Add(bItem);
@@ -883,7 +1046,7 @@ namespace BTea
                     ToppingObject tpObject = data_list[i];
                     bItem.ImgId = "TP" + tpObject.BId;
                     bItem.Name = tpObject.BName;
-                    bItem.Price = tpObject.BPrice.ToString("#,##0.00;(#,##0.00)");
+                    bItem.Price = tpObject.BPrice.ToString(TConst.K_MONEY_FORMAT);
                     bItem.Note = tpObject.BNote;
 
                     _dataList.Add(bItem);
@@ -955,6 +1118,61 @@ namespace BTea
         #endregion
 
         #region Property
+
+        public bool KMCheckItemStatus
+        {
+            get { return _kmCheckItem; }
+            set { _kmCheckItem = value; OnPropertyChange("KMCheckItemStatus"); }
+        }
+
+        public bool KMCheckBillStatus
+        {
+            get { return _kmCheckBill; }
+            set
+            {
+                _kmCheckBill = value;
+                OnPropertyChange("KMCheckBillStatus");
+                KMSumBill = 0;
+            }
+        }
+
+        public int KMSumBill
+        {
+            get
+            {
+                return _kMSumBill;
+            }
+            set
+            {
+                _kMSumBill = value;
+                OnPropertyChange("KMSumBill");
+
+                if (_kMSumBill >= 0 && _kMSumBill <= 100)
+                {
+                    double sumPrice = 0.0;
+                    for (int i = 0; i < _dataOrderList.Count; i++)
+                    {
+                        BTeaOrderItems orderItem = _dataOrderList[i];
+                        string strPrice = orderItem.OrderPrice;
+                        double oPrice = Convert.ToDouble(strPrice);
+                        sumPrice += oPrice;
+                    }
+
+                    if (sumPrice > 0)
+                    {
+                        double value_off = sumPrice * _kMSumBill / 100.0;
+                        double billPriceEnd = sumPrice - value_off;
+                        BillSumPrice = billPriceEnd.ToString(TConst.K_MONEY_FORMAT);
+                    }
+                }
+            }
+        }
+
+        public int OrderItemKM
+        {
+            get { return _orderItemKM; }
+            set { _orderItemKM = value; OnPropertyChange("OrderItemKM"); }
+        }
 
         public bool IsEnableOrderItem
         {

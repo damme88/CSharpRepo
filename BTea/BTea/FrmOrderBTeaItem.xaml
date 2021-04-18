@@ -7,7 +7,7 @@
         xmlns:local_convert="clr-namespace:BTea.convert"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Danh sách Đã Bán" Height="600" Width="1200">
+        Title="Danh sách Đã Bán" Height="600" Width="1250">
     <Window.Resources>
         <local_convert:SizeDrinkConvert x:Key="SizeConvert"/>
         <local_convert:SugarRateConvert x:Key="SugarConvert"/>
@@ -34,7 +34,7 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <ListView Width="1100" Height="500" 
+            <ListView Width="1200" Height="500" 
                       ItemsSource="{Binding OrderItems}" 
                       SelectedItem="{Binding SelectedOrderItem}"
                       Margin="5" HorizontalAlignment="Left" 
@@ -51,8 +51,9 @@
                         <GridViewColumn Header="Tỉ lệ đường" Width="100" DisplayMemberBinding="{Binding OrderItemSRate, Converter={StaticResource SugarConvert}}"/>
                         <GridViewColumn Header="Tỉ lệ đá" Width="100" DisplayMemberBinding="{Binding OrderItemIRate, Converter={StaticResource IceConvert}}"/>
                         <GridViewColumn Header="Topping" Width="120" DisplayMemberBinding="{Binding OrderItemTopping}"/>
-                        <GridViewColumn Header="Mã hóa đơn" Width="150" DisplayMemberBinding="{Binding OrderItemBillId}"/>
+                        <GridViewColumn Header="Ten hóa đơn" Width="150" DisplayMemberBinding="{Binding OrderItemBillId}"/>
                         <GridViewColumn Header="Ngày tạo" Width="150" DisplayMemberBinding="{Binding OrderItemOrderDate}"/>
+                        <GridViewColumn Header="KM(%)" Width="50" DisplayMemberBinding="{Binding OrderItemKM}"/>
                     </GridView>
                 </ListView.View>
             </ListView>

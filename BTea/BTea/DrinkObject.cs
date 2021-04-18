@@ -65,6 +65,22 @@ namespace BTea
             }
             return strTp;
         }
+
+        public string ToppingToStringSingleLine()
+        {
+            string strTp = "";
+            for (int j = 0; j < _tpListObj.Count; ++j)
+            {
+                ToppingObject tpObj = _tpListObj[j];
+                strTp += tpObj.BName;
+                if (j < _tpListObj.Count - 1)
+                {
+                    strTp += "\n";
+                }
+            }
+            return strTp;
+        }
+
         #endregion
         #region PROPERTY
         public List<ToppingObject> TPListObj

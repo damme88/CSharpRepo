@@ -48,12 +48,13 @@ namespace BTea
                 BillObject billObject = data_list[i];
                 bItem.BillId = "BL" + billObject.BillId;
                 bItem.BillName = billObject.BillName;
-                bItem.BillPrice = billObject.BillPrice.ToString("#,##0.00;(#,##0.00)");
+                bItem.BillPrice = billObject.BillPrice.ToString(TConst.K_MONEY_FORMAT);
                 bItem.BillCreator = billObject.BillCreator;
                 bItem.BillDate = billObject.BillDate.ToString("dd-MMM-yyyy");
                 bItem.BillPhone = billObject.BillPhone;
                 bItem.BillAddress = billObject.BillAddress;
                 bItem.BillNote = billObject.BillNote;
+                bItem.BillKM = billObject.KMValue.ToString();
 
                 string strItemOrder = billObject.BillOrderItem;
                 string[] itemsArr = strItemOrder.Split(',');

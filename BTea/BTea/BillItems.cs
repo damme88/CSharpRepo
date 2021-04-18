@@ -24,6 +24,7 @@ namespace BTea
         public string BillAddress { set; get; }
         public string BillNote { set; get; }
 
+        public string BillKM { set; get; }
         public List<string> OrderItemList
         {
             get { return _orderItemList; }

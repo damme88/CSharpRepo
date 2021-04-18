@@ -39,6 +39,7 @@
                         <GridViewColumn Header="Sdt khách" Width="100" DisplayMemberBinding="{Binding BillPhone}"/>
                         <GridViewColumn Header="Địa chỉ khách" Width="150" DisplayMemberBinding="{Binding BillAddress}"/>
                         <GridViewColumn Header="Ghi chú" Width="100" DisplayMemberBinding="{Binding BillNote}"/>
+                        <GridViewColumn Header="KM(%)" Width="50" DisplayMemberBinding="{Binding BillKM}"/>
                         <GridViewColumn Header="Danh sách Order" Width="150">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>

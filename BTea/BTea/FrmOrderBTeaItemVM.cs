@@ -29,6 +29,8 @@ namespace BTea
 
         public string OrderItemOrderDate { set; get; }
 
+        public string OrderItemKM { set; get; }
+
     }
 
     class FrmOrderBTeaItemVM : TBaseVM
@@ -46,7 +48,7 @@ namespace BTea
 
                 objItem.OrderItemId = obj.BOrderId;
                 objItem.OrderItemName = obj.BOrderName;
-                objItem.OrderItemPrice = obj.BOrderPrice.ToString("#,##0.00;(#,##0.00)");
+                objItem.OrderItemPrice = obj.BOrderPrice.ToString(TConst.K_MONEY_FORMAT);
                 objItem.OrderItemNum = obj.BOrderNum.ToString();
                 if (obj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
                 {
@@ -64,13 +66,14 @@ namespace BTea
                 }
                 objItem.OrderItemBillId = obj.BOrderBillId.ToString();
                 objItem.OrderItemOrderDate = obj.BOrderDate.ToString("dd-MMM-yyyy");
+                objItem.OrderItemKM = obj.BOrderKm.ToString();
 
                 _orderItems.Add(objItem);
 
                 sumPrice += obj.BOrderPrice;
             }
 
-            _sumPriceItems = sumPrice.ToString("#,##0.00;(#,##0.00)");
+            _sumPriceItems = sumPrice.ToString(TConst.K_MONEY_FORMAT);
             if (_orderItems.Count > 0)
             {
                 _selectedOrderItem = _orderItems[0];
