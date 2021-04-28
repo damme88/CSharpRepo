@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BTea"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="FrmFoodMain" Height="400" Width="600">
+        Title="Menu Đồ Nhâm Nhi" Height="400" Width="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
@@ -17,7 +17,7 @@
                 <Button Command="{Binding CmdAddFood}" Style="{StaticResource BtnBase}" Content="Thêm"></Button>
                 <Button Command="{Binding CmdEditFood}" Style="{StaticResource BtnBase}" Content="Sửa"></Button>
                 <Button Command="{Binding CmdDeleteFood}" Style="{StaticResource BtnBase}" Content="Xóa"></Button>
-                <TextBlock Text="So luong:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"></TextBlock>
+                <TextBlock Text="Số lượng:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"></TextBlock>
                 <TextBox Width="100" Height="30" HorizontalAlignment="Center"
                          Text="{Binding FoodCount}"
                          VerticalAlignment="Center" Margin="5" IsReadOnly="True"></TextBox>

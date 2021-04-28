@@ -31,6 +31,9 @@ namespace BTea
                 }
             }
 
+            int numberItem = 0;
+            int priceItem = 0;
+
             for (int k = 0; k < billItems.Count; k++)
             {
                 BTeaOrderObject obj = billItems[k];
@@ -39,11 +42,22 @@ namespace BTea
                 objItem.OrderNum = obj.BOrderNum.ToString();
                 objItem.OrderPrice = obj.BOrderPrice.ToString(TConst.K_MONEY_FORMAT);
                 objItem.OrderKm = obj.BOrderKm.ToString();
+                numberItem += obj.BOrderNum;
+                priceItem += obj.BOrderPrice;
+
+                if (obj.BOrderKmType == TConst.K_KM_VND)
+                {
+                    objItem.OrderKmType = " "; //VND
+                }
+                else
+                {
+                    objItem.OrderKmType = "%";
+                }
 
                 if (obj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
                 {
-                    string Note1 = "";
-                    string NoteStr = "";
+                    string strSizeSI = "";
+                    string strTp = "";
 
                     int size = obj.BOrderSize;
                     string sSize = "";
@@ -56,72 +70,41 @@ namespace BTea
                         sSize = "L";
                     }
 
-                    int nSugar = obj.BOrderSugarRate;
-                    string sSugar = "";
-                    if (nSugar == 0)
+                    string sSugar = obj.SugarToString();
+                    string sIce = obj.IceToString();
+
+                    strSizeSI = "Size: " + sSize;
+                    if (sSugar != string.Empty)
                     {
-                        sSugar = "100%";
-                    }
-                    else if (nSugar == 1)
-                    {
-                        sSugar = "30%";
-                    }
-                    else if (nSugar == 2)
-                    {
-                        sSugar = "50%";
-                    }
-                    else if (nSugar == 3)
-                    {
-                        sSugar = "70%";
+                        strSizeSI += ";" + "Đường: " + sSugar;
                     }
 
-                    int nIce = obj.BOrderIceRate;
-                    string sIce = nIce.ToString();
-                    if (nIce == 0)
+                    if (sIce != string.Empty)
                     {
-                        sIce = "100%";
-                    }
-                    else if (nIce == 1)
-                    {
-                        sIce = "30%";
-                    }
-                    else if (nIce == 2)
-                    {
-                        sIce = "50%";
-                    }
-                    else if (nIce == 3)
-                    {
-                        sIce = "70%";
+                        strSizeSI += ";" + "Đá: " + sIce;
                     }
 
-                    Note1 = "Size: " + sSize + ";" + "Duong: " + sSugar + ";" + "Da: " + sIce + "\n";
+                    strSizeSI += "\n";
 
-                    string sTopping = obj.BOrderTopping;
-                    string[] itemsTp = sTopping.Split(',');
+                    strTp = obj.ToppingToString();
 
-                    List<ToppingObject> toppingObj = DBConnection.GetInstance().GetDataTopping();
-                    for (int i1 = 0; i1 < itemsTp.Length; i1++)
+                    if (strTp != string.Empty)
                     {
-                        string idTp = itemsTp[i1];
-                        for (int i2 = 0; i2 < toppingObj.Count; i2++)
-                        {
-                            ToppingObject tpObj = toppingObj[i2];
-                            string nId = tpObj.BId;
-                            if (idTp == nId)
-                            {
-                                NoteStr += tpObj.BName + ",";
-                            }
-                        }
+                        objItem.OrderNote = strSizeSI + "Topping: " + strTp;
                     }
-                    NoteStr = Note1 + "Topping: " + NoteStr;
-                    objItem.OrderNote = NoteStr;
+                    else
+                    {
+                        objItem.OrderNote = strSizeSI;
+                    }
                 }
                 else
                 {
-                    objItem.OrderNote = "Bui's Tea";
+                    objItem.OrderNote = "";
                 }
-
                 _billOrderList.Add(objItem);
+
+                OrderItemNumber = numberItem.ToString();
+                OrderItemPrice = priceItem.ToString(TConst.K_MONEY_FORMAT);
             }
         }
             
@@ -132,6 +115,9 @@ namespace BTea
         #endregion
 
         #region PROPERTY
+        public string OrderItemNumber { set; get; }
+        public string OrderItemPrice { set; get; }
+
         public List<string> IdItemList
         {
             get { return _idItemList; }

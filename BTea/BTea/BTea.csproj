@@ -88,6 +88,7 @@
     <Compile Include="BSettingVM.cs" />
     <Compile Include="BTeaOrderObject.cs" />
     <Compile Include="convert\IceRateConvert.cs" />
+    <Compile Include="convert\KMConvert.cs" />
     <Compile Include="convert\SizeDrinkConvert.cs" />
     <Compile Include="convert\SugarRateConvert.cs" />
     <Compile Include="FoodObject.cs" />

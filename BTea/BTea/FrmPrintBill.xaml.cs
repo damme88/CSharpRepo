@@ -26,13 +26,26 @@ namespace BTea
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            FrmPrintBillVM printVM = DataContext as FrmPrintBillVM;
             try
             {
+                myScrollViewer1.ScrollToTop();
+
+                if (printVM != null && printVM.IsPrintDrinkBill == 1)
+                {
+                    myScrollViewer2.ScrollToTop();
+                }
+                
                 this.IsEnabled = false;
                 PrintDialog printDialog = new PrintDialog();
                 if (printDialog.ShowDialog() == true)
                 {
-                    printDialog.PrintVisual(printBill, "Invoice");
+                    printDialog.PrintVisual(printBill, "Total_Bill");
+
+                    if (printVM != null && printVM.IsPrintDrinkBill == 1)
+                    {
+                        printDialog.PrintVisual(printBill2, "Drink Bill");
+                    }
                 }
             }
             finally

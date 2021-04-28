@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TApp.Base;
 
 namespace BTea
@@ -120,6 +121,14 @@ namespace BTea
 
         public void DoDeleteTopping(object sender)
         {
+            string strQa = "Dữ liệu sẽ được xóa trong Database. \nBạn có chắc chắn muốn xóa sản phẩm này ?";
+            string strInFor = "Thông báo";
+            MessageBoxResult msg = MessageBox.Show(strQa, strInFor, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (msg == MessageBoxResult.No)
+            {
+                return;
+            }
+
             ToppingItem tpItem = _selecteItem;
             if (tpItem != null)
             {
@@ -143,6 +152,7 @@ namespace BTea
                         GetDataToppingFromDB();
                         OnPropertyChange("ToppingItems");
                         OnPropertyChange("ToppingCount");
+                        OnPropertyChange("SelectedItemTopping");
                     }
                 }
             }
@@ -170,7 +180,11 @@ namespace BTea
                 _toppingItem.Add(tpItem);
             }
 
-            _toppingCount = data_list.Count;
+            _toppingCount = _toppingItem.Count;
+            if (_toppingCount > 0)
+            {
+                _selecteItem = _toppingItem[0];
+            }
         }
         #endregion
     }

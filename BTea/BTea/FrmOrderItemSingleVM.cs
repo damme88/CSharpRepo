@@ -24,16 +24,18 @@ namespace BTea
             _sizeItemSingle.Add(new SizeItemData(1, "L"));
 
             _surgarItemSingle = new List<SugarItemData>();
-            _surgarItemSingle.Add(new SugarItemData(0, "100%"));
-            _surgarItemSingle.Add(new SugarItemData(1, "30%"));
+            _surgarItemSingle.Add(new SugarItemData(0, ""));
+            _surgarItemSingle.Add(new SugarItemData(1, "70%"));
             _surgarItemSingle.Add(new SugarItemData(2, "50%"));
-            _surgarItemSingle.Add(new SugarItemData(3, "70%"));
+            _surgarItemSingle.Add(new SugarItemData(3, "30%"));
+            _surgarItemSingle.Add(new SugarItemData(4, "0%"));
 
             _iceItemSingle = new List<IceItemData>();
-            _iceItemSingle.Add(new IceItemData(0, "100%"));
-            _iceItemSingle.Add(new IceItemData(1, "30%"));
+            _iceItemSingle.Add(new IceItemData(0, ""));
+            _iceItemSingle.Add(new IceItemData(1, "70%"));
             _iceItemSingle.Add(new IceItemData(2, "50%"));
-            _iceItemSingle.Add(new IceItemData(3, "70%"));
+            _iceItemSingle.Add(new IceItemData(3, "30%"));
+            _iceItemSingle.Add(new IceItemData(3, "0%"));
 
             _toppingItemList = new List<ToppingItemCheck>();
             List<ToppingObject> data_topping = DBConnection.GetInstance().GetDataTopping();
@@ -64,17 +66,29 @@ namespace BTea
         private SizeItemData _selectedSizeItem;
         private SugarItemData _selectedSugarItem;
         private IceItemData _selectedIceItem;
-
+        private int _kmType;
         private readonly Action _pMainMethod;
         public RelayCommand OrderSingleUpdateCmd { set; get; }
         #endregion
 
         #region METHOD
-        public void SetInfo1(string name, double price, int number)
+        public void SetInfo1(string name, double price, int number, string kmValue, string kmType)
         {
             _orderSingleName = name;
             _orderSinglePrice = price;
             _orderSingleNum = number;
+
+            _orderSingleItemKM = TConst.ConvertMoney(kmValue);
+            if (kmType == " ")
+            {
+                _kMSVNDType = true;
+                _kMSPercentType = false;
+            }
+            else
+            {
+                _kMSVNDType = false;
+                _kMSPercentType = true;
+            }
         }
 
         public void SetInfo2(int idxSize, int idxSugar, int idxIce)
@@ -170,6 +184,73 @@ namespace BTea
         {
             get { return _iceItemSingle; }
             set { _iceItemSingle = value; OnPropertyChange("IceItemSingle"); }
+        }
+
+        private int _orderSingleItemKM;
+        public string OrderSingleItemKM
+        {
+            get
+            {
+                if (_kmType == TConst.K_KM_VND)
+                {
+                    return _orderSingleItemKM.ToString(TConst.K_MONEY_FORMAT);
+                }
+                return _orderSingleItemKM.ToString();
+            }
+            set
+            {
+                string val = value;
+                _orderSingleItemKM = TConst.ConvertMoney(val);
+                OnPropertyChange("OrderSingleItemKM");
+            }
+        }
+
+        public string OrderKmType
+        {
+            get
+            {
+                if (_kmType == TConst.K_KM_VND)
+                {
+                    return " "; // VND
+                }
+                return "%";
+            }
+        }
+
+        private bool _kMSPercentType;
+        public bool KMSPercentType
+        {
+            get { return _kMSPercentType; }
+            set
+            {
+                _orderSingleItemKM = 0;
+                _kMSPercentType = value;
+                if (_kMSPercentType == true)
+                {
+                    _kmType = TConst.K_KM_PERCENT;
+                }
+                
+                OnPropertyChange("KMSPercentType");
+                OnPropertyChange("OrderSingleItemKM");
+            }
+        }
+
+        private bool _kMSVNDType;
+        public bool KMSVNDType
+        {
+            get { return _kMSVNDType; }
+            set
+            {
+                _kMSVNDType = value;
+                if (_kMSVNDType == true)
+                {
+                    _kmType = TConst.K_KM_VND;
+                }
+                
+                OnPropertyChange("KMSVNDType");
+                _orderSingleItemKM = 0;
+                OnPropertyChange("OrderSingleItemKM");
+            }
         }
 
         #endregion

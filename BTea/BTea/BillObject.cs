@@ -15,7 +15,8 @@ namespace BTea
             _billAddress = string.Empty;
             _billPhone = string.Empty;
             _billCreator = string.Empty;
-            _billPrice = 0.0;
+            _billTableNumber = string.Empty;
+            _billPrice = 0;
             _billDate = DateTime.Now;
             _billNote = string.Empty;
             _btList = new List<BTBaseObject>();
@@ -24,14 +25,16 @@ namespace BTea
         #region MEMBER
         private int _billId;
         private string _billName;
-        private double _billPrice;
+        private int _billPrice;
         private string _billCreator;
+        private string _billTableNumber;
         private DateTime _billDate;
         private string _billPhone;
         private string _billAddress;
         private string _billOrderItem;
         private string _billNote;
         private int _kmValue;
+        private int _kmType;
         List<BTBaseObject> _btList;
         #endregion
 
@@ -56,6 +59,16 @@ namespace BTea
                 _billName = value;
             }
         }
+
+        public string BillTableNumber
+        {
+            get { return _billTableNumber; }
+            set
+            {
+                _billTableNumber = value;
+            }
+        }
+
         public string BillAddress
         {
             get { return _billAddress; }
@@ -82,7 +95,7 @@ namespace BTea
             }
         }
 
-        public double BillPrice
+        public int BillPrice
         {
             get { return _billPrice; }
             set
@@ -124,6 +137,15 @@ namespace BTea
             set
             {
                 _kmValue = value;
+            }
+        }
+
+        public int KMType
+        {
+            get { return _kmType; }
+            set
+            {
+                _kmType = value;
             }
         }
         #endregion

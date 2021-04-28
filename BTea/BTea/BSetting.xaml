@@ -6,27 +6,35 @@
         xmlns:local="clr-namespace:BTea"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Cài đặt chung" Height="400" Width="320">
+        Title="Cài đặt chung" Height="350" Width="400">
     <Grid>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="5" VerticalAlignment="Center">Quy định giá size L :</TextBlock>
-                <TextBox Width="100" Height="30" Margin="5" Text="{Binding LPrice}" HorizontalAlignment="Left"></TextBox>
+                <TextBlock Margin="5" Width="100" VerticalAlignment="Center">Giá size L :</TextBlock>
+                <TextBox Style="{StaticResource TB200_25_F12}" Text="{Binding LPrice, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"></TextBox>
                 <TextBlock Margin="5" VerticalAlignment="Center">VND</TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="5" VerticalAlignment="Center">Thư mục hình ảnh:</TextBlock>
-                <TextBox Width="120" Height="30" Text="{Binding ImgFolderPath}" IsReadOnly="True" Margin="5"></TextBox>
-                <Button Width="50" Height="30" Command="{Binding SettingShowFolderPathCmd}" Content="Mở"></Button>
+                <TextBlock Margin="5" Width="100" VerticalAlignment="Center">Thư mục hình ảnh:</TextBlock>
+                <TextBox Style="{StaticResource TB200_25_F12}" Text="{Binding ImgFolderPath}" IsReadOnly="True"></TextBox>
+                <Button Width="50" Height="25" Command="{Binding SettingShowFolderPathCmd}" Content="Mở"></Button>
             </StackPanel>
-            <TextBlock Text="Tên Quán:" Margin="5"></TextBlock>
-            <TextBox Width="100" HorizontalAlignment="Left" Margin="5"></TextBox>
-            <TextBlock Text="Hotline:" Margin="5"></TextBlock>
-            <TextBox Width="100" HorizontalAlignment="Left" Margin="5"></TextBox>
-            <TextBlock Text="Dia chi:" Margin="5"></TextBlock>
-            <TextBox Width="100" HorizontalAlignment="Left" Margin="5"></TextBox>
-            <TextBlock Text="Facebook:" Margin="5"></TextBlock>
-            <TextBox Width="100" HorizontalAlignment="Left" Margin="5"></TextBox>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Tên Quán:" Margin="5" Width="100"></TextBlock>
+                <TextBox  Text="{Binding ShopName}" Style="{StaticResource TB200_25_F12}" HorizontalAlignment="Left"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Hotline:" Margin="5" Width="100"></TextBlock>
+                <TextBox Text="{Binding ShopPhone}" Style="{StaticResource TB200_25_F12}" HorizontalAlignment="Left"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Dia chi:" Margin="5" Width="100"></TextBlock>
+                <TextBox Text="{Binding ShopAddress}" Style="{StaticResource TB200_25_F12}"  HorizontalAlignment="Left"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Facebook:" Margin="5" Width="100"></TextBlock>
+                <TextBox Text="{Binding ShopFacebook}" Style="{StaticResource TB200_25_F12}" HorizontalAlignment="Left"></TextBox>
+            </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,50,0,0">
                 <Button Style="{StaticResource BtnBase100}" Click="Button_Click_Ok" HorizontalAlignment="Left" Content="OK"></Button>
                 <Button Style="{StaticResource BtnBase100}" Click="Button_Click_Close" HorizontalAlignment="Left" Content="Close"></Button>

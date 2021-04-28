@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TApp.Base;
 
 namespace BTea
@@ -120,6 +121,14 @@ namespace BTea
 
         public void DoDeleteDrink(object sender)
         {
+            string strQa = "Dữ liệu sẽ được xóa trong Database. \nBạn có chắc chắn muốn xóa sản phẩm này ?";
+            string strInFor = "Thông báo";
+            MessageBoxResult msg = MessageBox.Show(strQa, strInFor, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (msg == MessageBoxResult.No)
+            {
+                return;
+            }
+
             DrinkItem drItem = _selecteItem;
             if (drItem != null)
             {
@@ -143,6 +152,7 @@ namespace BTea
                         GetDataDrinkFromDB();
                         OnPropertyChange("DrinkItems");
                         OnPropertyChange("DrinkCount");
+                        OnPropertyChange("SelectedItemDrink");
                     }
                 }
             }
@@ -170,7 +180,11 @@ namespace BTea
                 _drinkItem.Add(drItem);
             }
 
-            _drinkCount = data_list.Count;
+            _drinkCount = _drinkItem.Count;
+            if (_drinkCount > 0)
+            {
+                _selecteItem = _drinkItem[0];
+            }
         }
         #endregion
     }

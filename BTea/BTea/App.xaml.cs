@@ -18,12 +18,22 @@ namespace BTea
         {
             base.OnStartup(e);
 
-            ServiceController service = new ServiceController("MySQL80");
-            bool bStop = service.Status.Equals(ServiceControllerStatus.Stopped);
-            bool bPending = service.Status.Equals(ServiceControllerStatus.StopPending);
-            if (bStop || bPending)
+            string MSQLName =  ConfigurationManager.AppSettings["mysqlname"].ToString();
+            ServiceController service = new ServiceController(MSQLName);
+
+            try
             {
-                service.Start();
+                bool bStop = service.Status.Equals(ServiceControllerStatus.Stopped);
+                bool bPending = service.Status.Equals(ServiceControllerStatus.StopPending);
+                if (bStop || bPending)
+                {
+                    service.Start();
+                }
+            }
+            catch(Exception ex)
+            {
+                string strLog = ex.Message;
+                MessageBox.Show(strLog);
             }
         }
     }

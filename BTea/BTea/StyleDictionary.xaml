@@ -2,11 +2,31 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:BTea">
 
+    <Style x:Key="TB100_25_F12" TargetType="{x:Type TextBox}">
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="FontFamily" Value="Aria"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+    <Style x:Key="TB200_25_F12" TargetType="{x:Type TextBox}">
+        <Setter Property="Width" Value="200"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="FontFamily" Value="Aria"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
     <Style x:Key="BtnBase" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="80"/>
         <Setter Property="Height" Value="30"/>
         <Setter Property="FontFamily" Value="Aria"/>
         <Setter Property="Margin" Value="5"/>
+    </Style>
+    <Style x:Key="BtnBase60" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="60"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="FontFamily" Value="Aria"/>
+        <Setter Property="Margin" Value="2"/>
     </Style>
     <Style x:Key="BtnBase100" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="100"/>

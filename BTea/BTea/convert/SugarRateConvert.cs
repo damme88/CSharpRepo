@@ -13,9 +13,10 @@ namespace BTea.convert
         {
             string sSize = "X";
             string val = (string)value;
-            if (val =="1")
+
+            if (val == "1")
             {
-                sSize = "30%";
+                sSize = "70%";
             }
             else if (val == "2")
             {
@@ -23,13 +24,16 @@ namespace BTea.convert
             }
             else if (val == "3")
             {
-                sSize = "70%";
+                sSize = "30%";
             }
-            else if (val == "0")
+            else if (val == "4")
             {
-                sSize = "100%";
+                sSize = "0%";
             }
-
+            else
+            {
+                sSize = "";
+            }
             return sSize;
         }
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

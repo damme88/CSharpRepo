@@ -7,7 +7,7 @@
         xmlns:local_convert="clr-namespace:BTea.convert"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Danh sách Đã Bán" Height="600" Width="1250">
+        Title="Danh sách Đã Bán" Height="600" Width="1300">
     <Window.Resources>
         <local_convert:SizeDrinkConvert x:Key="SizeConvert"/>
         <local_convert:SugarRateConvert x:Key="SugarConvert"/>
@@ -17,12 +17,19 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Số Lượng:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <TextBlock Text="Số Danh muc:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
                 <TextBox Width="100" Height="30" HorizontalAlignment="Center"
                          Text="{Binding OrderItemsCount}"
+                         VerticalAlignment="Center"
+                         VerticalContentAlignment ="Center"
+                         Margin="5" IsReadOnly="True"></TextBox>
+                <TextBlock Text="Tong so luong Order:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <TextBox Width="100" Height="30" HorizontalAlignment="Center"
+                         Text="{Binding TotalOrderItemsCount}"
                          VerticalAlignment="Center"
                          VerticalContentAlignment ="Center"
                          Margin="5" IsReadOnly="True"></TextBox>
@@ -34,7 +41,17 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <ListView Width="1200" Height="500" 
+            <StackPanel Orientation="Horizontal" Height="50">
+                <TextBlock Text="Thong ke: " VerticalAlignment="Center" Margin="5"></TextBlock>
+                <RadioButton IsChecked="{Binding IsCheckTKTotal}" GroupName="TKGroup" VerticalAlignment="Center" Content="Toan bo" Margin="5"></RadioButton>
+                <RadioButton IsChecked="{Binding IsCheckTKType}" GroupName="TKGroup" VerticalAlignment="Center"  Content="Theo loai" Margin="5"></RadioButton>
+                <ComboBox IsEnabled="{Binding IsCheckTKType}" ItemsSource="{Binding TKTypeItems}" DisplayMemberPath="Content" SelectedItem="{Binding SeletedTKTypeItem}" Width="100" Height="30" Margin="5"></ComboBox>
+                <RadioButton IsChecked="{Binding IsCheckRankItem}" GroupName="TKGroup" VerticalAlignment="Center"  Content="Thứ hạng sản phẩm" Margin="5"></RadioButton>
+                <Button Command="{Binding TKApplyCommand}" Style="{StaticResource BtnBase100}" Content="Áp Dụng" Margin="100,5,5,5"></Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <ListView Width="1250" Height="450" 
                       ItemsSource="{Binding OrderItems}" 
                       SelectedItem="{Binding SelectedOrderItem}"
                       Margin="5" HorizontalAlignment="Left" 
@@ -53,7 +70,8 @@
                         <GridViewColumn Header="Topping" Width="120" DisplayMemberBinding="{Binding OrderItemTopping}"/>
                         <GridViewColumn Header="Ten hóa đơn" Width="150" DisplayMemberBinding="{Binding OrderItemBillId}"/>
                         <GridViewColumn Header="Ngày tạo" Width="150" DisplayMemberBinding="{Binding OrderItemOrderDate}"/>
-                        <GridViewColumn Header="KM(%)" Width="50" DisplayMemberBinding="{Binding OrderItemKM}"/>
+                        <GridViewColumn Header="KM" Width="50" DisplayMemberBinding="{Binding OrderItemKM}"/>
+                        <GridViewColumn Header="Loại KM" Width="50" DisplayMemberBinding="{Binding OrderItemKMType}"/>
                     </GridView>
                 </ListView.View>
             </ListView>

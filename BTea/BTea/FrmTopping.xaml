@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BTea"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Topping" Height="300" Width="300">
+        Title="Thêm/Sửa Topping" Height="300" Width="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -17,7 +17,7 @@
                 <TextBlock Margin="5">Tên Sản Phẩm:</TextBlock>
                 <TextBox Text="{Binding ToppingName}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
                 <TextBlock Margin="5">Giá (VND):</TextBlock>
-                <TextBox Text="{Binding ToppingPrice}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
+                <TextBox Text="{Binding ToppingPrice, UpdateSourceTrigger=PropertyChanged}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
                 <TextBlock Margin="5">Ghi Chú:</TextBlock>
                 <TextBox Text="{Binding ToppingNote}" Width="250" Height="50" HorizontalAlignment="Left" Margin="5"></TextBox>
             </StackPanel>

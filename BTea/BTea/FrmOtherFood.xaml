@@ -16,7 +16,7 @@
                 <TextBlock Margin="5">Tên Sản Phẩm:</TextBlock>
                 <TextBox Text="{Binding OtherFoodName}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
                 <TextBlock Margin="5">Giá (VND):</TextBlock>
-                <TextBox Text="{Binding OtherFoodPrice}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
+                <TextBox Text="{Binding OtherFoodPrice, UpdateSourceTrigger=PropertyChanged}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
                 <TextBlock Margin="5">Ghi Chú:</TextBlock>
                 <TextBox Text="{Binding OtherFoodNote}" Width="250" Height="50" HorizontalAlignment="Left" Margin="5"></TextBox>
             </StackPanel>

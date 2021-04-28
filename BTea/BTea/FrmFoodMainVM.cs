@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TApp.Base;
 
 namespace BTea
@@ -27,7 +28,6 @@ namespace BTea
             CmdAddFood = new RelayCommand(new Action<object>(DoAddFood));
             CmdEditFood = new RelayCommand(new Action<object>(DoEditFood));
             CmdDeleteFood = new RelayCommand(new Action<object>(DoDeleteFood));
-
             _frmFoodVM = new FrmFoodVM(FoodAddEditDoneCmd);
         }
 
@@ -120,11 +120,19 @@ namespace BTea
 
         public void DoDeleteFood(object sender)
         {
-            FoodItem tpItem = _selecteItem;
-            if (tpItem != null)
+            string strQa = "Dữ liệu sẽ được xóa trong Database. \nBạn có chắc chắn muốn xóa sản phẩm này ?";
+            string strInFor = "Thông báo";
+            MessageBoxResult msg = MessageBox.Show(strQa, strInFor, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (msg == MessageBoxResult.No)
             {
-                string strId = tpItem.Id;
-                string subId = strId.Replace("TP", "");
+                return;
+            }
+
+            FoodItem fItem = _selecteItem;
+            if (fItem != null)
+            {
+                string strId = fItem.Id;
+                string subId = strId.Replace(CodeFood, "");
                 int nId = 0;
                 try
                 {
@@ -143,6 +151,7 @@ namespace BTea
                         GetDataFoodFromDB();
                         OnPropertyChange("FoodItems");
                         OnPropertyChange("FoodCount");
+                        OnPropertyChange("SelectedItemFood");
                     }
                 }
             }
@@ -160,17 +169,21 @@ namespace BTea
             _foodItem = new ObservableCollection<FoodItem>();
             for (int i = 0; i < data_list.Count; ++i)
             {
-                FoodItem tpItem = new FoodItem();
-                FoodObject tpObject = data_list[i];
-                tpItem.Id = CodeFood + tpObject.BId;
-                tpItem.Name = tpObject.BName;
-                tpItem.Price = tpObject.BPrice.ToString(TConst.K_MONEY_FORMAT);
-                tpItem.Note = tpObject.BNote;
+                FoodItem fItem = new FoodItem();
+                FoodObject fObject = data_list[i];
+                fItem.Id = CodeFood + fObject.BId;
+                fItem.Name = fObject.BName;
+                fItem.Price = fObject.BPrice.ToString(TConst.K_MONEY_FORMAT);
+                fItem.Note = fObject.BNote;
 
-                _foodItem.Add(tpItem);
+                _foodItem.Add(fItem);
             }
 
-            _foodCount = data_list.Count;
+            _foodCount = _foodItem.Count;
+            if (_foodCount > 0)
+            {
+                _selecteItem = _foodItem[0];
+            }
         }
         #endregion
     }

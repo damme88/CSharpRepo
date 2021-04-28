@@ -20,11 +20,14 @@ namespace BTea
         public string BillPrice { set; get; }
         public string BillCreator { set; get; }
         public string BillDate { set; get; }
+        public string BillTableNumber { set; get; }
         public string BillPhone { set; get; }
         public string BillAddress { set; get; }
         public string BillNote { set; get; }
 
         public string BillKM { set; get; }
+        public string BillKMType { set; get; }
+
         public List<string> OrderItemList
         {
             get { return _orderItemList; }

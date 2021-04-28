@@ -32,10 +32,19 @@ namespace BTea
             if (_settingVM != null)
             {
                 string lPrice = _settingVM.LPrice.ToString();
+                string sName = _settingVM.ShopName;
+                string sPhone = _settingVM.ShopPhone;
+                string sAddress = _settingVM.ShopAddress;
+                string sFace = _settingVM.ShopFacebook;
 
-                Configuration oConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                oConfig.AppSettings.Settings["lprice"].Value = lPrice;
-                oConfig.Save(ConfigurationSaveMode.Modified, true);
+                Configuration bConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                bConfig.AppSettings.Settings["lprice"].Value = lPrice;
+                bConfig.AppSettings.Settings["shopname"].Value = sName;
+                bConfig.AppSettings.Settings["shopphone"].Value = sPhone;
+                bConfig.AppSettings.Settings["shopaddress"].Value = sAddress;
+                bConfig.AppSettings.Settings["shopface"].Value = sFace;
+
+                bConfig.Save(ConfigurationSaveMode.Modified, true);
                 ConfigurationManager.RefreshSection("appSettings");
             }
 

@@ -5,24 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BTea"
         mc:Ignorable="d"
-        Title="FrmBillMain" Height="600" Width="1024">
+        ResizeMode="NoResize"
+        Title="Danh sách hóa đơn" Height="650" Width="1200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Số lượng:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <TextBlock Text="Số lượng hoa don:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
                 <TextBox Width="100" Height="30" HorizontalAlignment="Center"
                          Text="{Binding BillCount}"
                          VerticalContentAlignment="Center" Margin="5" IsReadOnly="True"></TextBox>
+                <TextBlock Text="Giá tri:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <TextBox Style="{StaticResource TB100_25_F12}" IsReadOnly="True" Text="{Binding BillSumValue}"></TextBox>
                 <Button Command="{Binding CmdEditBill}" Style="{StaticResource BtnBase}" Content="Sửa"></Button>
                 <Button Command="{Binding CmdDeleteBill}" Style="{StaticResource BtnBase}" Content="Xóa"></Button>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <ListView Width="1000" Height="500" 
+            <StackPanel Orientation="Horizontal" Height="50">
+                <TextBlock Text="Thống kê: " VerticalAlignment="Center" Margin="5" Width="60"></TextBlock>
+                <RadioButton GroupName="TKGroup" IsChecked="{Binding TKCheckTotal}" VerticalAlignment="Center" Content="Toàn bộ" Margin="5"></RadioButton>
+                <RadioButton GroupName="TKGroup" IsChecked="{Binding TKCheckDay}" VerticalAlignment="Center" Content="Theo ngày" Margin="5"></RadioButton>
+                <DatePicker IsEnabled="{Binding TKCheckDay}" Margin="5" Width="120" Height="30" SelectedDate="{Binding TKDate}"></DatePicker>
+                <RadioButton GroupName="TKGroup" IsChecked="{Binding TKCheckMonth}" VerticalAlignment="Center"  Content="Theo tháng/năm" Margin="5"></RadioButton>
+                <ComboBox IsEnabled="{Binding TKCheckMonth}" ItemsSource="{Binding TKMonth}" SelectedItem="{Binding SelectedTKMonth}"  Width="100" Height="30" Margin="5"></ComboBox>
+                <ComboBox IsEnabled="{Binding TKCheckMonth}" ItemsSource="{Binding TKYear}" SelectedItem="{Binding SelectedTKYear}" Width="100" Height="30" Margin="5"></ComboBox>
+                <RadioButton  GroupName="TKGroup" IsChecked="{Binding TKCheckYear}" VerticalAlignment="Center"  Content="Theo năm" Margin="5"></RadioButton>
+                <ComboBox  IsEnabled="{Binding TKCheckYear}" ItemsSource="{Binding TKYear}" SelectedItem="{Binding SelectedTKYear}" Width="100" Height="30" Margin="5"></ComboBox>
+                <Button Style="{StaticResource BtnBase100}" Content="Áp Dụng" Margin="120,5,5,5" Command="{Binding CmdTK}"></Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <ListView Width="1100" Height="480" 
                       ItemsSource="{Binding BillItems}" 
                       SelectedItem="{Binding SelectedBillItem}"
                       Margin="5" HorizontalAlignment="Left" 
@@ -33,13 +51,23 @@
                     <GridView>
                         <GridViewColumn Header="Mã" Width="50" DisplayMemberBinding="{Binding BillId}"/>
                         <GridViewColumn Header="Tên" Width="150" DisplayMemberBinding="{Binding BillName}"/>
-                        <GridViewColumn Header="Giá (VND)" Width="80" DisplayMemberBinding="{Binding BillPrice}"/>
+                        <GridViewColumn Header="Giá" Width="80" DisplayMemberBinding="{Binding BillPrice}"/>
                         <GridViewColumn Header="Người tạo" Width="80" DisplayMemberBinding="{Binding BillCreator}"/>
                         <GridViewColumn Header="Ngày tạo" Width="100" DisplayMemberBinding="{Binding BillDate}"/>
+                        <GridViewColumn Header="Số bàn" Width="50" DisplayMemberBinding="{Binding BillTableNumber}"/>
                         <GridViewColumn Header="Sdt khách" Width="100" DisplayMemberBinding="{Binding BillPhone}"/>
                         <GridViewColumn Header="Địa chỉ khách" Width="150" DisplayMemberBinding="{Binding BillAddress}"/>
                         <GridViewColumn Header="Ghi chú" Width="100" DisplayMemberBinding="{Binding BillNote}"/>
-                        <GridViewColumn Header="KM(%)" Width="50" DisplayMemberBinding="{Binding BillKM}"/>
+                        <GridViewColumn Header="KM" Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding BillKM}"></TextBlock>
+                                        <TextBlock Text="{Binding BillKMType}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn Header="Danh sách Order" Width="150">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>

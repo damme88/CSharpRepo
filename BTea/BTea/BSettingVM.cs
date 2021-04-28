@@ -23,19 +23,58 @@ namespace BTea
             string sPrice = ConfigurationManager.AppSettings["lprice"].ToString();
             try
             {
-                _lPrice = Convert.ToDouble(sPrice);
+                _lPrice = TConst.ConvertMoney(sPrice);
             }
             catch
             {
                 _lPrice = 10000;
             }
+
+            _shopName = ConfigurationManager.AppSettings["shopname"].ToString();
+            _shopPhone = ConfigurationManager.AppSettings["shopphone"].ToString();
+            _shopAddress = ConfigurationManager.AppSettings["shopaddress"].ToString();
+            _shopFace = ConfigurationManager.AppSettings["shopface"].ToString();
         }
 
-        private double _lPrice;
-        public double LPrice
+        private string _shopName;
+        public string ShopName
         {
-            get { return _lPrice; }
-            set { _lPrice = value;
+            get { return _shopName; }
+            set { _shopName = value;  OnPropertyChange("ShopName"); }
+        }
+
+        private string _shopPhone;
+        public string ShopPhone
+        {
+            get { return _shopPhone; }
+            set { _shopPhone = value; OnPropertyChange("ShopPhone"); }
+        }
+
+        private string _shopAddress;
+        public string ShopAddress
+        {
+            get { return _shopAddress; }
+            set { _shopAddress = value; OnPropertyChange("ShopAddress"); }
+        }
+
+        private string _shopFace;
+        public string ShopFacebook
+        {
+            get { return _shopFace; }
+            set { _shopFace = value; OnPropertyChange("ShopFacebook"); }
+        }
+
+        private int _lPrice;
+        public string LPrice
+        {
+            get
+            {
+                return _lPrice.ToString(TConst.K_MONEY_FORMAT);
+            }
+            set
+            {
+                int iVal = TConst.ConvertMoney(value);
+                _lPrice = iVal;
                 OnPropertyChange("LPrice");
             }
         }

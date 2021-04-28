@@ -35,19 +35,21 @@ namespace BTea
 
         public string SugarToString()
         {
-            string str = "100%";
-            if (_surgarRate == 1)       str = "30%";
-            else if (_surgarRate == 2)  str = "50%";
-            else if (_surgarRate == 3)  str = "70%";
+            string str = "";
+            if (_surgarRate == 1) str = "70%";
+            else if (_surgarRate == 2) str = "50%";
+            else if (_surgarRate == 3) str = "30%";
+            else if (_surgarRate == 4) str = "0%";
             return str;
         }
 
         public string IceToString()
         {
-            string str = "100%";
-            if (_iceRate == 1)      str = "30%";
+            string str = "";
+            if (_iceRate == 1)      str = "70%";
             else if (_iceRate == 2) str = "50%";
-            else if (_iceRate == 3) str = "70%";
+            else if (_iceRate == 3) str = "30%";
+            else if (_iceRate == 4) str = "0%";
             return str;
         }
 

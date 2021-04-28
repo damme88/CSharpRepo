@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BTea"
         mc:Ignorable="d"
-        Title="Drink" Height="300" Width="300"
+        Title="Thêm/Sửa Đồ Uống" Height="300" Width="300"
         ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
@@ -17,7 +17,7 @@
                 <TextBlock Margin="10,10,0,0">Tên Sản Phẩm:</TextBlock>
                 <TextBox Text="{Binding DrinkName}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
                 <TextBlock Margin="10,0,0,0">Giá (VND):</TextBlock>
-                <TextBox Text="{Binding DrinkPrice}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
+                <TextBox Text="{Binding DrinkPrice, UpdateSourceTrigger=PropertyChanged}" Width="250" Height="30" HorizontalAlignment="Left" Margin="5"></TextBox>
                 <TextBlock Margin="10,0,0,0">Ghi Chú:</TextBlock>
                 <TextBox Text="{Binding DrinkNote}" Width="250" Height="50" HorizontalAlignment="Left" Margin="5"></TextBox>
             </StackPanel>

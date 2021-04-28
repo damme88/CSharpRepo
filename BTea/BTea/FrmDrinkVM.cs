@@ -14,7 +14,7 @@ namespace BTea
         {
             CmdDrinkAdd = new RelayCommand(new Action<object>(DrinkAdd));
             _drinkName = "";
-            _drinkPrice = "";
+            _drinkPrice = 0;
             _drinkNote = "";
             _drId = "";
         }
@@ -25,7 +25,7 @@ namespace BTea
             CmdDrinkEdit = new RelayCommand(new Action<object>(DrinkEdit));
             _pDrinkMethod = parentAction;
             _drinkName = "";
-            _drinkPrice = "";
+            _drinkPrice = 0;
             _drinkNote = "";
             _drId = "";
         }
@@ -35,7 +35,7 @@ namespace BTea
         private readonly Action _pDrinkMethod;
         private string _drId;
         private string _drinkName;
-        private string _drinkPrice;
+        private int _drinkPrice;
         private string _drinkNote;
         private Visibility _drinkStateAdd;
         private Visibility _drinkStateEdit;
@@ -78,10 +78,11 @@ namespace BTea
 
         public string DrinkPrice
         {
-            get { return _drinkPrice; }
+            get { return _drinkPrice.ToString(TConst.K_MONEY_FORMAT); }
             set
             {
-                _drinkPrice = value;
+                int iVal = TConst.ConvertMoney(value);
+                _drinkPrice = iVal;
                 OnPropertyChange("DrinkPrice");
             }
         }
@@ -104,21 +105,20 @@ namespace BTea
         {
             _drId = Id;
             _drinkName = Name;
-            _drinkPrice = Price;
+            _drinkPrice = TConst.ConvertMoney(Price);
             _drinkNote = Note; 
         }
 
         public void DrinkEdit(object sender)
         {
-            if (_drinkName != string.Empty &&
-                _drinkPrice != string.Empty)
+            if (_drinkName != string.Empty)
             {
                 DrinkObject drinkItem = new DrinkObject();
 
                 string drId = _drId.Replace("DR", "");
                 drinkItem.BId = drId;
                 drinkItem.BName = _drinkName;
-                drinkItem.BPrice = Convert.ToDouble(_drinkPrice);
+                drinkItem.BPrice = _drinkPrice;
                 drinkItem.BNote = _drinkNote;
                 bool bRet = DBConnection.GetInstance().EditDrinkItem(drinkItem);
                 _pDrinkMethod.Invoke();
@@ -126,19 +126,20 @@ namespace BTea
         }
         public void DrinkAdd(object sender)
         {
-            if (_drinkName != string.Empty &&
-                _drinkPrice != string.Empty)
+            if (_drinkName != string.Empty)
             {
                 DrinkObject drinkItem = new DrinkObject();
                 drinkItem.BName = _drinkName;
-                drinkItem.BPrice = Convert.ToDouble(_drinkPrice);
+                drinkItem.BPrice = _drinkPrice;
                 drinkItem.BNote = _drinkNote;
                 bool bRet = DBConnection.GetInstance().AddDrinkItem(drinkItem);
                 _pDrinkMethod.Invoke();
             }
             else
             {
-                MessageBox.Show("Thông tin chưa đủ. \nTối thiểu cần tên sản phẩm và giá", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                string strInfo = "Thông báo";
+                string strContent = "Tối thiểu cần tên sản phẩm.";
+                MessageBox.Show(strContent, strInfo, MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         #endregion

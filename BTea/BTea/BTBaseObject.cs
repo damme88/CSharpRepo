@@ -10,13 +10,13 @@ namespace BTea
     {
         protected string bId;
         protected string bName;
-        protected double bPrice;
+        protected int bPrice;
         protected string bNote;
         public BTBaseObject()
         {
             bId = string.Empty;
             bName = string.Empty;
-            bPrice = 0.0;
+            bPrice = 0;
             bNote = string.Empty;
         }
 
@@ -47,7 +47,7 @@ namespace BTea
             }
         }
 
-        public double BPrice
+        public int BPrice
         {
             get { return bPrice; }
             set

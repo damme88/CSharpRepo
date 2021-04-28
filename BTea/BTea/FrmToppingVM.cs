@@ -14,7 +14,7 @@ namespace BTea
         {
             CmdToppingAdd = new RelayCommand(new Action<object>(ToppingAdd));
             _tpName = "";
-            _tpPrice = "";
+            _tpPrice = 0;
             _tpNote = "";
             _tpId = "";
         }
@@ -25,7 +25,7 @@ namespace BTea
             CmdToppingEdit = new RelayCommand(new Action<object>(ToppingEdit));
             _pToppingMethod = parentAction;
             _tpName = "";
-            _tpPrice = "";
+            _tpPrice = 0;
             _tpNote = "";
             _tpId = "";
         }
@@ -35,7 +35,7 @@ namespace BTea
         private readonly Action _pToppingMethod;
         private string _tpId;
         private string _tpName;
-        private string _tpPrice;
+        private int _tpPrice;
         private string _tpNote;
         private Visibility _toppingStateAdd;
         private Visibility _toppingStateEdit;
@@ -78,10 +78,14 @@ namespace BTea
 
         public string ToppingPrice
         {
-            get { return _tpPrice; }
+            get
+            {
+                return _tpPrice.ToString(TConst.K_MONEY_FORMAT);
+            }
             set
             {
-                _tpPrice = value;
+                int iVal = TConst.ConvertMoney(value);
+                _tpPrice = iVal;
                 OnPropertyChange("ToppingPrice");
             }
         }
@@ -104,21 +108,20 @@ namespace BTea
         {
             _tpId = Id;
             _tpName = Name;
-            _tpPrice = Price;
+            _tpPrice = TConst.ConvertMoney(Price);
             _tpNote = Note; 
         }
 
         public void ToppingEdit(object sender)
         {
-            if (_tpName != string.Empty &&
-                _tpPrice != string.Empty)
+            if (_tpName != string.Empty)
             {
                 ToppingObject tpItem = new ToppingObject();
 
                 string tpId = _tpId.Replace("TP", "");
                 tpItem.BId = tpId;
                 tpItem.BName = _tpName;
-                tpItem.BPrice = Convert.ToDouble(_tpPrice);
+                tpItem.BPrice = _tpPrice;
                 tpItem.BNote = _tpNote;
                 bool bRet = DBConnection.GetInstance().EditToppingItem(tpItem);
                 _pToppingMethod.Invoke();
@@ -126,19 +129,20 @@ namespace BTea
         }
         public void ToppingAdd(object sender)
         {
-            if (_tpName != string.Empty &&
-                _tpPrice != string.Empty)
+            if (_tpName != string.Empty)
             {
                 ToppingObject tpItem = new ToppingObject();
                 tpItem.BName = _tpName;
-                tpItem.BPrice = Convert.ToDouble(_tpPrice);
+                tpItem.BPrice = _tpPrice;
                 tpItem.BNote = _tpNote;
                 bool bRet = DBConnection.GetInstance().AddToppingItem(tpItem);
                 _pToppingMethod.Invoke();
             }
             else
             {
-                MessageBox.Show("Thông tin chưa đủ. \nTối thiểu cần tên sản phẩm và giá", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                string strInfo = "Thông báo";
+                string strContent = "Tối thiểu cần tên sản phẩm.";
+                MessageBox.Show(strContent, strInfo, MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         #endregion

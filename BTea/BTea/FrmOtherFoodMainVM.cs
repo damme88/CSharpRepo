@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TApp.Base;
 
 namespace BTea
@@ -120,11 +121,20 @@ namespace BTea
 
         public void DoDeleteOtherFood(object sender)
         {
-            OtherFoodItem tpItem = _selecteItem;
-            if (tpItem != null)
+
+            string strQa = "Dữ liệu sẽ được xóa trong Database. \nBạn có chắc chắn muốn xóa sản phẩm này ?";
+            string strInFor = "Thông báo";
+            MessageBoxResult msg = MessageBox.Show(strQa, strInFor, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (msg == MessageBoxResult.No)
             {
-                string strId = tpItem.Id;
-                string subId = strId.Replace("TP", "");
+                return;
+            }
+
+            OtherFoodItem ofItem = _selecteItem;
+            if (ofItem != null)
+            {
+                string strId = ofItem.Id;
+                string subId = strId.Replace(CodeOtherFood, "");
                 int nId = 0;
                 try
                 {
@@ -143,6 +153,7 @@ namespace BTea
                         GetDataOtherFoodFromDB();
                         OnPropertyChange("OtherFoodItems");
                         OnPropertyChange("OtherFoodCount");
+                        OnPropertyChange("SelectedItemOtherFood");
                     }
                 }
             }
@@ -170,7 +181,11 @@ namespace BTea
                 _OtherFoodItem.Add(otherItem);
             }
 
-            _OtherFoodCount = data_list.Count;
+            _OtherFoodCount = _OtherFoodItem.Count;
+            if (_OtherFoodCount > 0)
+            {
+                _selecteItem = _OtherFoodItem[0];
+            }
         }
         #endregion
     }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BTea"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Sửa thông tin Order" Height="720" Width="300">
+        Title="Sửa thông tin Order" Height="700" Width="300">
     <Grid>
         <StackPanel Orientation="Vertical">
             <TextBlock Text="Tên sản phẩm" Margin="5"></TextBlock>
@@ -16,13 +16,13 @@
             <TextBlock Text="Giá(VND)" Margin="5" Visibility="Collapsed"></TextBlock>
             <TextBox Text="{Binding OrderSinglePrice}" Visibility="Collapsed" Width="200" Height="30" Margin="5" FontFamily="Aria" HorizontalAlignment="Left"></TextBox>
             <TextBlock Text="Size" Margin="5"></TextBlock>
-            <ComboBox  Width="200" Height="30" Margin="5" ItemsSource="{Binding SizeItemSingle}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedSizeItem}" FontFamily="Aria" HorizontalAlignment="Left"></ComboBox>
+            <ComboBox  Width="200" Height="25" Margin="5" ItemsSource="{Binding SizeItemSingle}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedSizeItem}" FontFamily="Aria" HorizontalAlignment="Left"></ComboBox>
             <TextBlock Text="Tỉ lệ đá" Margin="5"></TextBlock>
-            <ComboBox Width="200" Height="30" Margin="5" ItemsSource="{Binding SurgarItemSingle}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedSugarItem}" FontFamily="Aria" HorizontalAlignment="Left"></ComboBox>
+            <ComboBox Width="200" Height="25" Margin="5" ItemsSource="{Binding SurgarItemSingle}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedSugarItem}" FontFamily="Aria" HorizontalAlignment="Left"></ComboBox>
             <TextBlock Text="Tỉ lệ đường" Margin="5"></TextBlock>
-            <ComboBox Width="200" Height="30" Margin="5" ItemsSource="{Binding IceItemSingle}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedIceItem}" FontFamily="Aria" HorizontalAlignment="Left"></ComboBox>
+            <ComboBox Width="200" Height="25" Margin="5" ItemsSource="{Binding IceItemSingle}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedIceItem}" FontFamily="Aria" HorizontalAlignment="Left"></ComboBox>
             <TextBlock Text="Topping" Margin="2"></TextBlock>
-            <ListBox IsEnabled="{Binding StateToppingSingle}" Margin="5,2,2,2" HorizontalAlignment="Left" Width="200" Height="200" ItemsSource="{Binding SingleToppingItems}">
+            <ListBox IsEnabled="{Binding StateToppingSingle}" Margin="5,2,2,2" HorizontalAlignment="Left" Width="200" Height="150" ItemsSource="{Binding SingleToppingItems}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -32,6 +32,14 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <TextBlock Text="Khuyen mai" Margin="5"></TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <TextBox Text="{Binding OrderSingleItemKM, UpdateSourceTrigger=PropertyChanged}" FontSize="12"  Width="80" Height="30" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBox>
+                <StackPanel Orientation="Vertical">
+                    <RadioButton GroupName="KMSGroup" IsChecked="{Binding KMSPercentType}" Content=" %"  VerticalAlignment="Center" Margin="2"></RadioButton>
+                    <RadioButton GroupName="KMSGroup" IsChecked="{Binding KMSVNDType}" Content="VND"  VerticalAlignment="Center" Margin="2"></RadioButton>
+                </StackPanel>
+            </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Button Command="{Binding OrderSingleUpdateCmd}" Width="90" Height="30" Content="Cập Nhật" HorizontalAlignment="Left" Margin="10"></Button>
                 <Button Click="Button_Click" Width="90" Height="30" Content="Hủy bỏ" HorizontalAlignment="Left" Margin="5"></Button>

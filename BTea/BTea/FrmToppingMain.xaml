@@ -17,7 +17,7 @@
                 <Button Command="{Binding CmdAddTopping}" Style="{StaticResource BtnBase}" Content="Thêm"></Button>
                 <Button Command="{Binding CmdEditTopping}" Style="{StaticResource BtnBase}" Content="Sửa"></Button>
                 <Button Command="{Binding CmdDeleteTopping}" Style="{StaticResource BtnBase}" Content="Xóa"></Button>
-                <TextBlock Text="So luong:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"></TextBlock>
+                <TextBlock Text="Số Lượng:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"></TextBlock>
                 <TextBox Width="100" Height="30" HorizontalAlignment="Center"
                          Text="{Binding ToppingCount}"
                          VerticalAlignment="Center" Margin="5" IsReadOnly="True"></TextBox>

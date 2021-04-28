@@ -54,6 +54,27 @@ namespace BTea
             OrderNum = "1";
 
             _orderObject = null;
+
+            _sizeItems = new List<SizeItemData>();
+            _sizeItems.Add(new SizeItemData(0, "M"));
+            _sizeItems.Add(new SizeItemData(0, "L"));
+            _selectedSizeItem = _sizeItems[0];
+
+            _sugarItems = new List<SugarItemData>();
+            _sugarItems.Add(new SugarItemData(0, "")); // 100%
+            _sugarItems.Add(new SugarItemData(1, "70%"));
+            _sugarItems.Add(new SugarItemData(2, "50%"));
+            _sugarItems.Add(new SugarItemData(3, "30%"));
+            _sugarItems.Add(new SugarItemData(3, "0%"));
+            _selectedSugarItem = _sugarItems[0];
+
+            _iceItems = new List<IceItemData>();
+            _iceItems.Add(new IceItemData(0, "")); //100%
+            _iceItems.Add(new IceItemData(1, "70%"));
+            _iceItems.Add(new IceItemData(2, "50%"));
+            _iceItems.Add(new IceItemData(3, "30%"));
+            _iceItems.Add(new IceItemData(3, "0%"));
+            _selectedIceItem = _iceItems[0];
         }
 
         private BTBaseObject _orderObject;
@@ -65,9 +86,53 @@ namespace BTea
 
         public string OrderName { set; get; }
         public string OrderNum { set; get; }
+
+        private List<SizeItemData> _sizeItems;
+        public List<SizeItemData> SizeItems
+        {
+            get { return _sizeItems; }
+            set { _sizeItems = value;}
+        }
+
+        private SizeItemData _selectedSizeItem;
+        public SizeItemData SelectedSizeItem
+        {
+            get { return _selectedSizeItem; }
+            set { _selectedSizeItem = value; }
+        }
+
+        private List<SugarItemData> _sugarItems;
+        public List<SugarItemData> SugarItems
+        {
+            get { return _sugarItems; }
+            set { _sugarItems = value; }
+        }
+
+        private SugarItemData _selectedSugarItem;
+        public SugarItemData SelectedSugarItem
+        {
+            get { return _selectedSugarItem; }
+            set { _selectedSugarItem = value; }
+        }
+
+        private List<IceItemData> _iceItems;
+        public List<IceItemData> IceItems
+        {
+            get { return _iceItems; }
+            set { _iceItems = value; }
+        }
+
+        private IceItemData _selectedIceItem;
+        public IceItemData SelectedIceItem
+        {
+            get { return _selectedIceItem; }
+            set { _selectedIceItem = value; }
+        }
+
         public string OrderPrice { set; get; } // full price (include *number)
         public string OrderNote { set; get; }
         public string OrderKm { set; get; }
+        public string OrderKmType { set; get; }
 
         public void MakeNoteSumary()
         {
@@ -84,8 +149,16 @@ namespace BTea
 
                     string strNote = "";
                     strNote += "Size: " + sizeStr + " ";
-                    strNote += "Đường: " + SuStr + " ";
-                    strNote += "Đá: " + IceStr + " ";
+                    if (SuStr != string.Empty)
+                    {
+                        strNote += "Đường: " + SuStr + " ";
+                    }
+                    
+                    if (IceStr != string.Empty)
+                    {
+                        strNote += "Đá: " + IceStr + " ";
+                    }
+                    
                     if (tpContent != string.Empty)
                     {
                         strNote += "\nTopping: " + tpContent;
@@ -94,26 +167,20 @@ namespace BTea
                 }
             }
         }
-        public double MakeSummaryPrice()
+        public int MakeSummaryPrice()
         {
-            double fullPrice = 0.0;
-            int number = Convert.ToInt32(OrderNum);
+            int fullPrice = 0;
+            int number = TConst.ConvertInt(OrderNum);
 
             if (_orderObject.Type == BTBaseObject.BTeaType.DRINK_TYPE)
             {
-                double drPrice = 0.0;
+                int drPrice = 0;
                 DrinkObject drObj = _orderObject as DrinkObject;
                 string slPrice = ConfigurationManager.AppSettings["lprice"].ToString();
 
-                double lPrice = 0.0;
-                try
-                {
-                    lPrice = Convert.ToDouble(slPrice);
-                }
-                catch
-                {
+                int lPrice = TConst.ConvertMoney(slPrice);
+                if (lPrice == 0)
                     lPrice = 10000;
-                }
 
                 if (drObj != null)
                 {
@@ -123,10 +190,10 @@ namespace BTea
                         drPrice += lPrice;
                     }
 
-                    double tpPrice = 0.0;
+                    int tpPrice = 0;
                     for (int ii = 0; ii < drObj.TPListObj.Count; ++ii)
                     {
-                        double price = drObj.TPListObj[ii].BPrice;
+                        int price = drObj.TPListObj[ii].BPrice;
                         tpPrice += price;
                     }
 
@@ -139,9 +206,17 @@ namespace BTea
                 fullPrice = _orderObject.BPrice * number;
             }
 
-            int kmValue = Convert.ToInt32(OrderKm);
-            double offVal = fullPrice * kmValue / 100;
-            fullPrice = fullPrice - offVal;
+            int kmValue = TConst.ConvertMoney(OrderKm);
+            if (OrderKmType == "%")
+            {
+                int offVal = fullPrice * kmValue / 100;
+                fullPrice = fullPrice - offVal;
+            }
+            else
+            {
+                fullPrice = fullPrice - kmValue;
+            }
+
             OrderPrice = fullPrice.ToString(TConst.K_MONEY_FORMAT);
             return fullPrice;
         }
@@ -160,8 +235,15 @@ namespace BTea
                     string IceStr = drObj.IceToString();
                     string strNote = "";
                     strNote += "\nSize: " + sizeStr + "\n";
-                    strNote += "Đường: " + SuStr + "\n";
-                    strNote += "Đá: " + IceStr + "\n";
+                    if (SuStr != string.Empty)
+                    {
+                        strNote += "Đường: " + SuStr + "\n";
+                    }
+
+                    if (IceStr != string.Empty)
+                    { 
+                       strNote += "Đá: " + IceStr + "\n";
+                    }
                     string strTopping = drObj.ToppingToStringSingleLine();
                     strDes = _orderObject.BName + strNote + strTopping;
                 }
@@ -180,7 +262,9 @@ namespace BTea
 
             bool bCheck1 = false;
             if (this.OrderName == obj.OrderName &&
-                this.OrderNote == obj.OrderNote)
+                this.OrderNote == obj.OrderNote &&
+                this.OrderKmType == obj.OrderKmType &&
+                this.OrderKm == obj.OrderKm)
             {
                 bCheck1 = true;
             }
@@ -276,8 +360,11 @@ namespace BTea
             FileEB2Cmd = new RelayCommand(new Action<object>(DoEbook2Menu));
             FileEB3Cmd = new RelayCommand(new Action<object>(DoEbook3Menu));
 
-            _kmCheckItem = false;
-            _kmCheckBill = false;
+            _kmVNDType = false;
+            _kmPercentType = true;
+            _kmTotalVNDType = false;
+            _kmTotalPercentType = true;
+
             _orderItemKM = 0;
             _kMSumBill = 0;
 
@@ -291,8 +378,8 @@ namespace BTea
             _dataList = new ObservableCollection<BTeaItem>();
             _originDataList = new ObservableCollection<BTeaItem>();
             _bTeaSelectedItem = null;
-            _dataList = GetDataList();
 
+            _dataList = GetDataList();
             if (_drinkCheck == true)
             {
                 _stateSize = true;
@@ -312,25 +399,28 @@ namespace BTea
             _sizeItems.Add(new SizeItemData(0, "M"));
             _sizeItems.Add(new SizeItemData(1, "L"));
 
-            SelectedSizeItem = _sizeItems[0];
+            _selectedSizeItem = _sizeItems[0];
 
             _sugarItems = new List<SugarItemData>();
-            _sugarItems.Add(new SugarItemData(0, "100%"));
-            _sugarItems.Add(new SugarItemData(1, "30%"));
+            _sugarItems.Add(new SugarItemData(0, "")); // 100%
+            _sugarItems.Add(new SugarItemData(1, "70%"));
             _sugarItems.Add(new SugarItemData(2, "50%"));
-            _sugarItems.Add(new SugarItemData(3, "70%"));
-            SelectedSugarItem = _sugarItems[0];
+            _sugarItems.Add(new SugarItemData(3, "30%"));
+            _sugarItems.Add(new SugarItemData(3, "0%"));
+            _selectedSugarItem = _sugarItems[0];
 
             _iceItems = new List<IceItemData>();
-            _iceItems.Add(new IceItemData(0, "100%"));
-            _iceItems.Add(new IceItemData(1, "30%"));
+            _iceItems.Add(new IceItemData(0, "")); //100%
+            _iceItems.Add(new IceItemData(1, "70%"));
             _iceItems.Add(new IceItemData(2, "50%"));
-            _iceItems.Add(new IceItemData(3, "70%"));
+            _iceItems.Add(new IceItemData(3, "30%"));
+            _iceItems.Add(new IceItemData(3, "0%"));
 
-            SelectedIceItem = _iceItems[0];
+            _selectedIceItem = _iceItems[0];
 
             _billPrice = "0.0000";
             _toppingItemList = new List<ToppingItemCheck>();
+
             List<ToppingObject> data_topping = DBConnection.GetInstance().GetDataTopping();
             for (int i = 0; i < data_topping.Count; ++i)
             {
@@ -347,7 +437,7 @@ namespace BTea
             }
 
             _billMoreInfo = false;
-            _billCreator = "BuiTea";
+            _billCreator = ConfigurationManager.AppSettings["shopname"].ToString();
             _billStartDate = DateTime.Now;
             _statusBarDateInfo = "Ngày: " + _billStartDate.ToString("dd-MM-yyyy");
 
@@ -396,7 +486,7 @@ namespace BTea
             BTBaseObject orderObj = sOrderItem.OrderObject as BTBaseObject;
 
             int number = Convert.ToInt32(sOrderItem.OrderNum);
-            _frmItemSingleVM.SetInfo1(orderObj.BName, orderObj.BPrice, number);
+            _frmItemSingleVM.SetInfo1(orderObj.BName, orderObj.BPrice, number, sOrderItem.OrderKm, sOrderItem.OrderKmType);
 
             if (orderObj != null)
             {
@@ -507,6 +597,7 @@ namespace BTea
         private string _billPrice;
         private string _billCreator;
         private DateTime _billStartDate;
+        private string _billTableNumber;
         private string _billPhone;
         private string _billAddress;
         private string _billNote;
@@ -519,13 +610,58 @@ namespace BTea
 
         private bool _isEnableOrderItem;
 
-        private bool _kmCheckItem;
-        private bool _kmCheckBill;
+        private bool _kmVNDType;
+        private bool _kmPercentType;
+        private bool _kmTotalVNDType;
+        private bool _kmTotalPercentType;
+
         private int _orderItemKM;
         private int _kMSumBill;
+        private int _kmItemType;
+        private int _kmTotalType;
         #endregion
 
         #region Method
+        void UpdateTotalPriceByKM()
+        {
+            double sumPrice = 0.0;
+            for (int i = 0; i < _dataOrderList.Count; i++)
+            {
+                BTeaOrderItems orderItem = _dataOrderList[i];
+                string strPrice = orderItem.OrderPrice;
+                double oPrice = Convert.ToDouble(strPrice);
+                sumPrice += oPrice;
+            }
+
+            if ( _kmTotalType == TConst.K_KM_VND)
+            {
+                if (sumPrice > 0)
+                {
+                    double billPriceEnd = sumPrice - _kMSumBill;
+                    if (billPriceEnd < 0)
+                    {
+                        billPriceEnd = 0;
+                    }
+                    BillSumPrice = billPriceEnd.ToString(TConst.K_MONEY_FORMAT);
+                }
+            }
+            else
+            {
+                if (_kMSumBill >= 0 && _kMSumBill <= 100)
+                {
+                    if (sumPrice > 0)
+                    {
+                        double value_off = sumPrice * _kMSumBill / 100.0;
+                        double billPriceEnd = sumPrice - value_off;
+                        if (billPriceEnd < 0)
+                        {
+                            billPriceEnd = 0;
+                        }
+                        BillSumPrice = billPriceEnd.ToString(TConst.K_MONEY_FORMAT);
+                    }
+                }
+            }
+        }
         public void DoAboutMenu(object obj)
         {
 
@@ -539,19 +675,29 @@ namespace BTea
         }
         public void DoCloseMenu(object obj)
         {
+            Application.Current.Shutdown();
+        }
 
+        public void DoEbook1Menu(object obj)
+        {
+            // Sinh to
+            string path = Environment.CurrentDirectory;
+            path += "\\ebook\\Ebook_KT_Sinh_To.pdf";
+            System.Diagnostics.Process.Start(path);
         }
         public void DoEbook2Menu(object obj)
         {
-
+            // Cocktail
+            string path = Environment.CurrentDirectory;
+            path += "\\ebook\\EBook_460_Cocktail.pdf";
+            System.Diagnostics.Process.Start(path);
         }
         public void DoEbook3Menu(object obj)
         {
-
-        }
-        public void DoEbook1Menu(object obj)
-        {
-
+            //Tra sua 1
+            string path = Environment.CurrentDirectory;
+            path += "\\ebook\\Ebook_Tra_Sua_1.pdf";
+            System.Diagnostics.Process.Start(path);
         }
 
         public void UpdateOrderItemCmd()
@@ -560,6 +706,8 @@ namespace BTea
             if (obj != null && _frmItemSingleVM != null)
             {
                 _bteaOderItem.OrderNum = _frmItemSingleVM.OrderSingleNum.ToString();
+                _bteaOderItem.OrderKm = _frmItemSingleVM.OrderSingleItemKM;
+                _bteaOderItem.OrderKmType = _frmItemSingleVM.OrderKmType;
 
                 if (obj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
                 {
@@ -694,17 +842,51 @@ namespace BTea
 
         public void PrintBill(object obj)
         {
+            if (_dataOrderList.Count <= 0)
+            {
+                MessageBox.Show("Danh sach trong", "Thong bao", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             FrmPrintBill printDlg = new FrmPrintBill();
             FrmPrintBillVM _printVM = new FrmPrintBillVM();
             int totalNumber = 0;
+            int totalNumDrink = 0;
+            double totalPriceDrink = 0;
+
             for (int i = 0; i < _dataOrderList.Count; ++i)
             {
                 BTeaOrderItems orderItem = _dataOrderList[i];
                 PrintBillIData dataItem = new PrintBillIData();
-
                 dataItem.NumberProduct = orderItem.OrderNum;
                 dataItem.SumPrice = orderItem.OrderPrice;
                 dataItem.NameProduct = orderItem.MakePrintDescription();
+                if (orderItem.OrderObject.Type == BTBaseObject.BTeaType.DRINK_TYPE)
+                {
+                    PrintBillIData dataItemDrink = new PrintBillIData();
+                    dataItemDrink.NumberProduct = orderItem.OrderNum;
+                    dataItemDrink.SumPrice = orderItem.OrderPrice;
+                    dataItemDrink.NameProduct = orderItem.MakePrintDescription();
+                    try
+                    {
+                        totalNumDrink += Convert.ToInt32(orderItem.OrderNum);
+                    }
+                    catch
+                    {
+                        totalNumDrink = 0;
+                    }
+
+                    try
+                    {
+                        totalPriceDrink += Convert.ToDouble(orderItem.OrderPrice);
+                    }
+                    catch
+                    {
+                        totalPriceDrink = 0.0;
+                    }
+
+                    _printVM.AddDataDrink(dataItemDrink);
+                }
 
                 try
                 {
@@ -717,9 +899,27 @@ namespace BTea
 
                 _printVM.AddData(dataItem);
             }
-            _printVM.SetInfo(_billName, _billCreator, _billStartDate.ToString(), _billPrice, totalNumber.ToString());
+
+            if (_printVM.PrintBillItemsDrink.Count == 0)
+            {
+                _printVM.SetHideDrinkBill();
+            }
+
+            _printVM.SetInfo(_billName, _billTableNumber, _billCreator, 
+                            _billStartDate.ToString(), _billPrice,
+                            totalNumber.ToString());
+
+            _printVM.SetInfoDrink(totalNumDrink, totalPriceDrink);
             printDlg.DataContext = _printVM;
             printDlg.ShowDialog();
+
+            string strContent = "Hoa Don nay ban chua luu vao DataBase.\n Ban co muon luu khong?";
+            string strInfo = "Thong bao";
+            MessageBoxResult msg = MessageBox.Show(strContent, strInfo, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (msg == MessageBoxResult.Yes)
+            {
+                DoMakeBill(obj);
+            }
         }
 
         public void DoRevenue(object obj)
@@ -734,19 +934,30 @@ namespace BTea
         {
             if (_dataOrderList.Count == 0)
             {
-                MessageBox.Show("Chưa có sản phẩm nào được order!", "Thông Báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Danh sach trong", "Thông báo",
+                               MessageBoxButton.OK, 
+                               MessageBoxImage.Information);
                 return;
             }
 
             BillObject billObject = new BillObject();
             billObject.BillName = _billName;
-            billObject.BillPrice = Convert.ToDouble(_billPrice);
+            billObject.BillPrice = TConst.ConvertMoney(_billPrice);
             billObject.BillCreator = _billCreator;
             billObject.BillDate = _billStartDate;
             billObject.BillPhone = _billPhone;
             billObject.BillAddress = _billAddress;
             billObject.BillNote = _billNote;
             billObject.KMValue = _kMSumBill;
+            if (_kmItemType == TConst.K_KM_VND)
+            {
+                billObject.KMType = TConst.K_KM_VND;
+            }
+            else
+            {
+                billObject.KMType = TConst.K_KM_VND;
+            }
+            billObject.BillTableNumber = _billTableNumber;
 
             string strOrderItem = "";
             bool bAddItemOrder = false;
@@ -757,7 +968,7 @@ namespace BTea
                 orderObject.BOrderId = orderBaseObj.BId;
                 orderObject.BOrderName = orderBaseObj.BName;
                 orderObject.BOrderPrice = _dataOrderList[i].MakeSummaryPrice();
-                orderObject.BOrderNum = Convert.ToInt32(_dataOrderList[i].OrderNum);
+                orderObject.BOrderNum = TConst.ConvertInt(_dataOrderList[i].OrderNum);
                 strOrderItem = strOrderItem + orderObject.BOrderId + ",";
                 orderObject.Type = orderBaseObj.Type;
                 if (orderBaseObj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
@@ -781,7 +992,15 @@ namespace BTea
 
                 orderObject.BOrderBillId = _billName;
                 orderObject.BOrderDate = _billStartDate;
-                orderObject.BOrderKm = Convert.ToInt32(_dataOrderList[i].OrderKm);
+                orderObject.BOrderKm = TConst.ConvertMoney(_dataOrderList[i].OrderKm);
+                if (_dataOrderList[i].OrderKmType == " ")
+                {
+                    orderObject.BOrderKmType = TConst.K_KM_VND;
+                }
+                else
+                {
+                    orderObject.BOrderKmType = TConst.K_KM_PERCENT;
+                }
 
                 bool bRet2 = DBConnection.GetInstance().AddOrderItem(orderObject);
                 if (bRet2 == false)
@@ -815,17 +1034,44 @@ namespace BTea
             BillNote = "";
             BillSumPrice = "0.000";
             BillStartDate = DateTime.Now;
+
+            List<ToppingItemCheck> tempList = new List<ToppingItemCheck>();
+            for (int i = 0; i < _toppingItemList.Count; ++i)
+            {
+                _toppingItemList[i].IsSelected = false;
+                tempList.Add(_toppingItemList[i]);
+            }
+            _toppingItemList.Clear();
+            ToppingItems = tempList;
+
+            SelectedSugarItem = _sugarItems[0];
+            SelectedIceItem = _iceItems[0];
+            SelectedSizeItem = _sizeItems[0];
+
+            OrderItemNum = "1";
+            OrderItemKM = "0";
+            KMPercentType = true;
+            KMVNDType = false;
         }
 
         public void DoClearBill(object obj)
         {
-            MessageBox.Show("Bạn có chắc chắn xóa hóa đơn?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            BillAddress = "";
-            BillPhone = "";
-            BillNote = "";
-            BillSumPrice = "0.000";
-            DataOrderList.Clear();
-            IsEnableOrderItem = false;
+            if (_dataOrderList.Count > 0)
+            {
+                MessageBox.Show("Bạn có chắc chắn xóa hóa đơn?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                BillAddress = "";
+                BillPhone = "";
+                BillNote = "";
+                BillSumPrice = "0.000";
+                BillTableNumber = "";
+                DataOrderList.Clear();
+                IsEnableOrderItem = false;
+                KMSumBill = "0";
+            }
+            else
+            {
+                MessageBox.Show("Danh sach trong", "Thông báo", MessageBoxButton.OK,MessageBoxImage.Information);
+            }
         }
 
         public BTBaseObject MakeOrderObject()
@@ -836,7 +1082,7 @@ namespace BTea
                 DrinkObject drObject = new DrinkObject();
                 drObject.BId = _bTeaSelectedItem.ImgId;
                 drObject.BName = _bTeaSelectedItem.Name;
-                drObject.BPrice = Convert.ToDouble(_bTeaSelectedItem.Price);
+                drObject.BPrice = TConst.ConvertMoney(_bTeaSelectedItem.Price);
                 drObject.BNote = _bTeaSelectedItem.Note;
                 drObject.DrinkSize = SelectedSizeItem.Index;
                 drObject.SugarRate = SelectedSugarItem.Index;
@@ -871,7 +1117,7 @@ namespace BTea
                 FoodObject fObject = new FoodObject();
                 fObject.BId = _bTeaSelectedItem.ImgId;
                 fObject.BName = _bTeaSelectedItem.Name;
-                fObject.BPrice = Convert.ToDouble(_bTeaSelectedItem.Price);
+                fObject.BPrice = TConst.ConvertMoney(_bTeaSelectedItem.Price);
                 fObject.BNote = _bTeaSelectedItem.Note;
                 btObject = fObject;
             }
@@ -880,7 +1126,7 @@ namespace BTea
                 OtherFoodObject ofObject = new OtherFoodObject();
                 ofObject.BId = _bTeaSelectedItem.ImgId;
                 ofObject.BName = _bTeaSelectedItem.Name;
-                ofObject.BPrice = Convert.ToDouble(_bTeaSelectedItem.Price);
+                ofObject.BPrice = TConst.ConvertMoney(_bTeaSelectedItem.Price);
                 ofObject.BNote = _bTeaSelectedItem.Note;
                 btObject = ofObject;
             }
@@ -889,7 +1135,7 @@ namespace BTea
                 ToppingObject tpObject = new ToppingObject();
                 tpObject.BId = _bTeaSelectedItem.ImgId;
                 tpObject.BName = _bTeaSelectedItem.Name;
-                tpObject.BPrice = Convert.ToDouble(_bTeaSelectedItem.Price);
+                tpObject.BPrice = TConst.ConvertMoney(_bTeaSelectedItem.Price);
                 tpObject.BNote = _bTeaSelectedItem.Note;
                 btObject = tpObject;
             }
@@ -908,7 +1154,19 @@ namespace BTea
             orderObjItem.OrderName = btObject.BName;
             orderObjItem.OrderNum = _orderItemNum.ToString();
             orderObjItem.OrderObject = btObject;
-            orderObjItem.OrderKm = _orderItemKM.ToString();
+            orderObjItem.OrderKm = _orderItemKM.ToString(TConst.K_MONEY_FORMAT);
+            if (_kmItemType == TConst.K_KM_PERCENT)
+            {
+                orderObjItem.OrderKmType = "%";
+            }
+            else if (_kmItemType == TConst.K_KM_VND)
+            {
+                orderObjItem.OrderKmType = " ";
+            }
+            else
+            {
+                orderObjItem.OrderKmType = "%";
+            }
 
             orderObjItem.MakeSummaryPrice();
             orderObjItem.MakeNoteSumary();
@@ -931,13 +1189,20 @@ namespace BTea
                 _dataOrderList.Add(orderObjItem);
                 _bteaOderItem = _dataOrderList[0];
                 //Calculate summary of price
-                double sumPrice = 0.0;
+                int sumPrice = 0;
                 for (int i = 0; i < _dataOrderList.Count; i++)
                 {
                     BTeaOrderItems orderItem = _dataOrderList[i];
                     string strPrice = orderItem.OrderPrice;
-                    double oPrice = Convert.ToDouble(strPrice);
-                    sumPrice += oPrice;
+                    try
+                    {
+                        int oPrice = TConst.ConvertMoney(strPrice);
+                        sumPrice += oPrice;
+                    }
+                    catch
+                    {
+                        sumPrice = 0;
+                    }
                 }
                 _billPrice = sumPrice.ToString(TConst.K_MONEY_FORMAT);
 
@@ -986,6 +1251,7 @@ namespace BTea
         public ObservableCollection<BTeaItem> GetDataList()
         {
             _dataList.Clear();
+            _originDataList.Clear();
             if (_drinkCheck == true)
             {
                 List<DrinkObject> data_list = DBConnection.GetInstance().GetDataDrink();
@@ -1010,7 +1276,7 @@ namespace BTea
                 {
                     BTeaItem bItem = new BTeaItem();
                     FoodObject fObject = data_list[i];
-                    bItem.ImgId = "TP" + fObject.BId;
+                    bItem.ImgId = "F" + fObject.BId;
                     bItem.Name = fObject.BName;
                     bItem.Price = fObject.BPrice.ToString(TConst.K_MONEY_FORMAT);
                     bItem.Note = fObject.BNote;
@@ -1044,7 +1310,7 @@ namespace BTea
                 {
                     BTeaItem bItem = new BTeaItem();
                     ToppingObject tpObject = data_list[i];
-                    bItem.ImgId = "TP" + tpObject.BId;
+                    bItem.ImgId = "F" + tpObject.BId;
                     bItem.Name = tpObject.BName;
                     bItem.Price = tpObject.BPrice.ToString(TConst.K_MONEY_FORMAT);
                     bItem.Note = tpObject.BNote;
@@ -1070,6 +1336,12 @@ namespace BTea
                 {
                     _dataList.Add(item);
                 }
+
+                if (_dataList.Count > 0)
+                {
+                    BTeaSelectedItem = _dataList[0];
+                }
+
                 OnPropertyChange("DataList");
             }
             else
@@ -1119,59 +1391,141 @@ namespace BTea
 
         #region Property
 
-        public bool KMCheckItemStatus
+        public bool KMVNDType
         {
-            get { return _kmCheckItem; }
-            set { _kmCheckItem = value; OnPropertyChange("KMCheckItemStatus"); }
-        }
-
-        public bool KMCheckBillStatus
-        {
-            get { return _kmCheckBill; }
+            get { return _kmVNDType; }
             set
             {
-                _kmCheckBill = value;
-                OnPropertyChange("KMCheckBillStatus");
-                KMSumBill = 0;
+                _kmVNDType = value;
+                if (_kmVNDType == true)
+                {
+                    _kmItemType = TConst.K_KM_VND;
+                }
+                OnPropertyChange("KMVNDType");
             }
         }
 
-        public int KMSumBill
+        public bool KMPercentType
+        {
+            get { return _kmPercentType; }
+            set
+            {
+                _kmPercentType = value;
+                if (_kmPercentType == true)
+                {
+                    _kmItemType = TConst.K_KM_PERCENT;
+                }
+                OnPropertyChange("KMPercentType");
+                _orderItemKM = 0;
+                OnPropertyChange("OrderItemKM");
+            }
+        }
+
+        public bool KMTotalVNDType
+        {
+            get { return _kmTotalVNDType; }
+            set
+            {
+                _kmTotalVNDType = value;
+
+                if (_kmTotalVNDType == true)
+                {
+                    _kmTotalType = TConst.K_KM_VND;
+                }
+
+                _kMSumBill = 0;
+
+                OnPropertyChange("KMTotalVNDType");
+                OnPropertyChange("KMSumBill");
+                UpdateTotalPriceByKM();
+            }
+        }
+
+        public bool KMTotalPercentType
+        {
+            get { return _kmTotalPercentType; }
+            set
+            {
+                _kmTotalPercentType = value;
+                if (_kmTotalPercentType == true)
+                {
+                    _kmTotalType = TConst.K_KM_PERCENT;
+                }
+
+                _kMSumBill = 0;
+                OnPropertyChange("KMSumBill");
+                OnPropertyChange("KMTotalPercentType");
+                UpdateTotalPriceByKM();
+            }
+        }
+
+        public string KMSumBill
         {
             get
             {
-                return _kMSumBill;
+                if (_kmTotalType == TConst.K_KM_PERCENT)
+                {
+                    return _kMSumBill.ToString();
+                }
+                return _kMSumBill.ToString(TConst.K_MONEY_FORMAT);
             }
             set
             {
-                _kMSumBill = value;
-                OnPropertyChange("KMSumBill");
-
-                if (_kMSumBill >= 0 && _kMSumBill <= 100)
+                int iVal = TConst.ConvertMoney(value);
+                if (_kmTotalType == TConst.K_KM_PERCENT)
                 {
-                    double sumPrice = 0.0;
-                    for (int i = 0; i < _dataOrderList.Count; i++)
+                    if (iVal < 0 || iVal > 100)
                     {
-                        BTeaOrderItems orderItem = _dataOrderList[i];
-                        string strPrice = orderItem.OrderPrice;
-                        double oPrice = Convert.ToDouble(strPrice);
-                        sumPrice += oPrice;
+                        _kMSumBill = 0;
                     }
-
-                    if (sumPrice > 0)
+                    else
                     {
-                        double value_off = sumPrice * _kMSumBill / 100.0;
-                        double billPriceEnd = sumPrice - value_off;
-                        BillSumPrice = billPriceEnd.ToString(TConst.K_MONEY_FORMAT);
+                        _kMSumBill = iVal;
                     }
                 }
+                else
+                {
+                    _kMSumBill = iVal;
+                }
+
+                OnPropertyChange("KMSumBill");
+                UpdateTotalPriceByKM();
             }
         }
 
-        public int OrderItemKM
+        public string OrderItemKM
         {
-            get { return _orderItemKM; }
-            set { _orderItemKM = value; OnPropertyChange("OrderItemKM"); }
+            get
+            {
+                if (_kmItemType == TConst.K_KM_PERCENT)
+                {
+                    return _orderItemKM.ToString();
+                }
+
+                return _orderItemKM.ToString(TConst.K_MONEY_FORMAT);
+            }
+            set
+            {
+                int iVal = TConst.ConvertMoney(value);
+
+                if (_kmItemType == TConst.K_KM_PERCENT)
+                {
+                    if (iVal < 0 || iVal > 100)
+                    {
+                        _orderItemKM = 0;
+                    }
+                    else
+                    {
+                        _orderItemKM = iVal;
+                    }
+                }
+                else
+                {
+                    _orderItemKM = iVal;
+                }
+                
+                OnPropertyChange("OrderItemKM");
+            }
         }
 
         public bool IsEnableOrderItem
@@ -1267,6 +1621,11 @@ namespace BTea
             set { _billName = value; OnPropertyChange("BillName"); }
         }
 
+        public string BillTableNumber
+        {
+            get { return _billTableNumber; }
+            set { _billTableNumber = value; OnPropertyChange("BillTableNumber"); }
+        }
         public string BillCreator
         {
             get { return _billCreator; }
@@ -1317,9 +1676,47 @@ namespace BTea
             }
         }
 
-        public SizeItemData SelectedSizeItem { set; get; }
-        public SugarItemData SelectedSugarItem { set; get; }
-        public IceItemData SelectedIceItem { set; get; }
+        private SizeItemData _selectedSizeItem;
+        public SizeItemData SelectedSizeItem
+        {
+            set
+            {
+                _selectedSizeItem = value;
+                OnPropertyChange("SelectedSizeItem");
+            }
+            get
+            {
+                return _selectedSizeItem;
+            }
+        }
+
+        private SugarItemData _selectedSugarItem;
+        public SugarItemData SelectedSugarItem
+        {
+            set
+            {
+                _selectedSugarItem = value;
+                OnPropertyChange("SelectedSugarItem");
+            }
+            get
+            {
+                return _selectedSugarItem;
+            }
+        }
+
+        private IceItemData _selectedIceItem;
+        public IceItemData SelectedIceItem
+        {
+            set
+            {
+                _selectedIceItem = value;
+                OnPropertyChange("SelectedIceItem");
+            }
+            get
+            {
+                return _selectedIceItem;
+            }
+        }
         public bool StateSize
         {
             get { return _stateSize; }
