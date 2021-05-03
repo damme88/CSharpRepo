@@ -129,6 +129,7 @@ namespace BTea
             set { _selectedIceItem = value; }
         }
 
+        public int OrderId { set; get; }
         public string OrderPrice { set; get; } // full price (include *number)
         public string OrderNote { set; get; }
         public string OrderKm { set; get; }
@@ -421,6 +422,8 @@ namespace BTea
             _billPrice = "0.0000";
             _toppingItemList = new List<ToppingItemCheck>();
 
+            Tlog.GetInstance().WriteLog("Start:Get topping Order Drink");
+
             List<ToppingObject> data_topping = DBConnection.GetInstance().GetDataTopping();
             for (int i = 0; i < data_topping.Count; ++i)
             {
@@ -435,6 +438,8 @@ namespace BTea
                     _toppingItemList.Add(item);
                 }
             }
+
+            Tlog.GetInstance().WriteLog("End: Get topping Order Drink");
 
             _billMoreInfo = false;
             _billCreator = ConfigurationManager.AppSettings["shopname"].ToString();
@@ -499,7 +504,7 @@ namespace BTea
                         int idx2 = drObject.SugarRate;
                         int idx3 = drObject.IceRate;
                         _frmItemSingleVM.SetInfo2(idx1, idx2, idx3);
-
+                        _frmItemSingleVM.SetIsDrinkItem(true);
                         for (int i = 0; i < drObject.TPListObj.Count; i++)
                         {
                             ToppingObject tpObj = drObject.TPListObj[i];
@@ -520,15 +525,15 @@ namespace BTea
                 }
                 else if (orderObj.Type == BTBaseObject.BTeaType.FOOD_TYPE)
                 {
-
+                    _frmItemSingleVM.SetIsDrinkItem(false);
                 }
                 else if (orderObj.Type == BTBaseObject.BTeaType.OTHER_TYPE)
                 {
-
+                    _frmItemSingleVM.SetIsDrinkItem(false);
                 }
                 else if (orderObj.Type == BTBaseObject.BTeaType.TOPPING_TYPE)
                 {
-
+                    _frmItemSingleVM.SetIsDrinkItem(false);
                 }
             }
 
@@ -742,16 +747,12 @@ namespace BTea
                                 }
                             }
                         }
-
-                        //Calucate price and note again
-                        _bteaOderItem.MakeSummaryPrice();
-                        _bteaOderItem.MakeNoteSumary();
                     }
                 }
-                else
-                {
 
-                }
+                //Calucate price and note again
+                _bteaOderItem.MakeSummaryPrice();
+                _bteaOderItem.MakeNoteSumary();
             }
 
             if (_frmItemSingle != null)
@@ -759,6 +760,7 @@ namespace BTea
                 _frmItemSingle.Close();
             }
 
+            //Update list view 
             CollectionViewSource.GetDefaultView(_dataOrderList).Refresh();
             OnPropertyChange("DataOrderList");
 
@@ -959,18 +961,16 @@ namespace BTea
             }
             billObject.BillTableNumber = _billTableNumber;
 
-            string strOrderItem = "";
             bool bAddItemOrder = false;
             for (int i = 0; i < _dataOrderList.Count; i++)
             {
                 BTBaseObject orderBaseObj = _dataOrderList[i].OrderObject;
                 BTeaOrderObject orderObject = new BTeaOrderObject();
-                orderObject.BOrderId = orderBaseObj.BId;
                 orderObject.BOrderName = orderBaseObj.BName;
                 orderObject.BOrderPrice = _dataOrderList[i].MakeSummaryPrice();
                 orderObject.BOrderNum = TConst.ConvertInt(_dataOrderList[i].OrderNum);
-                strOrderItem = strOrderItem + orderObject.BOrderId + ",";
                 orderObject.Type = orderBaseObj.Type;
+                orderObject.BOrderIdItem = orderBaseObj.BId;
                 if (orderBaseObj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
                 {
                     DrinkObject drObj = orderBaseObj as DrinkObject;
@@ -992,14 +992,15 @@ namespace BTea
 
                 orderObject.BOrderBillId = _billName;
                 orderObject.BOrderDate = _billStartDate;
-                orderObject.BOrderKm = TConst.ConvertMoney(_dataOrderList[i].OrderKm);
                 if (_dataOrderList[i].OrderKmType == " ")
                 {
                     orderObject.BOrderKmType = TConst.K_KM_VND;
+                    orderObject.BOrderKm = TConst.ConvertMoney(_dataOrderList[i].OrderKm);
                 }
                 else
                 {
                     orderObject.BOrderKmType = TConst.K_KM_PERCENT;
+                    orderObject.BOrderKm = TConst.ConvertInt(_dataOrderList[i].OrderKm);
                 }
 
                 bool bRet2 = DBConnection.GetInstance().AddOrderItem(orderObject);
@@ -1014,18 +1015,30 @@ namespace BTea
                 }
             }
 
-            billObject.BillOrderItem = strOrderItem;
-            bool bRet = DBConnection.GetInstance().AddBillItem(billObject);
+            if (bAddItemOrder == true)
+            {
+                string strOrderItem = "";
+                List<BTeaOrderObject> listOrder = DBConnection.GetInstance().GetDataOrderObject();
+                for (int i = 0; i < listOrder.Count; i++)
+                {
+                    if (listOrder[i].BOrderBillId == _billName)
+                    {
+                        strOrderItem = strOrderItem + listOrder[i].BOrderId + ",";
+                    }
+                }
 
-            if (bRet == true && bAddItemOrder == true)
-            {
-                MessageBox.Show("Thành công!", "Thông Báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                CreateBillName();
-                OnPropertyChange("BillName");
-            }
-            else
-            {
-                MessageBox.Show("Thất bại", "Thông Báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                billObject.BillOrderItem = strOrderItem;
+                bool bRet = DBConnection.GetInstance().AddBillItem(billObject);
+                if (bRet == true)
+                {
+                    MessageBox.Show("Thành công!", "Thông Báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    CreateBillName();
+                    OnPropertyChange("BillName");
+                }
+                else
+                {
+                    MessageBox.Show("Thất bại", "Thông Báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
 
             DataOrderList.Clear();
@@ -1079,10 +1092,19 @@ namespace BTea
             BTBaseObject btObject = null;
             if (_drinkCheck == true)
             {
+                List<DrinkObject> baseList = DBConnection.GetInstance().GetDataDrink();
+                
                 DrinkObject drObject = new DrinkObject();
                 drObject.BId = _bTeaSelectedItem.ImgId;
                 drObject.BName = _bTeaSelectedItem.Name;
-                drObject.BPrice = TConst.ConvertMoney(_bTeaSelectedItem.Price);
+
+                string id = drObject.BId.Replace("DR", "");
+                DrinkObject baseObj = baseList.Find(x => x.BId == id);
+                if (baseObj != null)
+                {
+                    drObject.BPrice = baseObj.BPrice;
+                }
+
                 drObject.BNote = _bTeaSelectedItem.Note;
                 drObject.DrinkSize = SelectedSizeItem.Index;
                 drObject.SugarRate = SelectedSugarItem.Index;
@@ -1252,6 +1274,7 @@ namespace BTea
         {
             _dataList.Clear();
             _originDataList.Clear();
+            Tlog.GetInstance().WriteLog("Lay du lieu Order");
             if (_drinkCheck == true)
             {
                 List<DrinkObject> data_list = DBConnection.GetInstance().GetDataDrink();
@@ -1324,6 +1347,8 @@ namespace BTea
             {
                 _bTeaSelectedItem = _dataList[0];
             }
+
+            Tlog.GetInstance().WriteLog("Ket thuc lay du lieu Order");
             return _dataList;
         }
 
@@ -1373,6 +1398,7 @@ namespace BTea
 
         public void CreateBillName()
         {
+            Tlog.GetInstance().WriteLog("Start: Tao ten Hoa Don.");
             List<BillObject> data_list = DBConnection.GetInstance().GetDataBillObject();
             int billIdx = 1;
             if (data_list.Count > 0)
@@ -1385,6 +1411,8 @@ namespace BTea
             string strMonth = _billStartDate.Month.ToString();
             string strYear = _billStartDate.Year.ToString();
             _billName += "_" + strDay + strMonth + strYear;
+
+            Tlog.GetInstance().WriteLog("End: Tao ten Hoa Don.");
         }
 
         #endregion

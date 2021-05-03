@@ -20,6 +20,18 @@ namespace BTea
         public string Content { set; get; }
     }
 
+    class RankItem
+    {
+        public RankItem(int id, string content)
+        {
+            Id = id;
+            Content = content;
+        }
+
+        public int Id { set; get; }
+        public string Content { set; get; }
+    }
+
     class OrderBTeaItem
     {
         public OrderBTeaItem() {; }
@@ -49,6 +61,19 @@ namespace BTea
 
     class FrmOrderBTeaItemVM : TBaseVM
     {
+        public enum RankType
+        {
+            RANK_NUM = 0,
+            RANK_VALUE = 1,
+        }
+
+        public enum TKType
+        {
+            TK_TOTAL = 0,
+            TK_PRODUCT = 1,
+            TK_RANK = 2,
+        }
+
         public FrmOrderBTeaItemVM()
         {
 
@@ -67,6 +92,11 @@ namespace BTea
 
             _orderItems = new ObservableCollection<OrderBTeaItem>();
 
+            _tkrankItem = new List<RankItem>();
+            _tkrankItem.Add(new RankItem(0, "Theo so luong"));
+            _tkrankItem.Add(new RankItem(1, "Theo gia tien"));
+
+            _tkSelectedRankItem = _tkrankItem[0];
             DoTKTotal();
         }
 
@@ -193,6 +223,26 @@ namespace BTea
                 OnPropertyChange("SelectedOrderItem");
             }
         }
+
+        private List<RankItem> _tkrankItem;
+        public List<RankItem> TKRankItems
+        {
+            get { return _tkrankItem; }
+            set
+            {   _tkrankItem = value;
+                OnPropertyChange("TKRankItem");
+            }
+        }
+
+        private RankItem _tkSelectedRankItem;
+        public RankItem SeletedTKRankItem
+        {
+            get { return _tkSelectedRankItem; }
+            set
+            { _tkSelectedRankItem = value;
+                OnPropertyChange("SeletedTKRankItem");
+            }
+        }
         #endregion
 
         #region METHOD
@@ -209,7 +259,7 @@ namespace BTea
                 BTeaOrderObject obj = listOrder[i];
                 OrderBTeaItem objItem = new OrderBTeaItem();
 
-                objItem.OrderItemId = obj.BOrderId;
+                objItem.OrderItemId = obj.BOrderIdItem;
                 objItem.OrderItemName = obj.BOrderName;
                 objItem.OrderItemPrice = obj.BOrderPrice.ToString(TConst.K_MONEY_FORMAT);
                 objItem.OrderItemNum = obj.BOrderNum.ToString();
@@ -273,7 +323,7 @@ namespace BTea
                 if (btType.Id == (int)obj.Type)
                 {
                     OrderBTeaItem objItem = new OrderBTeaItem();
-                    objItem.OrderItemId = obj.BOrderId;
+                    objItem.OrderItemId = obj.BOrderIdItem;
                     objItem.OrderItemName = obj.BOrderName;
                     objItem.OrderItemPrice = obj.BOrderPrice.ToString(TConst.K_MONEY_FORMAT);
                     objItem.OrderItemNum = obj.BOrderNum.ToString();
@@ -322,18 +372,90 @@ namespace BTea
 
         public void DoTKByRank()
         {
-            if (_orderItems != null)
+            DoTKTotal();
+            ObservableCollection<OrderBTeaItem> rankItemList = new ObservableCollection<OrderBTeaItem>();
+            var groupedCustomerList = _orderItems.GroupBy(u => u.OrderItemName).Select(grp => grp.ToList()).ToList();
+            for (int i = 0; i < groupedCustomerList.Count; i++)
+            {
+                OrderBTeaItem bItem = new OrderBTeaItem();
+                int numberTotal = 0;
+                int priceTotal = 0;
+                for (int j = 0; j < groupedCustomerList[i].Count; j++)
+                {
+                    int num = TConst.ConvertInt(groupedCustomerList[i][j].OrderItemNum);
+                    int price = TConst.ConvertMoney(groupedCustomerList[i][j].OrderItemPrice);
+                    numberTotal += num;
+                    priceTotal += price;
+
+                    if (bItem.OrderItemName == null)
+                    {
+                        bItem.OrderItemName = groupedCustomerList[i][j].OrderItemName;
+                    }
+
+                    if (bItem.OrderItemId == null)
+                    {
+                        bItem.OrderItemId = groupedCustomerList[i][j].OrderItemId;
+                    }
+                }
+                bItem.OrderItemNum = numberTotal.ToString();
+                bItem.OrderItemPrice = priceTotal.ToString(TConst.K_MONEY_FORMAT);
+                bItem.OrderItemBillId = "X";
+                bItem.OrderItemIRate = "X";
+                bItem.OrderItemKM = "X";
+                bItem.OrderItemKMType = "X";
+                bItem.OrderItemOrderDate = "X";
+                bItem.OrderItemSize = "X";
+                bItem.OrderItemSRate = "X";
+                bItem.OrderItemTopping = "X";
+                rankItemList.Add(bItem);
+            }
+
+            int rankType = _tkSelectedRankItem.Id;
+            if (rankType == (int)RankType.RANK_NUM)
+            {
+                var newList = rankItemList.OrderBy(x => TConst.ConvertInt(x.OrderItemNum)).Reverse();
                 _orderItems.Clear();
+                int price = 0;
+                int num = 0;
+                foreach (var i in newList)
+                {
+                    _orderItems.Add(i);
+                    price += TConst.ConvertMoney(i.OrderItemPrice);
+                    num += TConst.ConvertInt(i.OrderItemNum);
+                }
+                OrderItemsCount = _orderItems.Count;
+                TotalOrderItemsCount = num;
+                SumPriceItems = price.ToString(TConst.K_MONEY_FORMAT);
+            }
+            else
+            {
+                var newList = rankItemList.OrderBy(x => TConst.ConvertMoney(x.OrderItemPrice)).Reverse();
+                _orderItems.Clear();
+                int price = 0;
+                int num = 0;
+                foreach (var i in newList)
+                {
+                    _orderItems.Add(i);
+                    price += TConst.ConvertMoney(i.OrderItemPrice);
+                    num += TConst.ConvertInt(i.OrderItemNum);
+                }
+
+                OrderItemsCount = _orderItems.Count;
+                TotalOrderItemsCount = num;
+                SumPriceItems = price.ToString(TConst.K_MONEY_FORMAT);
+            }
+
+            OnPropertyChange("OrderItems");
         }
         public void DoTKApply(object obj)
         {
-            if (_tkType == 1) // by type
+            if (_tkType == (int)TKType.TK_PRODUCT) // by type
             {
                 DoTKByType();
             }
-            else if (_tkType == 2) // by rank
+            else if (_tkType == (int)TKType.TK_RANK) // by rank
             {
-
+                DoTKByRank();
             }
             else // Total
             {

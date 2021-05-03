@@ -30,7 +30,7 @@ namespace BTea.convert
             {
                 sSize = "0%";
             }
-            else
+            else if (val == "0")
             {
                 sSize = "";
             }

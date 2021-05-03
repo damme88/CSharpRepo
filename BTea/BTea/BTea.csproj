@@ -96,6 +96,10 @@
       <DependentUpon>FrmBillMain.xaml</DependentUpon>
     </Compile>
     <Compile Include="FrmBillMainVM.cs" />
+    <Compile Include="FrmEditBill.xaml.cs">
+      <DependentUpon>FrmEditBill.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEditBillVM.cs" />
     <Compile Include="FrmFood.xaml.cs">
       <DependentUpon>FrmFood.xaml</DependentUpon>
     </Compile>
@@ -138,6 +142,7 @@
     <Compile Include="FrmToppingVM.cs" />
     <Compile Include="OtherFoodObject.cs" />
     <Compile Include="TConst.cs" />
+    <Compile Include="Tlog.cs" />
     <Compile Include="ToppingObject.cs" />
     <Page Include="BSetting.xaml">
       <SubType>Designer</SubType>
@@ -152,6 +157,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FrmDrinkMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FrmEditBill.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -28,7 +28,15 @@ namespace BTea
                                ";User Id=" + _mUserName +
                                ";password=" + _mPassword +
                                ";CharSet = utf8";
-            _connection = new MySqlConnection(connectionString);
+            try
+            {
+                _connection = new MySqlConnection(connectionString);
+            }
+            catch(Exception ex)
+            {
+                string msg = ex.Message;
+                Tlog.GetInstance().WriteLog("Thong tin ket noi KO chinh xac(Co the la Port): " + ex.Message);
+            }
         }
         private static DBConnection _instance;
         public static DBConnection GetInstance()
@@ -57,6 +65,9 @@ namespace BTea
             }
             catch (Exception ex)
             {
+                string msg = "Open Database Failed: ";
+                msg += ex.Message;
+                Tlog.GetInstance().WriteLog(msg);
                 return false;
             }
             return true;
@@ -70,7 +81,9 @@ namespace BTea
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show(ex.Message);
+                string msg = "Close DB Error: ";
+                msg += ex.Message;
+                Tlog.GetInstance().WriteLog(msg);
             }
         }
 
@@ -85,7 +98,6 @@ namespace BTea
             {
                 //Create Command
                 MySqlCommand cmd = new MySqlCommand(query, _connection);
-
                 try
                 {
                     //Create a data reader and Execute the command
@@ -106,19 +118,25 @@ namespace BTea
 
                         drObjectList.Add(drObj);
                     }
-
                     //close Data Reader
                     dataReader.Close();
                 }
                 catch(Exception ex)
                 {
                     //close Connection
+                    string strMsg = "Lay du do uong that bai : ";
+                    strMsg += ex.Message;
+                    Tlog.GetInstance().WriteLog(strMsg);
                     CloseDB();
                     return drObjectList;
                 }
 
                 //close Connection
                 CloseDB();
+            }
+            else
+            {
+                Environment.Exit(0);
             }
             return drObjectList;
         }
@@ -139,9 +157,14 @@ namespace BTea
                 {
                     int result = cmd.ExecuteNonQuery();
                     bRet = true;
+                    Tlog.GetInstance().WriteLog("Add Drink Thanh Cong");
                 }
                 catch (System.Exception ex)
                 {
+                    string msg = "Add Drink That bai";
+                    msg += ex.Message;
+
+                    Tlog.GetInstance().WriteLog(msg);
                     bRet = false;
                 }
             }
@@ -167,8 +190,12 @@ namespace BTea
                     cmd.Parameters.Add(new MySqlParameter("inPrice", drItem.BPrice));
                     cmd.Parameters.Add(new MySqlParameter("inNote", drItem.BNote));
                 }
-                catch
+                catch(Exception ex)
                 {
+                    string msg = "Edit Drink That bai: ";
+                    msg += ex.Message;
+                    Tlog.GetInstance().WriteLog(msg);
+
                     return false;
                 }
 
@@ -176,10 +203,15 @@ namespace BTea
                 try
                 {
                     result = cmd.ExecuteNonQuery();
+                    string msg = "Edit Drink Thanh cong";
+                    Tlog.GetInstance().WriteLog(msg);
                 }
                 catch (System.Exception ex)
                 {
                     bRet = false;
+                    string msg = "Edit Drink That bai: ";
+                    msg += ex.Message;
+                    Tlog.GetInstance().WriteLog(msg);
                 }
 
                 if (result == 1)
@@ -209,9 +241,14 @@ namespace BTea
                 try
                 {
                     result = cmd.ExecuteNonQuery();
+                    string msg = "Delete Drink Thanh cong: ";
+                    Tlog.GetInstance().WriteLog(msg);
                 }
                 catch (System.Exception ex)
                 {
+                    string msg = "Delete Drink That bai: ";
+                    msg += ex.Message;
+                    Tlog.GetInstance().WriteLog(msg);
                     bRet = false;
                 }
 
@@ -259,12 +296,14 @@ namespace BTea
 
                         fObjectList.Add(foodObj);
                     }
-
                     //close Data Reader
                     dataReader.Close();
                 }
-                catch
+                catch(Exception ex)
                 {
+                    string strMsg = "Get DB Do Nham nhi that bai : ";
+                    strMsg += ex.Message;
+                    Tlog.GetInstance().WriteLog(strMsg);
                     //close Connection
                     CloseDB();
                     return fObjectList;
@@ -292,9 +331,12 @@ namespace BTea
                 {
                     int result = cmd.ExecuteNonQuery();
                     bRet = true;
+                    Tlog.GetInstance().WriteLog("Add food thanh cong");
                 }
                 catch (System.Exception ex)
                 {
+                    string msg = "Add food that bai: " + ex.Message;
+                    Tlog.GetInstance().WriteLog(msg);
                     bRet = false;
                 }
             }
@@ -319,8 +361,10 @@ namespace BTea
                     cmd.Parameters.Add(new MySqlParameter("inPrice", foodItem.BPrice));
                     cmd.Parameters.Add(new MySqlParameter("inNote", foodItem.BNote));
                 }
-                catch
+                catch(Exception ex)
                 {
+                    string msg = "Edit food that bai: " + ex.Message;
+                    Tlog.GetInstance().WriteLog(msg);
                     return false;
                 }
                 
@@ -328,9 +372,13 @@ namespace BTea
                 try
                 {
                     result = cmd.ExecuteNonQuery();
+                    string msg = "Edit food thanh cong";
+                    Tlog.GetInstance().WriteLog(msg);
                 }
                 catch (System.Exception ex)
                 {
+                    string msg = "Edit food that bai: " + ex.Message;
+                    Tlog.GetInstance().WriteLog(msg);
                     bRet = false;
                 }
 
@@ -361,9 +409,11 @@ namespace BTea
                 try
                 {
                     result = cmd.ExecuteNonQuery();
+                    Tlog.GetInstance().WriteLog("Delete food thanh cong: ");
                 }
                 catch (System.Exception ex)
                 {
+                    Tlog.GetInstance().WriteLog("Delete food that bai: " + ex.Message);
                     bRet = false;
                 }
 
@@ -389,7 +439,6 @@ namespace BTea
             //Open connection
             if (this.ConnectionDB() == true)
             {
-
                 try
                 {
                     //Create Command
@@ -414,11 +463,16 @@ namespace BTea
                         OtherfObjectList.Add(otherfoodObj);
                     }
 
+                    Tlog.GetInstance().WriteLog("Get DB Do lat vat thanh cong.");
                     //close Data Reader
                     dataReader.Close();
                 }
-                catch
+                catch(Exception ex)
                 {
+                    string msg = "Get DB Do lat vat ko that bai: ";
+                    msg += ex.Message;
+
+                    Tlog.GetInstance().WriteLog(msg);
                     CloseDB();
                     return OtherfObjectList;
                 }
@@ -445,9 +499,11 @@ namespace BTea
                 {
                     int result = cmd.ExecuteNonQuery();
                     bRet = true;
+                    Tlog.GetInstance().WriteLog("Add Otherfood thanh cong");
                 }
                 catch (System.Exception ex)
                 {
+                    Tlog.GetInstance().WriteLog("Add Otherfood that bai" + ex.Message);
                     bRet = false;
                 }
             }
@@ -473,9 +529,11 @@ namespace BTea
                 try
                 {
                     result = cmd.ExecuteNonQuery();
+                    Tlog.GetInstance().WriteLog("Edit Otherfood thanh cong");
                 }
                 catch (System.Exception ex)
                 {
+                    Tlog.GetInstance().WriteLog("Edit Otherfood that bai" + ex.Message);
                     bRet = false;
                 }
 
@@ -506,9 +564,11 @@ namespace BTea
                 try
                 {
                     result = cmd.ExecuteNonQuery();
+                    Tlog.GetInstance().WriteLog("Delete Otherfood thanh cong");
                 }
                 catch (System.Exception ex)
                 {
+                    Tlog.GetInstance().WriteLog("Delete Otherfood that bai" + ex.Message);
                     bRet = false;
                 }
 
@@ -554,18 +614,20 @@ namespace BTea
 
                         tpObjectList.Add(tpObj);
                     }
-
+                    Tlog.GetInstance().WriteLog("Get DB topping thanh cong.");
                     //close Data Reader
                     dataReader.Close();
                 }
-                catch
+                catch(Exception ex)
                 {
                     //close Connection
+                    string msg = "Get DB Topping ko that bai: ";
+                    msg += ex.Message;
+                    Tlog.GetInstance().WriteLog(msg);
                     CloseDB();
                     return tpObjectList;
                 }
                 
-
                 //close Connection
                 CloseDB();
             }
@@ -588,10 +650,12 @@ namespace BTea
                 {
                     int result = cmd.ExecuteNonQuery();
                     bRet = true;
+                    Tlog.GetInstance().WriteLog("Add Topping thanh cong");
                 }
                 catch (System.Exception ex)
                 {
                     bRet = false;
+                    Tlog.GetInstance().WriteLog("Add Topping that bai: " + ex.Message);
                 }
             }
 
@@ -615,11 +679,13 @@ namespace BTea
                 int result = 0;
                 try
                 {
+                    Tlog.GetInstance().WriteLog("Edit Topping thanh cong: ");
                     result = cmd.ExecuteNonQuery();
                 }
                 catch (System.Exception ex)
                 {
                     bRet = false;
+                    Tlog.GetInstance().WriteLog("Edit Topping that bai: " + ex.Message);
                 }
 
                 if (result == 1)
@@ -649,10 +715,12 @@ namespace BTea
                 try
                 {
                     result = cmd.ExecuteNonQuery();
+                    Tlog.GetInstance().WriteLog("Delete Topping thanh cong");
                 }
                 catch (System.Exception ex)
                 {
                     bRet = false;
+                    Tlog.GetInstance().WriteLog("Delete Topping that bai: " + ex.Message);
                 }
 
                 if (result == 1)
@@ -726,11 +794,16 @@ namespace BTea
                         billObjectList.Add(billObj);
                     }
 
+                    Tlog.GetInstance().WriteLog("Get DB Hoa Don thanh cong.");
                     //close Data Reader
                     dataReader.Close();
                 }
-                catch
+                catch(Exception ex)
                 {
+                    string msg = "Get DB Hoa Don that bai. ";
+                    msg += ex;
+
+                    Tlog.GetInstance().WriteLog(msg);
                     CloseDB();
                     return billObjectList;
                 }
@@ -763,13 +836,94 @@ namespace BTea
                 {
                     int result = cmd.ExecuteNonQuery();
                     bRet = true;
+                    Tlog.GetInstance().WriteLog("Them Hoa Don thanh cong");
                 }
                 catch (System.Exception ex)
+                {
+                    Tlog.GetInstance().WriteLog("Them Hoa Don that bai");
+                    bRet = false;
+                }
+            }
+
+            CloseDB();
+            return bRet;
+        }
+
+        public bool EditBillItem(BillObject billItem)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("EditBillItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                int bId = Convert.ToInt32(billItem.BillId);
+                cmd.Parameters.Add(new MySqlParameter("inId", bId));
+                cmd.Parameters.Add(new MySqlParameter("inName", billItem.BillName));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", billItem.BillPrice));
+                cmd.Parameters.Add(new MySqlParameter("inCreator", billItem.BillCreator));
+                cmd.Parameters.Add(new MySqlParameter("inDate", billItem.BillDate));
+                cmd.Parameters.Add(new MySqlParameter("inTable", billItem.BillTableNumber));
+                cmd.Parameters.Add(new MySqlParameter("inPhone", billItem.BillPhone));
+                cmd.Parameters.Add(new MySqlParameter("inAddress", billItem.BillAddress));
+                cmd.Parameters.Add(new MySqlParameter("inOrderItem", billItem.BillOrderItem));
+                cmd.Parameters.Add(new MySqlParameter("inNote", billItem.BillNote));
+                cmd.Parameters.Add(new MySqlParameter("inKm", billItem.KMType));
+                cmd.Parameters.Add(new MySqlParameter("inKmType", billItem.KMType));
+                int result = 0;
+                try
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                    Tlog.GetInstance().WriteLog("Edit Thong tin Bill that bai: " + ex.Message);
+                }
+
+                if (result == 1)
+                {
+                    bRet = true;
+                }
+                else
                 {
                     bRet = false;
                 }
             }
 
+            CloseDB();
+            return bRet;
+        }
+
+        public bool DeleteBillItem(int Id)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("DeleteBillItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new MySqlParameter("inId", Id));
+
+                int result = 0;
+                try
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    Tlog.GetInstance().WriteLog("Delete Hoa Don that bai" + ex.Message);
+                    bRet = false;
+                }
+
+                if (result == 1)
+                {
+                    bRet = true;
+                }
+                else
+                {
+                    bRet = false;
+                }
+            }
             CloseDB();
             return bRet;
         }
@@ -794,6 +948,7 @@ namespace BTea
                     while (dataReader.Read())
                     {
                         string sId = dataReader["Id"] + "";
+                        string sIdItem = dataReader["IdItem"] + "";
                         string sName = dataReader["Name"] + "";
                         string sNum = dataReader["Number"] + "";
                         string sPrice = dataReader["Price"] + "";
@@ -806,7 +961,8 @@ namespace BTea
                         string sOrderKmType = dataReader["KmType"] + "";
 
                         BTeaOrderObject OrderObj = new BTeaOrderObject();
-                        OrderObj.BOrderId = sId;
+                        OrderObj.BOrderId = TConst.ConvertInt(sId);
+                        OrderObj.BOrderIdItem = sIdItem;
                         OrderObj.BOrderName = sName;
                         OrderObj.BOrderNum = TConst.ConvertInt(sNum);
                         OrderObj.BOrderPrice = TConst.ConvertMoney(sPrice);
@@ -844,12 +1000,12 @@ namespace BTea
     
                         OderList.Add(OrderObj);
                     }
-
                     //close Data Reader
                     dataReader.Close();
                 }
-                catch
+                catch(Exception ex)
                 {
+                    Tlog.GetInstance().WriteLog("Get Thong tin sp da Order that bai: " + ex.Message);
                     CloseDB();
                     return OderList;
                 }
@@ -868,7 +1024,7 @@ namespace BTea
                 MySqlCommand cmd = new MySqlCommand("AddBteaOrderItem", _connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new MySqlParameter("inId", bOrderItem.BOrderId));
+                cmd.Parameters.Add(new MySqlParameter("inIdItem", bOrderItem.BOrderIdItem));
                 cmd.Parameters.Add(new MySqlParameter("inName", bOrderItem.BOrderName));
                 cmd.Parameters.Add(new MySqlParameter("inNumber", bOrderItem.BOrderNum));
                 cmd.Parameters.Add(new MySqlParameter("inPrice", bOrderItem.BOrderPrice));
@@ -887,10 +1043,91 @@ namespace BTea
                 }
                 catch (System.Exception ex)
                 {
+                    Tlog.GetInstance().WriteLog("Add OrderItem that bai: " + ex.Message);
                     bRet = false;
                 }
             }
 
+            CloseDB();
+            return bRet;
+        }
+
+        public bool EditOrderItem(BTeaOrderObject orderItem)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("EditOrderItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new MySqlParameter("inId", orderItem.BOrderId));
+                cmd.Parameters.Add(new MySqlParameter("inIdItem", orderItem.BOrderIdItem));
+                cmd.Parameters.Add(new MySqlParameter("inName", orderItem.BOrderName));
+                cmd.Parameters.Add(new MySqlParameter("inNumber", orderItem.BOrderNum));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", orderItem.BOrderPrice));
+                cmd.Parameters.Add(new MySqlParameter("inSize", orderItem.BOrderSize));
+                cmd.Parameters.Add(new MySqlParameter("inSugarRate", orderItem.BOrderSugarRate));
+                cmd.Parameters.Add(new MySqlParameter("inIceRate", orderItem.BOrderIceRate));
+                cmd.Parameters.Add(new MySqlParameter("inTopping", orderItem.BOrderTopping));
+                cmd.Parameters.Add(new MySqlParameter("inBillId", orderItem.BOrderBillId));
+                cmd.Parameters.Add(new MySqlParameter("inOrderDate", orderItem.BOrderDate));
+                cmd.Parameters.Add(new MySqlParameter("inKm", orderItem.BOrderKm));
+                cmd.Parameters.Add(new MySqlParameter("inKmType", orderItem.BOrderKmType));
+                int result = 0;
+                try
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    bRet = false;
+                    Tlog.GetInstance().WriteLog("Edit Thong tin OrderItem that bai: " + ex.Message);
+                }
+
+                if (result == 1)
+                {
+                    bRet = true;
+                }
+                else
+                {
+                    bRet = false;
+                }
+            }
+
+            CloseDB();
+            return bRet;
+        }
+
+        public bool DeleteOrderItem(int Id)
+        {
+
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("DeleteBteaOrderItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new MySqlParameter("inId", Id));
+
+                int result = 0;
+                try
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    Tlog.GetInstance().WriteLog("Delete OrderItem that bai: " + ex.Message);
+                    bRet = false;
+                }
+
+                if (result == 1)
+                {
+                    bRet = true;
+                }
+                else
+                {
+                    bRet = false;
+                }
+            }
             CloseDB();
             return bRet;
         }

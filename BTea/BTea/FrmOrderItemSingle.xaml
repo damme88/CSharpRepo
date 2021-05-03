@@ -16,13 +16,13 @@
             <TextBlock Text="Giá(VND)" Margin="5" Visibility="Collapsed"></TextBlock>
             <TextBox Text="{Binding OrderSinglePrice}" Visibility="Collapsed" Width="200" Height="30" Margin="5" FontFamily="Aria" HorizontalAlignment="Left"></TextBox>
             <TextBlock Text="Size" Margin="5"></TextBlock>
-            <ComboBox  Width="200" Height="25" Margin="5" ItemsSource="{Binding SizeItemSingle}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedSizeItem}" FontFamily="Aria" HorizontalAlignment="Left"></ComboBox>
+            <ComboBox  IsEnabled="{Binding IsDrinkItem}" Width="200" Height="25" Margin="5" ItemsSource="{Binding SizeItemSingle}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedSizeItem}" FontFamily="Aria" HorizontalAlignment="Left"></ComboBox>
             <TextBlock Text="Tỉ lệ đá" Margin="5"></TextBlock>
-            <ComboBox Width="200" Height="25" Margin="5" ItemsSource="{Binding SurgarItemSingle}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedSugarItem}" FontFamily="Aria" HorizontalAlignment="Left"></ComboBox>
+            <ComboBox  IsEnabled="{Binding IsDrinkItem}" Width="200" Height="25" Margin="5" ItemsSource="{Binding SurgarItemSingle}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedSugarItem}" FontFamily="Aria" HorizontalAlignment="Left"></ComboBox>
             <TextBlock Text="Tỉ lệ đường" Margin="5"></TextBlock>
-            <ComboBox Width="200" Height="25" Margin="5" ItemsSource="{Binding IceItemSingle}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedIceItem}" FontFamily="Aria" HorizontalAlignment="Left"></ComboBox>
+            <ComboBox IsEnabled="{Binding IsDrinkItem}" Width="200" Height="25" Margin="5" ItemsSource="{Binding IceItemSingle}" DisplayMemberPath="Content" SelectedItem="{Binding SelectedIceItem}" FontFamily="Aria" HorizontalAlignment="Left"></ComboBox>
             <TextBlock Text="Topping" Margin="2"></TextBlock>
-            <ListBox IsEnabled="{Binding StateToppingSingle}" Margin="5,2,2,2" HorizontalAlignment="Left" Width="200" Height="150" ItemsSource="{Binding SingleToppingItems}">
+            <ListBox IsEnabled="{Binding IsDrinkItem}" Margin="5,2,2,2" HorizontalAlignment="Left" Width="200" Height="150" ItemsSource="{Binding SingleToppingItems}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

@@ -13,7 +13,8 @@ namespace BTea
 
         }
 
-        public string BOrderId { set; get; }
+        public int BOrderId { set; get; }
+        public string BOrderIdItem { set; get; }
         public string BOrderName { set; get; }
         public int BOrderNum { set; get; }
         public int BOrderPrice { set; get; }
@@ -80,6 +81,80 @@ namespace BTea
             }
 
             return strTp;
+        }
+
+        public BTBaseObject MakeObject()
+        {
+            BTBaseObject btObject = null;
+
+            if (Type == BTBaseObject.BTeaType.DRINK_TYPE)
+            {
+
+
+                DrinkObject drObject = new DrinkObject();
+                drObject.BId = BOrderIdItem;
+                drObject.BName = BOrderName;
+
+                List<DrinkObject> baseList = DBConnection.GetInstance().GetDataDrink();
+                string id = drObject.BId.Replace("DR", "");
+                DrinkObject baseObj = baseList.Find(x => x.BId == id);
+                if (baseObj != null)
+                {
+                    drObject.BPrice = baseObj.BPrice;
+                }
+                
+                drObject.DrinkSize = BOrderSize;
+                drObject.SugarRate = BOrderSugarRate;
+                drObject.IceRate = BOrderSugarRate;
+
+                List<ToppingObject> dataTopping = DBConnection.GetInstance().GetDataTopping();
+
+                string sTopping = BOrderTopping;
+                string[] itemsTp = sTopping.Split(',');
+
+                for (int i = 0; i < itemsTp.Count(); ++i)
+                {
+                    for (int j = 0; j < dataTopping.Count; j++)
+                    {
+                        ToppingObject tpData = dataTopping[j];
+                        if (itemsTp[i] == tpData.BId)
+                        {
+                            ToppingObject newTpObj = new ToppingObject();
+                            newTpObj.BId = tpData.BId;
+                            newTpObj.BName = tpData.BName;
+                            newTpObj.BPrice = tpData.BPrice;
+                            drObject.TPListObj.Add(newTpObj);
+                        }
+                    }
+                }
+                btObject = drObject;
+            }
+            else if (Type == BTBaseObject.BTeaType.FOOD_TYPE)
+            {
+                FoodObject fObject = new FoodObject();
+                fObject.BId = BOrderIdItem;
+                fObject.BName = BOrderName;
+                fObject.BPrice = BOrderPrice;
+                btObject = fObject;
+            }
+            else if (Type == BTBaseObject.BTeaType.OTHER_TYPE)
+            {
+                OtherFoodObject ofObject = new OtherFoodObject();
+                ofObject.BId = BOrderIdItem;
+                ofObject.BName = BOrderName;
+                ofObject.BPrice = BOrderPrice;
+                btObject = ofObject;
+            }
+            else if (Type == BTBaseObject.BTeaType.TOPPING_TYPE)
+            {
+                ToppingObject tpObject = new ToppingObject();
+                tpObject.BId = BOrderIdItem;
+                tpObject.BName = BOrderName;
+                tpObject.BPrice = BOrderPrice;
+                btObject = tpObject;
+            }
+
+            return btObject;
         }
     }
 }

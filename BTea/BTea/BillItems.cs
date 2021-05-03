@@ -12,7 +12,7 @@ namespace BTea
         public BillItem()
         {
             BillDetailCmd = new RelayCommand(new Action<object>(BillDetailInfo));
-            _orderItemList = new List<string>();
+            _orderItemList = new List<int>();
         }
         #region PROPERTY
         public string BillId {set; get;}
@@ -28,7 +28,7 @@ namespace BTea
         public string BillKM { set; get; }
         public string BillKMType { set; get; }
 
-        public List<string> OrderItemList
+        public List<int> OrderItemList
         {
             get { return _orderItemList; }
             set { _orderItemList = value; }
@@ -37,21 +37,21 @@ namespace BTea
 
         #region MEMBERS
         public RelayCommand BillDetailCmd { set; get; }
-        private List<string> _orderItemList;
+        private List<int> _orderItemList;
         #endregion
 
         #region METHOD
-        public void AddItemOrder(string idItem)
+        public void AddItemOrder(int id)
         {
             if (_orderItemList != null)
             {
-                _orderItemList.Add(idItem);
+                _orderItemList.Add(id);
             }
         }
         public void BillDetailInfo(object sender)
         {
             frmOrderItemBill _frmItemBill = new frmOrderItemBill();
-            frmOrderItemBillVM _frmItemVM = new frmOrderItemBillVM(_orderItemList, BillName);
+            frmOrderItemBillVM _frmItemVM = new frmOrderItemBillVM(_orderItemList);
             _frmItemBill.DataContext = _frmItemVM;
             _frmItemBill.ShowDialog();
         }

@@ -10,7 +10,7 @@ namespace BTea
 {
     class frmOrderItemBillVM : TBaseVM
     {
-        public frmOrderItemBillVM(List<string> idItems, string billName)
+        public frmOrderItemBillVM(List<int> idItems)
         {
             _idItemList = idItems;
 
@@ -23,8 +23,8 @@ namespace BTea
                 for (int j = 0; j < listOrder.Count; ++j)
                 {
                     BTeaOrderObject orderObj = listOrder[j];
-                    string idBill = _idItemList[i];
-                    if (idBill == orderObj.BOrderId && orderObj.BOrderBillId == billName)
+                    int idItem = _idItemList[i];
+                    if (idItem == orderObj.BOrderId)
                     {
                         billItems.Add(orderObj);
                     }
@@ -111,14 +111,14 @@ namespace BTea
         #region MEMBER
         private ObservableCollection<BTeaOrderItems> _billOrderList;
         private BTeaOrderItems _billOrderSelectedItem;
-        private List<string> _idItemList;
+        private List<int> _idItemList;
         #endregion
 
         #region PROPERTY
         public string OrderItemNumber { set; get; }
         public string OrderItemPrice { set; get; }
 
-        public List<string> IdItemList
+        public List<int> IdItemList
         {
             get { return _idItemList; }
             set { _idItemList = value;  OnPropertyChange("IdItemList"); }

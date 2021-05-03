@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Data;
 using TApp.Base;
 
 namespace BTea
@@ -13,6 +15,8 @@ namespace BTea
         
         public FrmBillMainVM()
         {
+            CmdDeleteBill = new RelayCommand(new Action<object>(DoDeleteBill));
+            CmdEditBill = new RelayCommand(new Action<object>(DoEditBill));
             _billItem = new ObservableCollection<BillItem>();
             GetDataBillFromDB();
             if (_billItem.Count >  0)
@@ -66,6 +70,9 @@ namespace BTea
             CmdTK = new RelayCommand(new Action<object>(DoTKBill));
         }
 
+        public RelayCommand CmdDeleteBill { set; get; }
+        public RelayCommand CmdEditBill { set; get; }
+        FrmEditBill _frmEditBill;
         private ObservableCollection<BillItem> _billItem;
         private BillItem _selectedBillItem;
 
@@ -157,7 +164,7 @@ namespace BTea
                 for (int ii = 0; ii < itemsArr.Length; ii++)
                 {
                     string strValue = itemsArr[ii];
-                    bItem.AddItemOrder(strValue);
+                    bItem.AddItemOrder(TConst.ConvertInt(strValue));
                 }
                 _billItem.Add(bItem);
             }
@@ -165,6 +172,76 @@ namespace BTea
             _billCount = _billItem.Count;
         }
 
+        public void UpdateBillCmd()
+        {
+            if (_frmEditBill != null)
+            {
+                _frmEditBill.Close();
+            }
+
+            DoTKBill(null);
+        }
+        public void DoEditBill(object obj)
+        {
+            if (_selectedBillItem != null)
+            {
+                _frmEditBill = new FrmEditBill();
+                FrmEditBillVM _frmEditBillVM = new FrmEditBillVM(UpdateBillCmd);
+
+                string strBillId = _selectedBillItem.BillId;
+                strBillId = strBillId.Replace("BL", "");
+                int nId = TConst.ConvertInt(strBillId);
+
+                _frmEditBillVM.SetInfo1(nId, _selectedBillItem.BillName, _selectedBillItem.BillCreator,
+                                        _selectedBillItem.BillTableNumber, _selectedBillItem.BillDate,
+                                        _selectedBillItem.BillPhone, _selectedBillItem.BillAddress, _selectedBillItem.BillNote);
+
+                _frmEditBillVM.SetInfo2(_selectedBillItem.BillKM, _selectedBillItem.BillKMType);
+
+                _frmEditBillVM.SetDataList(_selectedBillItem.OrderItemList);
+
+                _frmEditBill.DataContext = _frmEditBillVM;
+                _frmEditBill.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Hay chon hoa don de sua", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        public void DoDeleteBill(object obj)
+        {
+            string strQa = "Dữ liệu sẽ được xóa trong Database(xóa vĩnh viễn). \nBạn có chắc chắn muốn xóa hóa đơn này?";
+            string strInFor = "Thông báo";
+            MessageBoxResult msg = MessageBox.Show(strQa, strInFor, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (msg == MessageBoxResult.No)
+            {
+                return;
+            }
+
+            BillItem bItem = _selectedBillItem;
+            if (bItem != null)
+            {
+                string billName = bItem.BillName;
+                List<int> orderList = bItem.OrderItemList;
+                for (int i = 0; i < orderList.Count; ++i)
+                {
+                    int id = orderList[i];
+                    bool bRet = DBConnection.GetInstance().DeleteOrderItem(id);
+                }
+
+                string strBillId = bItem.BillId;
+                strBillId = strBillId.Replace("BL", "");
+                int nId = TConst.ConvertInt(strBillId);
+                if (nId > 0)
+                {
+                    bool bRet = DBConnection.GetInstance().DeleteBillItem(nId);
+                }
+            }
+
+            CollectionViewSource.GetDefaultView(BillItems).Refresh();
+            OnPropertyChange("BillItems");
+        }
         public void DoFilterByDay()
         {
             if (_billItem != null)
@@ -213,7 +290,7 @@ namespace BTea
                     for (int ii = 0; ii < itemsArr.Length; ii++)
                     {
                         string strValue = itemsArr[ii];
-                        bItem.AddItemOrder(strValue);
+                        bItem.AddItemOrder(TConst.ConvertInt(strValue));
                     }
                     _billItem.Add(bItem);
                 }
@@ -272,7 +349,7 @@ namespace BTea
                     for (int ii = 0; ii < itemsArr.Length; ii++)
                     {
                         string strValue = itemsArr[ii];
-                        bItem.AddItemOrder(strValue);
+                        bItem.AddItemOrder(TConst.ConvertInt(strValue));
                     }
                     _billItem.Add(bItem);
                 }
@@ -329,7 +406,7 @@ namespace BTea
                     for (int ii = 0; ii < itemsArr.Length; ii++)
                     {
                         string strValue = itemsArr[ii];
-                        bItem.AddItemOrder(strValue);
+                        bItem.AddItemOrder(TConst.ConvertInt(strValue));
                     }
                     _billItem.Add(bItem);
                 }

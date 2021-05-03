@@ -16,6 +16,9 @@ namespace BTea
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            Tlog.GetInstance().Init();
+            Tlog.GetInstance().WriteLog("Bat dau chay chuong trinh");
+
             base.OnStartup(e);
 
             string MSQLName =  ConfigurationManager.AppSettings["mysqlname"].ToString();
@@ -32,8 +35,8 @@ namespace BTea
             }
             catch(Exception ex)
             {
-                string strLog = ex.Message;
-                MessageBox.Show(strLog);
+                Tlog.GetInstance().WriteLog("Cong ket noi co van de: " + ex.Message);
+                Environment.Exit(0);
             }
         }
     }

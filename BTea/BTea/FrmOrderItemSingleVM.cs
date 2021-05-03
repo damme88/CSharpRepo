@@ -62,6 +62,7 @@ namespace BTea
         private List<SizeItemData> _sizeItemSingle;
         private List<SugarItemData> _surgarItemSingle;
         private List<IceItemData> _iceItemSingle;
+        private bool _isDrinkItem;
 
         private SizeItemData _selectedSizeItem;
         private SugarItemData _selectedSugarItem;
@@ -98,6 +99,11 @@ namespace BTea
             _selectedIceItem = IceItemSingle[idxIce];
         }
 
+        public void SetIsDrinkItem(bool bItem)
+        {
+            _isDrinkItem = bItem;
+        }
+
         public void SetTopping(int idx)
         {
             _toppingItemList[idx].IsSelected = true;
@@ -110,6 +116,12 @@ namespace BTea
         #endregion
 
         #region PROPERTY
+        public bool IsDrinkItem
+        {
+            get { return _isDrinkItem; }
+            set { _isDrinkItem = value; OnPropertyChange("IsDrinkItem"); }
+        }
+
         public SizeItemData SelectedSizeItem
         {
             get { return _selectedSizeItem; }

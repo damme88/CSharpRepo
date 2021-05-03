@@ -47,6 +47,7 @@
                 <RadioButton IsChecked="{Binding IsCheckTKType}" GroupName="TKGroup" VerticalAlignment="Center"  Content="Theo loai" Margin="5"></RadioButton>
                 <ComboBox IsEnabled="{Binding IsCheckTKType}" ItemsSource="{Binding TKTypeItems}" DisplayMemberPath="Content" SelectedItem="{Binding SeletedTKTypeItem}" Width="100" Height="30" Margin="5"></ComboBox>
                 <RadioButton IsChecked="{Binding IsCheckRankItem}" GroupName="TKGroup" VerticalAlignment="Center"  Content="Thứ hạng sản phẩm" Margin="5"></RadioButton>
+                <ComboBox IsEnabled="{Binding IsCheckRankItem}" ItemsSource="{Binding TKRankItems}" DisplayMemberPath="Content" SelectedItem="{Binding SeletedTKRankItem}" Width="100" Height="30" Margin="5"></ComboBox>
                 <Button Command="{Binding TKApplyCommand}" Style="{StaticResource BtnBase100}" Content="Áp Dụng" Margin="100,5,5,5"></Button>
             </StackPanel>
         </Grid>
