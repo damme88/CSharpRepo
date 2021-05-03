@@ -6,18 +6,18 @@
         xmlns:local="clr-namespace:BTea"
         mc:Ignorable="d"
         Top="0" Left="400"
-        Title="FrmPrintBill" Height="1500" Width="300">
+        Title="FrmPrintBill" Height="1000" Width="300">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <!--<RowDefinition Height="*"></RowDefinition>-->
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <StackPanel Orientation="Horizontal">
                     <Button HorizontalAlignment="Left" Width="100" Height="30" Content="In Hóa Đơn" VerticalAlignment="Top" Margin="5" Click="Button_Click"/>
-                    <CheckBox IsChecked="{Binding IsPrintDrinkBill}" Content="In do uong" Margin="5" VerticalAlignment="Center"></CheckBox>
+                    <CheckBox IsChecked="{Binding IsPrintDouble}" Content="In 2 hoa don" Margin="5" VerticalAlignment="Center"></CheckBox>
                 </StackPanel>
             </Grid>
             <ScrollViewer Grid.Row="1" Name="myScrollViewer1">
@@ -111,7 +111,7 @@
                     </Grid>
                 </Grid>
             </ScrollViewer>
-            <ScrollViewer Grid.Row="2" Name="myScrollViewer2" Visibility="{Binding IsVisibleDrinkBill}">
+            <!--<ScrollViewer Grid.Row="2" Name="myScrollViewer2">
                 <Grid  x:Name="printBill2" Margin="5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -201,7 +201,7 @@
                         </Grid>
                     </Grid>
                 </Grid>
-            </ScrollViewer>
+            </ScrollViewer>-->
         </Grid>
     </Grid>
 </Window>

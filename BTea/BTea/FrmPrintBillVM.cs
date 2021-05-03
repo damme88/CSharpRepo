@@ -41,16 +41,16 @@ namespace BTea
             _printBillTableNumber = "";
             _printBillCreator = "";
             _printBillDate = "";
-
-            _isPrintDrinkBill = 1;
-            if (_isPrintDrinkBill == 1)
-            {
-                _isVisibleDrinkBill = Visibility.Visible;
-            }
-            else
-            {
-                _isVisibleDrinkBill = Visibility.Hidden;
-            }
+            _isPrintDouble = 1;
+            //_isPrintDrinkBill = 1;
+            //if (_isPrintDrinkBill == 1)
+            //{
+            //    _isVisibleDrinkBill = Visibility.Visible;
+            //}
+            //else
+            //{
+            //    _isVisibleDrinkBill = Visibility.Hidden;
+            //}
         }
 
         #region MEMBERS
@@ -166,23 +166,27 @@ namespace BTea
             set { _printTotalPriceDrink = value; OnPropertyChange("PrintTotalPriceDrink"); }
         }
 
-        private int _isPrintDrinkBill;
-        public int IsPrintDrinkBill
+        private int _isPrintDouble;
+        public int IsPrintDouble
         {
             set
-            { _isPrintDrinkBill = value;
+            {
+                _isPrintDouble = value;
                 OnPropertyChange("IsPrintDrinkBill");
 
-                if (_isPrintDrinkBill == 1)
-                {
-                   IsVisibleDrinkBill = Visibility.Visible;
-                }
-                else
-                {
-                    IsVisibleDrinkBill = Visibility.Hidden;
-                }
+                //if (_isPrintDrinkBill == 1)
+                //{
+                //   IsVisibleDrinkBill = Visibility.Visible;
+                //}
+                //else
+                //{
+                //    IsVisibleDrinkBill = Visibility.Hidden;
+                //}
             }
-            get { return _isPrintDrinkBill; }
+            get
+            {
+                return _isPrintDouble;
+            }
         }
 
         private Visibility _isVisibleDrinkBill;

@@ -23,6 +23,7 @@
                 <TextBox Style="{StaticResource TB100_25_F12}" IsReadOnly="True" Text="{Binding BillSumValue}"></TextBox>
                 <Button Command="{Binding CmdEditBill}" Style="{StaticResource BtnBase}" Content="Sửa"></Button>
                 <Button Command="{Binding CmdDeleteBill}" Style="{StaticResource BtnBase}" Content="Xóa"></Button>
+                <Button Command="{Binding CmdPrintBill}" Style="{StaticResource BtnBase}" Content="In"></Button>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">

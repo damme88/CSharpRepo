@@ -30,22 +30,29 @@ namespace BTea
             try
             {
                 myScrollViewer1.ScrollToTop();
-
-                if (printVM != null && printVM.IsPrintDrinkBill == 1)
+                int nCount = 1;
+                if (printVM.IsPrintDouble == 1)
                 {
-                    myScrollViewer2.ScrollToTop();
+                    nCount = 2;
                 }
+                //if (printVM != null && printVM.IsPrintDrinkBill == 1)
+                //{
+                //    myScrollViewer2.ScrollToTop();
+                //}
                 
                 this.IsEnabled = false;
                 PrintDialog printDialog = new PrintDialog();
                 if (printDialog.ShowDialog() == true)
                 {
-                    printDialog.PrintVisual(printBill, "Total_Bill");
-
-                    if (printVM != null && printVM.IsPrintDrinkBill == 1)
+                    for (int i = 0; i < nCount; i++)
                     {
-                        printDialog.PrintVisual(printBill2, "Drink Bill");
+                        printDialog.PrintVisual(printBill, "Total_Bill");
                     }
+                   
+                    //if (printVM != null && printVM.IsPrintDrinkBill == 1)
+                    //{
+                    //    printDialog.PrintVisual(printBill2, "Drink Bill");
+                    //}
                 }
             }
             finally

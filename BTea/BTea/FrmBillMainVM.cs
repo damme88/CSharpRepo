@@ -17,6 +17,7 @@ namespace BTea
         {
             CmdDeleteBill = new RelayCommand(new Action<object>(DoDeleteBill));
             CmdEditBill = new RelayCommand(new Action<object>(DoEditBill));
+            CmdPrintBill = new RelayCommand(new Action<object>(DoPrintBill));
             _billItem = new ObservableCollection<BillItem>();
             GetDataBillFromDB();
             if (_billItem.Count >  0)
@@ -72,6 +73,8 @@ namespace BTea
 
         public RelayCommand CmdDeleteBill { set; get; }
         public RelayCommand CmdEditBill { set; get; }
+        public RelayCommand CmdPrintBill { set; get; }
+
         FrmEditBill _frmEditBill;
         private ObservableCollection<BillItem> _billItem;
         private BillItem _selectedBillItem;
@@ -207,6 +210,180 @@ namespace BTea
             {
                 MessageBox.Show("Hay chon hoa don de sua", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+
+        public ObservableCollection<BTeaOrderItems> GetListOrder()
+        {
+            ObservableCollection<BTeaOrderItems> _dataList = new ObservableCollection<BTeaOrderItems>();
+            List<BTeaOrderObject> billItems = new List<BTeaOrderObject>();
+            List<BTeaOrderObject> listOrderDB = DBConnection.GetInstance().GetDataOrderObject();
+
+            List<int> itemOrderList = _selectedBillItem.OrderItemList;
+            for (int i = 0; i < itemOrderList.Count; i++)
+            {
+                for (int j = 0; j < listOrderDB.Count; ++j)
+                {
+                    BTeaOrderObject orderObj = listOrderDB[j];
+                    int idItem = itemOrderList[i];
+                    if (idItem == orderObj.BOrderId)
+                    {
+                        billItems.Add(orderObj);
+                    }
+                }
+            }
+
+            for (int k = 0; k < billItems.Count; k++)
+            {
+                BTeaOrderObject obj = billItems[k];
+                BTeaOrderItems objItem = new BTeaOrderItems();
+                objItem.OrderName = obj.BOrderName;
+                objItem.OrderNum = obj.BOrderNum.ToString();
+                objItem.OrderPrice = obj.BOrderPrice.ToString(TConst.K_MONEY_FORMAT);
+                objItem.OrderId = obj.BOrderId;
+
+                objItem.OrderKm = obj.BOrderKm.ToString();
+                objItem.OrderObject = obj.MakeObject();
+
+                if (obj.BOrderKmType == TConst.K_KM_VND)
+                {
+                    objItem.OrderKmType = " "; //VND
+                }
+                else
+                {
+                    objItem.OrderKmType = "%";
+                }
+
+                if (obj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
+                {
+                    string strSizeSI = "";
+                    string strTp = "";
+
+                    int size = obj.BOrderSize;
+                    string sSize = "";
+                    if (size == 0)
+                    {
+                        sSize = "M";
+                    }
+                    else
+                    {
+                        sSize = "L";
+                    }
+
+                    string sSugar = obj.SugarToString();
+                    string sIce = obj.IceToString();
+
+                    strSizeSI = "Size: " + sSize;
+                    if (sSugar != string.Empty)
+                    {
+                        strSizeSI += ";" + "Đường: " + sSugar;
+                    }
+
+                    if (sIce != string.Empty)
+                    {
+                        strSizeSI += ";" + "Đá: " + sIce;
+                    }
+
+                    strSizeSI += "\n";
+
+                    strTp = obj.ToppingToString();
+
+                    if (strTp != string.Empty)
+                    {
+                        objItem.OrderNote = strSizeSI + "Topping: " + strTp;
+                    }
+                    else
+                    {
+                        objItem.OrderNote = strSizeSI;
+                    }
+                }
+                else
+                {
+                    objItem.OrderNote = "";
+                }
+                _dataList.Add(objItem);
+            }
+
+            return _dataList;
+        }
+
+        public void DoPrintBill(object obj)
+        {
+            if (_selectedBillItem == null)
+            {
+                return;
+            }
+            
+            FrmPrintBill printDlg = new FrmPrintBill();
+            FrmPrintBillVM _printVM = new FrmPrintBillVM();
+            int totalNumber = 0;
+            int totalNumDrink = 0;
+            double totalPriceDrink = 0;
+
+            ObservableCollection<BTeaOrderItems> _dataOrderList = GetListOrder();
+            for (int i = 0; i < _dataOrderList.Count; ++i)
+            {
+                BTeaOrderItems orderItem = _dataOrderList[i];
+                PrintBillIData dataItem = new PrintBillIData();
+                dataItem.NumberProduct = orderItem.OrderNum;
+                dataItem.SumPrice = orderItem.OrderPrice;
+                dataItem.NameProduct = orderItem.MakePrintDescription();
+                if (orderItem.OrderObject.Type == BTBaseObject.BTeaType.DRINK_TYPE)
+                {
+                    PrintBillIData dataItemDrink = new PrintBillIData();
+                    dataItemDrink.NumberProduct = orderItem.OrderNum;
+                    dataItemDrink.SumPrice = orderItem.OrderPrice;
+                    dataItemDrink.NameProduct = orderItem.MakePrintDescription();
+                    try
+                    {
+                        totalNumDrink += Convert.ToInt32(orderItem.OrderNum);
+                    }
+                    catch
+                    {
+                        totalNumDrink = 0;
+                    }
+
+                    try
+                    {
+                        totalPriceDrink += Convert.ToDouble(orderItem.OrderPrice);
+                    }
+                    catch
+                    {
+                        totalPriceDrink = 0.0;
+                    }
+
+                    _printVM.AddDataDrink(dataItemDrink);
+                }
+
+                try
+                {
+                    totalNumber += Convert.ToInt32(orderItem.OrderNum);
+                }
+                catch
+                {
+                    totalNumber = 0;
+                }
+
+                _printVM.AddData(dataItem);
+            }
+
+            if (_printVM.PrintBillItemsDrink.Count == 0)
+            {
+                _printVM.SetHideDrinkBill();
+            }
+
+            string billName = _selectedBillItem.BillName;
+            string billNumber = _selectedBillItem.BillTableNumber;
+            string billCreator = _selectedBillItem.BillCreator;
+            string billDate = _selectedBillItem.BillDate;
+            string billPrice = _selectedBillItem.BillPrice;
+
+            _printVM.SetInfo(billName, billNumber, billCreator,
+                            billDate, billPrice,
+                            totalNumber.ToString());
+
+            _printVM.SetInfoDrink(totalNumDrink, totalPriceDrink);
+            printDlg.DataContext = _printVM;
+            printDlg.ShowDialog();
         }
 
         public void DoDeleteBill(object obj)
