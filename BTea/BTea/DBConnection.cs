@@ -981,19 +981,19 @@ namespace BTea
                             OrderObj.BOrderKm = TConst.ConvertMoney(sOrderKm);
                         }
 
-                        if (sId.Contains("DR"))
+                        if (sIdItem.Contains("DR"))
                         {
                             OrderObj.Type = BTBaseObject.BTeaType.DRINK_TYPE;
                         }
-                        else if (sId.Contains("TP"))
+                        else if (sIdItem.Contains("TP"))
                         {
                             OrderObj.Type = BTBaseObject.BTeaType.TOPPING_TYPE;
                         }
-                        else if (sId.Contains("OF"))
+                        else if (sIdItem.Contains("OF"))
                         {
                             OrderObj.Type = BTBaseObject.BTeaType.OTHER_TYPE;
                         }
-                        else if (sId.Contains("F")  == true && sId.Contains("OF") == false)
+                        else if (sIdItem.Contains("F")  == true && sId.Contains("OF") == false)
                         {
                             OrderObj.Type = BTBaseObject.BTeaType.FOOD_TYPE;
                         }

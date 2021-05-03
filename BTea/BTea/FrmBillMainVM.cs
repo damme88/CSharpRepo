@@ -239,8 +239,7 @@ namespace BTea
                 }
             }
 
-            CollectionViewSource.GetDefaultView(BillItems).Refresh();
-            OnPropertyChange("BillItems");
+            DoTKBill(null);
         }
         public void DoFilterByDay()
         {

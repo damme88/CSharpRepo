@@ -119,7 +119,11 @@ namespace BTea
         public bool IsDrinkItem
         {
             get { return _isDrinkItem; }
-            set { _isDrinkItem = value; OnPropertyChange("IsDrinkItem"); }
+            set
+            {
+                _isDrinkItem = value;
+                OnPropertyChange("IsDrinkItem");
+            }
         }
 
         public SizeItemData SelectedSizeItem

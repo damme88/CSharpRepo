@@ -466,6 +466,23 @@ namespace BTea
            if (_dataOrderList.Count > 0)
             {
                 _bteaOderItem = _dataOrderList[0];
+
+                int sumPrice = 0;
+                for (int i = 0; i < _dataOrderList.Count; i++)
+                {
+                    BTeaOrderItems orderItem = _dataOrderList[i];
+                    string strPrice = orderItem.OrderPrice;
+                    try
+                    {
+                        int oPrice = TConst.ConvertMoney(strPrice);
+                        sumPrice += oPrice;
+                    }
+                    catch
+                    {
+                        sumPrice = 0;
+                    }
+                }
+                BillSumPrice = sumPrice.ToString(TConst.K_MONEY_FORMAT);
             }
             else
             {

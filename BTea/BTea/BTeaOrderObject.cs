@@ -89,8 +89,6 @@ namespace BTea
 
             if (Type == BTBaseObject.BTeaType.DRINK_TYPE)
             {
-
-
                 DrinkObject drObject = new DrinkObject();
                 drObject.BId = BOrderIdItem;
                 drObject.BName = BOrderName;
@@ -128,6 +126,7 @@ namespace BTea
                     }
                 }
                 btObject = drObject;
+                btObject.Type = BTBaseObject.BTeaType.DRINK_TYPE;
             }
             else if (Type == BTBaseObject.BTeaType.FOOD_TYPE)
             {
@@ -136,6 +135,7 @@ namespace BTea
                 fObject.BName = BOrderName;
                 fObject.BPrice = BOrderPrice;
                 btObject = fObject;
+                btObject.Type = BTBaseObject.BTeaType.FOOD_TYPE;
             }
             else if (Type == BTBaseObject.BTeaType.OTHER_TYPE)
             {
@@ -144,6 +144,7 @@ namespace BTea
                 ofObject.BName = BOrderName;
                 ofObject.BPrice = BOrderPrice;
                 btObject = ofObject;
+                btObject.Type = BTBaseObject.BTeaType.OTHER_TYPE;
             }
             else if (Type == BTBaseObject.BTeaType.TOPPING_TYPE)
             {
@@ -152,6 +153,7 @@ namespace BTea
                 tpObject.BName = BOrderName;
                 tpObject.BPrice = BOrderPrice;
                 btObject = tpObject;
+                btObject.Type = BTBaseObject.BTeaType.TOPPING_TYPE;
             }
 
             return btObject;
