@@ -7,6 +7,7 @@
         xmlns:local2="clr-namespace:BTea.convert"
         mc:Ignorable="d"
         ResizeMode="CanResize"
+        Icon="btea.ico"
         WindowStartupLocation="CenterScreen" 
         Title="BTea" Height="780" Width="1360">
     <Window.Resources>

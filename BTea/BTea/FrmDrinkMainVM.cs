@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +30,7 @@ namespace BTea
             CmdAddDrink = new RelayCommand(new Action<object>(DoAddDrink));
             CmdEditDrink = new RelayCommand(new Action<object>(DoEditDrink));
             CmdDeleteDrink = new RelayCommand(new Action<object>(DoDeleteDrink));
-
+            ImgPathCmd = new RelayCommand(new Action<object>(DoImgPathCmd));
             _frmDrinkVM = new FrmDrinkVM(DrinkAddEditDoneCmd);
         }
 
@@ -36,6 +38,7 @@ namespace BTea
         public RelayCommand CmdAddDrink { set; get; }
         public RelayCommand CmdEditDrink { set; get; }
         public RelayCommand CmdDeleteDrink { set; get; }
+        public RelayCommand ImgPathCmd { set; get; }
 
         private FrmDrinkVM _frmDrinkVM;
         private string CodeDrink;
@@ -157,6 +160,24 @@ namespace BTea
                 }
             }
         }
+
+        public void DoImgPathCmd(object sender)
+        {
+            string path = Environment.CurrentDirectory;
+            path += "\\img_data\\";
+
+            if (path != "")
+            {
+                if (Directory.Exists(path) == true)
+                {
+                    Process.Start("explorer.exe", path);
+                    return;
+                }
+            }
+
+            TConst.MsgError("Folder ảnh không tồn tại.");
+        }
+
         public void DrinkAddEditDoneCmd()
         {
             if (frmDrink != null)

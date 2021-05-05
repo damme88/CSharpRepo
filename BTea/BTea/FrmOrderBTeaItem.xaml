@@ -21,13 +21,13 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Số Danh muc:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <TextBlock Text="Số danh mục:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
                 <TextBox Width="100" Height="30" HorizontalAlignment="Center"
                          Text="{Binding OrderItemsCount}"
                          VerticalAlignment="Center"
                          VerticalContentAlignment ="Center"
                          Margin="5" IsReadOnly="True"></TextBox>
-                <TextBlock Text="Tong so luong Order:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <TextBlock Text="Tổng số lượng Order:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
                 <TextBox Width="100" Height="30" HorizontalAlignment="Center"
                          Text="{Binding TotalOrderItemsCount}"
                          VerticalAlignment="Center"
@@ -42,9 +42,9 @@
         </Grid>
         <Grid Grid.Row="1">
             <StackPanel Orientation="Horizontal" Height="50">
-                <TextBlock Text="Thong ke: " VerticalAlignment="Center" Margin="5"></TextBlock>
-                <RadioButton IsChecked="{Binding IsCheckTKTotal}" GroupName="TKGroup" VerticalAlignment="Center" Content="Toan bo" Margin="5"></RadioButton>
-                <RadioButton IsChecked="{Binding IsCheckTKType}" GroupName="TKGroup" VerticalAlignment="Center"  Content="Theo loai" Margin="5"></RadioButton>
+                <TextBlock Text="Thống kê: " VerticalAlignment="Center" Margin="5"></TextBlock>
+                <RadioButton IsChecked="{Binding IsCheckTKTotal}" GroupName="TKGroup" VerticalAlignment="Center" Content="Toàn bộ" Margin="5"></RadioButton>
+                <RadioButton IsChecked="{Binding IsCheckTKType}" GroupName="TKGroup" VerticalAlignment="Center"  Content="theo loại" Margin="5"></RadioButton>
                 <ComboBox IsEnabled="{Binding IsCheckTKType}" ItemsSource="{Binding TKTypeItems}" DisplayMemberPath="Content" SelectedItem="{Binding SeletedTKTypeItem}" Width="100" Height="30" Margin="5"></ComboBox>
                 <RadioButton IsChecked="{Binding IsCheckRankItem}" GroupName="TKGroup" VerticalAlignment="Center"  Content="Thứ hạng sản phẩm" Margin="5"></RadioButton>
                 <ComboBox IsEnabled="{Binding IsCheckRankItem}" ItemsSource="{Binding TKRankItems}" DisplayMemberPath="Content" SelectedItem="{Binding SeletedTKRankItem}" Width="100" Height="30" Margin="5"></ComboBox>

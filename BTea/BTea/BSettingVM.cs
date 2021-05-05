@@ -15,8 +15,7 @@ namespace BTea
     {
         public BSettingVM()
         {
-            string path = Environment.CurrentDirectory;
-            path += "\\img_data\\";
+            string path = Environment.CurrentDirectory + "\\img_data\\";
             ImgFolderPath = path;
             SettingShowFolderPathCmd = new RelayCommand(new Action<object>(ShowImgPathFolder));
 
@@ -84,27 +83,16 @@ namespace BTea
 
         public void ShowImgPathFolder(object obj)
         {
-            bool isValid = true;
             if (ImgFolderPath != "")
             {
                 if (Directory.Exists(ImgFolderPath) == true)
                 {
                     Process.Start("explorer.exe", ImgFolderPath);
+                    return;
                 }
-                else
-                {
-                    isValid = false;
-                }
-            }
-            else
-            {
-                isValid = false;
             }
 
-            if (isValid == false)
-            {
-                MessageBox.Show("Đường dẫn không tồn tại", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            TConst.MsgError("Đường dẫn không tồn tại.");
         }
     }
 }

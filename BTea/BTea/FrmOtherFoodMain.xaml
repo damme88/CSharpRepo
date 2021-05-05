@@ -17,9 +17,10 @@
                 <Button Command="{Binding CmdEditOtherFood}" Style="{StaticResource BtnBase}" Content="Sửa"></Button>
                 <Button Command="{Binding CmdDeleteOtherFood}" Style="{StaticResource BtnBase}" Content="Xóa"></Button>
                 <TextBlock Text="Số Lượng:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"></TextBlock>
-                <TextBox Width="100" Height="30" HorizontalAlignment="Center"
+                <TextBox Width="60" Height="30" HorizontalAlignment="Center"
                          Text="{Binding OtherFoodCount}"
                          VerticalAlignment="Center" Margin="5" IsReadOnly="True"></TextBox>
+                <Button Style="{StaticResource BtnBase100}" Command="{Binding ImgPathCmd}" Content="Mở Folder Ảnh"></Button>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">

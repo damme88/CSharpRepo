@@ -16,19 +16,19 @@ namespace BTea
         {
             ;
         }
-        public PrintBillIData(string name, string num, string sPrice, string tPrice)
+        public PrintBillIData(string name, string num, string sPrice, string kmproduct, string tPrice)
         {
             NameProduct = name;
             NumberProduct = num;
-            SinglePrice = sPrice;
+            BasePriceProduct = sPrice;
             SumPrice = tPrice;
         }
 
         public string NameProduct { set; get; }
         public string NumberProduct { set; get; }
 
-        public string SinglePrice { set; get; }
-
+        public string BasePriceProduct { set; get; }
+        public string KMProduct { set; get; }
         public string SumPrice { set; get; }
     }
     class FrmPrintBillVM : TBaseVM
@@ -81,19 +81,28 @@ namespace BTea
             _isVisibleDrinkBill = Visibility.Collapsed;
         }
 
-        public void SetInfo(string pName, string pTableNumber, string pCreator, string pDate, string totalPrice, string totalNumber)
+        public void SetInfo(string pName, 
+                            string pTableNumber, 
+                            string pCreator, 
+                            string pDate, 
+                            string totalKm,
+                            string totalPrice, 
+                            string totalNumber)
         {
             _printBillName = pName;
             _printBillTableNumber = pTableNumber;
             _printBillDate = pDate;
             _printBillCreator = pCreator;
             _printTotalPrice = totalPrice;
+            _printTotalKM = totalKm;
             PrintTotalNumber = totalNumber;
 
             BillShopName = ConfigurationManager.AppSettings["shopname"].ToString();
             BillShopPhone = ConfigurationManager.AppSettings["shopphone"].ToString();
             BillShopAddress = ConfigurationManager.AppSettings["shopaddress"].ToString();
             BillShopFanpge = ConfigurationManager.AppSettings["shopface"].ToString();
+
+            BillMsgInfo = "Cảm ơn Qúy Khách!\n Hẹn gặp lại sau.";
         }
         #endregion
 
@@ -159,6 +168,14 @@ namespace BTea
             set { _printTotalPrice = value; OnPropertyChange("PrintTotalPrice"); }
         }
 
+        private string _printTotalKM;
+        public string PrintTotalKM
+        {
+            get { return _printTotalKM; }
+            set { _printTotalKM = value; OnPropertyChange("PrintTotalKM"); }
+        }
+
+
         private string _printTotalPriceDrink;
         public string PrintTotalPriceDrink
         {
@@ -212,6 +229,8 @@ namespace BTea
         public string BillShopAddress { set; get; }
 
         public string BillShopFanpge { set; get; }
+
+        public string BillMsgInfo { set; get; }
         #endregion
     }
 }

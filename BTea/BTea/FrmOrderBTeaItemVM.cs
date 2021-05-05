@@ -93,8 +93,8 @@ namespace BTea
             _orderItems = new ObservableCollection<OrderBTeaItem>();
 
             _tkrankItem = new List<RankItem>();
-            _tkrankItem.Add(new RankItem(0, "Theo so luong"));
-            _tkrankItem.Add(new RankItem(1, "Theo gia tien"));
+            _tkrankItem.Add(new RankItem(0, "Theo số lượng"));
+            _tkrankItem.Add(new RankItem(1, "Theo giá tiền"));
 
             _tkSelectedRankItem = _tkrankItem[0];
             DoTKTotal();

@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.IO;
+using System.Diagnostics;
+
 using TApp.Base;
 
 namespace BTea
@@ -28,6 +31,7 @@ namespace BTea
             CmdAddOtherFood = new RelayCommand(new Action<object>(DoAddOtherFood));
             CmdEditOtherFood = new RelayCommand(new Action<object>(DoEditOtherFood));
             CmdDeleteOtherFood = new RelayCommand(new Action<object>(DoDeleteOtherFood));
+            ImgPathCmd = new RelayCommand(new Action<object>(DoImgPathCmd));
 
             _frmOtherFoodVM = new FrmOtherFoodVM(OtherFoodAddEditDoneCmd);
         }
@@ -36,6 +40,7 @@ namespace BTea
         public RelayCommand CmdAddOtherFood { set; get; }
         public RelayCommand CmdEditOtherFood { set; get; }
         public RelayCommand CmdDeleteOtherFood { set; get; }
+        public RelayCommand ImgPathCmd { set; get; }
 
         private FrmOtherFoodVM _frmOtherFoodVM;
         private string CodeOtherFood;
@@ -78,6 +83,23 @@ namespace BTea
         #endregion
 
         #region Method
+
+        public void DoImgPathCmd(object sender)
+        {
+            string path = Environment.CurrentDirectory;
+            path += "\\img_data\\";
+
+            if (path != "")
+            {
+                if (Directory.Exists(path) == true)
+                {
+                    Process.Start("explorer.exe", path);
+                    return;
+                }
+            }
+
+            TConst.MsgError("Folder ảnh không tồn tại.");
+        }
         public void DoAddOtherFood(object sender)
         {
             if (_frmOtherFoodVM != null)

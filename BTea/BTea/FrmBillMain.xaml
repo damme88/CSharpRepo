@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Số lượng hoa don:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <TextBlock Text="Số lượng hóa đơn:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
                 <TextBox Width="100" Height="30" HorizontalAlignment="Center"
                          Text="{Binding BillCount}"
                          VerticalContentAlignment="Center" Margin="5" IsReadOnly="True"></TextBox>

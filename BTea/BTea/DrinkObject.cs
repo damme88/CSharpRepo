@@ -67,6 +67,16 @@ namespace BTea
             }
             return strTp;
         }
+        public string ToppingIDToString()
+        {
+            string str = "";
+            for (int i = 0; i < _tpListObj.Count; i++)
+            {
+                string sId = _tpListObj[i].BId;
+                str = str + sId + ",";
+            }
+            return str;
+        }
 
         public string ToppingToStringSingleLine()
         {

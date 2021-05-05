@@ -327,6 +327,8 @@ namespace BTea
                 dataItem.NumberProduct = orderItem.OrderNum;
                 dataItem.SumPrice = orderItem.OrderPrice;
                 dataItem.NameProduct = orderItem.MakePrintDescription();
+                dataItem.BasePriceProduct = orderItem.OrderObject.BPrice.ToString();
+
                 if (orderItem.OrderObject.Type == BTBaseObject.BTeaType.DRINK_TYPE)
                 {
                     PrintBillIData dataItemDrink = new PrintBillIData();
@@ -376,9 +378,26 @@ namespace BTea
             string billCreator = _selectedBillItem.BillCreator;
             string billDate = _selectedBillItem.BillDate;
             string billPrice = _selectedBillItem.BillPrice;
+            string billKm = _selectedBillItem.BillKM;
+            if (billKm == "0")
+            {
+                billKm = "";
+            }
+            else
+            {
+                if (_selectedBillItem.BillKMType == "%")
+                {
+                    billKm += "%";
+                }
+                else
+                {
+                    billKm += "đ";
+                }
+            }
+            
 
             _printVM.SetInfo(billName, billNumber, billCreator,
-                            billDate, billPrice,
+                            billDate, billKm, billPrice,
                             totalNumber.ToString());
 
             _printVM.SetInfoDrink(totalNumDrink, totalPriceDrink);

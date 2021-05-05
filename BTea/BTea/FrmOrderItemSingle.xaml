@@ -32,7 +32,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <TextBlock Text="Khuyen mai" Margin="5"></TextBlock>
+            <TextBlock Text="Khuyễn mãi" Margin="5"></TextBlock>
             <StackPanel Orientation="Horizontal">
                 <TextBox Text="{Binding OrderSingleItemKM, UpdateSourceTrigger=PropertyChanged}" FontSize="12"  Width="80" Height="30" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBox>
                 <StackPanel Orientation="Vertical">

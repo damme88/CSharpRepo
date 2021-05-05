@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +30,7 @@ namespace BTea
             CmdAddTopping = new RelayCommand(new Action<object>(DoAddTopping));
             CmdEditTopping = new RelayCommand(new Action<object>(DoEditTopping));
             CmdDeleteTopping = new RelayCommand(new Action<object>(DoDeleteTopping));
-
+            ImgPathCmd = new RelayCommand(new Action<object>(DoImgPathCmd));
             _frmToppingVM = new FrmToppingVM(ToppingAddEditDoneCmd);
         }
 
@@ -36,6 +38,7 @@ namespace BTea
         public RelayCommand CmdAddTopping { set; get; }
         public RelayCommand CmdEditTopping { set; get; }
         public RelayCommand CmdDeleteTopping { set; get; }
+        public RelayCommand ImgPathCmd { set; get; }
 
         private FrmToppingVM _frmToppingVM;
         private string CodeTopping;
@@ -78,6 +81,23 @@ namespace BTea
         #endregion
 
         #region Method
+        public void DoImgPathCmd(object sender)
+        {
+            string path = Environment.CurrentDirectory;
+            path += "\\img_data\\";
+
+            if (path != "")
+            {
+                if (Directory.Exists(path) == true)
+                {
+                    Process.Start("explorer.exe", path);
+                    return;
+                }
+            }
+
+            TConst.MsgError("Folder ảnh không tồn tại.");
+        }
+
         public void DoAddTopping(object sender)
         {
             if (_frmToppingVM != null)

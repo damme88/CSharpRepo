@@ -17,10 +17,11 @@
                 <Button Command="{Binding CmdAddDrink}" Style="{StaticResource BtnBase}" Content="Thêm"></Button>
                 <Button Command="{Binding CmdEditDrink}" Style="{StaticResource BtnBase}" Content="Sửa"></Button>
                 <Button Command="{Binding CmdDeleteDrink}" Style="{StaticResource BtnBase}" Content="Xóa"></Button>
-                <TextBlock Text="So luong:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
-                <TextBox Width="100" Height="30" HorizontalAlignment="Center"
+                <TextBlock Text="Số lượng :" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <TextBox Width="60" Height="30" HorizontalAlignment="Center"
                          Text="{Binding DrinkCount}"
                          VerticalAlignment="Center" Margin="5" IsReadOnly="True"></TextBox>
+                <Button Style="{StaticResource BtnBase100}" Command="{Binding ImgPathCmd}" Content="Mở Folder Ảnh"></Button>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">

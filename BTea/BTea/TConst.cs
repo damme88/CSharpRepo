@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BTea
 {
@@ -11,12 +12,16 @@ namespace BTea
     {
         public const string K_MONEY_FORMAT = "#,##0;(#,##0)";
         public const string K_MONEY_FORMAT2 = "#,##0.00;(#,##0.00)";
+        public const string K_S_INFO = "Thông báo";
+        public const string K_S_LIST_EMPTY = "Danh sách trống";
         public const int K_KM_PERCENT = 0;
         public const int K_KM_VND = 1;
         public const int K_TK_TOTAL = 0;
         public const int K_TK_DAY = 1;
         public const int K_TK_MONTH = 2;
         public const int K_TK_YEAR = 3;
+        public const int K_SIZE_M = 0;
+        public const int K_SIZE_L = 1;
         static public int ConvertInt(string strVal)
         {
             int val = 0;
@@ -45,6 +50,28 @@ namespace BTea
             }
 
             return iVal;
+        }
+
+        static public MessageBoxResult MsgYNQ(string content)
+        {
+
+            return MessageBox.Show(content, K_S_INFO,
+                               MessageBoxButton.YesNo,
+                               MessageBoxImage.Question);
+        }
+
+        static public void MsgInfo(string content)
+        {
+            MessageBox.Show(content, K_S_INFO,
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+        }
+
+        static public void MsgError(string content)
+        {
+            MessageBox.Show(content, K_S_INFO,
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
         }
     }
 }
