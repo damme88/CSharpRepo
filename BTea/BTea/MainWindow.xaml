@@ -26,6 +26,7 @@
                     <MenuItem Header="File">
                         <MenuItem Header="Thông tin" Command="{Binding FileAboutCmd}"></MenuItem>
                         <MenuItem Header="Cài đặt chung" Command="{Binding FileSettingCmd}"></MenuItem>
+                        <MenuItem Header="Backup DB" Command="{Binding FileBackupDBCmd}"></MenuItem>
                         <MenuItem Header="Đóng ứng dụng" Command="{Binding FileCloseCmd}"></MenuItem>
                     </MenuItem>
                     <MenuItem Header="Tài liệu">

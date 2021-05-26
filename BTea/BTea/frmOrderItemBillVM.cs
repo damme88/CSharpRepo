@@ -60,32 +60,23 @@ namespace BTea
                     string strTp = "";
 
                     int size = obj.BOrderSize;
-                    string sSize = "";
-                    if (size == 0)
-                    {
-                        sSize = "M";
-                    }
-                    else
-                    {
-                        sSize = "L";
-                    }
+                    if (size == 0) strSizeSI = "Size: M";
+                    else strSizeSI = "Size: L";
 
                     string sSugar = obj.SugarToString();
                     string sIce = obj.IceToString();
 
-                    strSizeSI = "Size: " + sSize;
                     if (sSugar != string.Empty)
                     {
-                        strSizeSI += ";" + "Đường: " + sSugar;
+                        strSizeSI += ";Đường: " + sSugar;
                     }
 
                     if (sIce != string.Empty)
                     {
-                        strSizeSI += ";" + "Đá: " + sIce;
+                        strSizeSI += ";Đá: " + sIce;
                     }
 
                     strSizeSI += "\n";
-
                     strTp = obj.ToppingToString();
 
                     if (strTp != string.Empty)

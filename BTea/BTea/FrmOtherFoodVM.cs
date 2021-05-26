@@ -139,9 +139,8 @@ namespace BTea
             }
             else
             {
-                string strInfo = "Thông báo";
                 string strContent = "Tối thiểu cần tên sản phẩm.";
-                MessageBox.Show(strContent, strInfo, MessageBoxButton.OK, MessageBoxImage.Information);
+                TConst.MsgInfo(strContent);
             }
         }
         #endregion

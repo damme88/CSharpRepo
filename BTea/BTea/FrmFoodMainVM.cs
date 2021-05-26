@@ -142,9 +142,10 @@ namespace BTea
 
         public void DoDeleteFood(object sender)
         {
-            string strQa = "Dữ liệu sẽ được xóa trong Database. \nBạn có chắc chắn muốn xóa sản phẩm này ?";
-            string strInFor = "Thông báo";
-            MessageBoxResult msg = MessageBox.Show(strQa, strInFor, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            string strQa = "Dữ liệu sẽ được xóa trong Database.";
+            strQa += "\nBạn có chắc chắn muốn xóa sản phẩm này ?";
+
+            MessageBoxResult msg = TConst.MsgYNQ(strQa);
             if (msg == MessageBoxResult.No)
             {
                 return;
@@ -155,15 +156,7 @@ namespace BTea
             {
                 string strId = fItem.Id;
                 string subId = strId.Replace(CodeFood, "");
-                int nId = 0;
-                try
-                {
-                    nId = Convert.ToInt32(subId);
-                }
-                catch (Exception ex)
-                {
-                    nId = -1;
-                }
+                int nId = TConst.ConvertInt(subId);
 
                 if (nId > 0)
                 {

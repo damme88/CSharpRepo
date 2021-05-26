@@ -22,7 +22,7 @@ namespace BTea
         public int BOrderSugarRate { set; get; }
         public int BOrderIceRate { set; get; }
         public string BOrderTopping { set; get; }
-        public string BOrderBillId { set; get; }
+        public string BOrderBillName { set; get; }
         public DateTime BOrderDate { set; get; }
         public int BOrderKm { set; get; }
 

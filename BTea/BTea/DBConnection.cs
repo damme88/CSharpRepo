@@ -969,7 +969,7 @@ namespace BTea
                         OrderObj.BOrderSugarRate = TConst.ConvertInt(sSugar);
                         OrderObj.BOrderIceRate = TConst.ConvertInt(sIce);
                         OrderObj.BOrderTopping = sTopping;
-                        OrderObj.BOrderBillId = sBillId;
+                        OrderObj.BOrderBillName = sBillId;
                         OrderObj.BOrderDate = Convert.ToDateTime(sOrderDate);
                         OrderObj.BOrderKmType = TConst.ConvertInt(sOrderKmType);
                         if (OrderObj.BOrderKmType == TConst.K_KM_PERCENT)
@@ -1032,7 +1032,7 @@ namespace BTea
                 cmd.Parameters.Add(new MySqlParameter("inSugarRate", bOrderItem.BOrderSugarRate));
                 cmd.Parameters.Add(new MySqlParameter("inIceRate", bOrderItem.BOrderIceRate));
                 cmd.Parameters.Add(new MySqlParameter("inTopping", bOrderItem.BOrderTopping));
-                cmd.Parameters.Add(new MySqlParameter("inBillId", bOrderItem.BOrderBillId));
+                cmd.Parameters.Add(new MySqlParameter("inBillId", bOrderItem.BOrderBillName));
                 cmd.Parameters.Add(new MySqlParameter("inOrderDate", bOrderItem.BOrderDate));
                 cmd.Parameters.Add(new MySqlParameter("inKm", bOrderItem.BOrderKm));
                 cmd.Parameters.Add(new MySqlParameter("inKmType", bOrderItem.BOrderKmType));
@@ -1069,7 +1069,7 @@ namespace BTea
                 cmd.Parameters.Add(new MySqlParameter("inSugarRate", orderItem.BOrderSugarRate));
                 cmd.Parameters.Add(new MySqlParameter("inIceRate", orderItem.BOrderIceRate));
                 cmd.Parameters.Add(new MySqlParameter("inTopping", orderItem.BOrderTopping));
-                cmd.Parameters.Add(new MySqlParameter("inBillId", orderItem.BOrderBillId));
+                cmd.Parameters.Add(new MySqlParameter("inBillId", orderItem.BOrderBillName));
                 cmd.Parameters.Add(new MySqlParameter("inOrderDate", orderItem.BOrderDate));
                 cmd.Parameters.Add(new MySqlParameter("inKm", orderItem.BOrderKm));
                 cmd.Parameters.Add(new MySqlParameter("inKmType", orderItem.BOrderKmType));

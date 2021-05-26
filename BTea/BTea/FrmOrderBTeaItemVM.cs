@@ -49,7 +49,7 @@ namespace BTea
 
         public string OrderItemTopping { set; get; }
 
-        public string OrderItemBillId { set; get; }
+        public string OrderItemBillName { set; get; }
 
         public string OrderItemOrderDate { set; get; }
 
@@ -79,29 +79,27 @@ namespace BTea
 
             _isCheckTKTotal = true;
             _isCheckTKType = false;
-            _tKTypeItems = new List<BTTypeItem>();
-
-            _tKTypeItems.Add(new BTTypeItem((int)BTBaseObject.BTeaType.DRINK_TYPE, "Đồ Uống"));
-            _tKTypeItems.Add(new BTTypeItem((int)BTBaseObject.BTeaType.FOOD_TYPE, "Đồ Nhâm Nhi"));
-            _tKTypeItems.Add(new BTTypeItem((int)BTBaseObject.BTeaType.OTHER_TYPE, "Đồ Lặt Vặt"));
-            _tKTypeItems.Add(new BTTypeItem((int)BTBaseObject.BTeaType.TOPPING_TYPE, "Topping"));
-
-            _seletedTKTypeItem = _tKTypeItems[0];
             _isCheckRankItem = false;
-            TKApplyCommand = new RelayCommand(new Action<object>(DoTKApply));
 
-            _orderItems = new ObservableCollection<OrderBTeaItem>();
+            _tKTypeItems = new List<BTTypeItem>();
+            _tKTypeItems.Add(new BTTypeItem((int)BTBaseObject.BTeaType.DRINK_TYPE,   "Đồ Uống"));
+            _tKTypeItems.Add(new BTTypeItem((int)BTBaseObject.BTeaType.FOOD_TYPE,    "Đồ Nhâm Nhi"));
+            _tKTypeItems.Add(new BTTypeItem((int)BTBaseObject.BTeaType.OTHER_TYPE,   "Đồ Lặt Vặt"));
+            _tKTypeItems.Add(new BTTypeItem((int)BTBaseObject.BTeaType.TOPPING_TYPE, "Topping"));
+            _seletedTKTypeItem = _tKTypeItems[0];
 
             _tkrankItem = new List<RankItem>();
             _tkrankItem.Add(new RankItem(0, "Theo số lượng"));
             _tkrankItem.Add(new RankItem(1, "Theo giá tiền"));
-
             _tkSelectedRankItem = _tkrankItem[0];
+
+            TKApplyCommand = new RelayCommand(new Action<object>(DoTKApply));
+            _orderItems = new ObservableCollection<OrderBTeaItem>();
+
             DoTKTotal();
         }
 
         #region MEMBER
-        #endregion
         private ObservableCollection<OrderBTeaItem> _orderItems;
         private OrderBTeaItem _selectedOrderItem;
         private int _orderItemsCount = 0;
@@ -115,6 +113,8 @@ namespace BTea
         private List<BTTypeItem> _tKTypeItems;
         private BTTypeItem _seletedTKTypeItem;
         public RelayCommand TKApplyCommand { set; get; }
+        #endregion
+
         #region PROPERTY
 
         public bool IsCheckTKTotal
@@ -252,17 +252,17 @@ namespace BTea
             if (_orderItems != null)
                 _orderItems.Clear();
 
-            List<BTeaOrderObject> listOrder = DBConnection.GetInstance().GetDataOrderObject();
+            List<BTeaOrderObject> dbOrderList = DBConnection.GetInstance().GetDataOrderObject();
             int totalItem = 0;
-            for (int i = 0; i < listOrder.Count; ++i)
+            for (int i = 0; i < dbOrderList.Count; ++i)
             {
-                BTeaOrderObject obj = listOrder[i];
+                BTeaOrderObject obj = dbOrderList[i];
                 OrderBTeaItem objItem = new OrderBTeaItem();
 
-                objItem.OrderItemId = obj.BOrderIdItem;
-                objItem.OrderItemName = obj.BOrderName;
-                objItem.OrderItemPrice = obj.BOrderPrice.ToString(TConst.K_MONEY_FORMAT);
-                objItem.OrderItemNum = obj.BOrderNum.ToString();
+                objItem.OrderItemId     = obj.BOrderIdItem;
+                objItem.OrderItemName   = obj.BOrderName;
+                objItem.OrderItemPrice  = obj.BOrderPrice.ToString(TConst.K_MONEY_FORMAT);
+                objItem.OrderItemNum    = obj.BOrderNum.ToString();
                 totalItem += obj.BOrderNum;
                 if (obj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
                 {
@@ -273,12 +273,13 @@ namespace BTea
                 }
                 else
                 {
-                    objItem.OrderItemSize = "";
-                    objItem.OrderItemSRate = "";
-                    objItem.OrderItemIRate = "";
+                    objItem.OrderItemSize = "X";
+                    objItem.OrderItemSRate = "X";
+                    objItem.OrderItemIRate = "X";
                     objItem.OrderItemTopping = "X";
                 }
-                objItem.OrderItemBillId = obj.BOrderBillId.ToString();
+
+                objItem.OrderItemBillName = obj.BOrderBillName.ToString();
                 objItem.OrderItemOrderDate = obj.BOrderDate.ToString("dd-MMM-yyyy");
                 if (obj.BOrderKmType == TConst.K_KM_VND)
                 {
@@ -337,12 +338,12 @@ namespace BTea
                     }
                     else
                     {
-                        objItem.OrderItemSize = "";
-                        objItem.OrderItemSRate = "";
-                        objItem.OrderItemIRate = "";
+                        objItem.OrderItemSize = "X";
+                        objItem.OrderItemSRate = "X";
+                        objItem.OrderItemIRate = "X";
                         objItem.OrderItemTopping = "X";
                     }
-                    objItem.OrderItemBillId = obj.BOrderBillId.ToString();
+                    objItem.OrderItemBillName = obj.BOrderBillName.ToString();
                     objItem.OrderItemOrderDate = obj.BOrderDate.ToString("dd-MMM-yyyy");
                     if (obj.BOrderKmType == TConst.K_KM_VND)
                     {
@@ -399,7 +400,7 @@ namespace BTea
                 }
                 bItem.OrderItemNum = numberTotal.ToString();
                 bItem.OrderItemPrice = priceTotal.ToString(TConst.K_MONEY_FORMAT);
-                bItem.OrderItemBillId = "X";
+                bItem.OrderItemBillName = "X";
                 bItem.OrderItemIRate = "X";
                 bItem.OrderItemKM = "X";
                 bItem.OrderItemKMType = "X";

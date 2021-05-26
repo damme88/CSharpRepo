@@ -1,7 +1,10 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -390,6 +393,7 @@ namespace BTea
             //Command for file menu
             FileAboutCmd  = new RelayCommand(new Action<object>(DoAboutMenu));
             FileSettingCmd = new RelayCommand(new Action<object>(DoSettingMenu));
+            FileBackupDBCmd = new RelayCommand(new Action<object>(DoBackupDB));
             FileCloseCmd = new RelayCommand(new Action<object>(DoCloseMenu));
             FileEB1Cmd = new RelayCommand(new Action<object>(DoEbook1Menu));
             FileEB2Cmd = new RelayCommand(new Action<object>(DoEbook2Menu));
@@ -614,6 +618,7 @@ namespace BTea
 
         public RelayCommand FileAboutCmd { set; get; }
         public RelayCommand FileSettingCmd { set; get; }
+        public RelayCommand FileBackupDBCmd { set; get; }
         public RelayCommand FileCloseCmd { set; get; }
         public RelayCommand FileEB1Cmd { set; get; }
         public RelayCommand FileEB2Cmd { set; get; }
@@ -723,6 +728,53 @@ namespace BTea
             settingDlg.DataContext = _settingVM;
             settingDlg.ShowDialog();
         }
+
+        public void DoBackupDB(object obj)
+        {
+            string _mServer = ConfigurationManager.AppSettings["server"].ToString();
+            string _mDBName = ConfigurationManager.AppSettings["dbname"].ToString();
+            string _mUserName = ConfigurationManager.AppSettings["username"].ToString();
+            string _mPassword = ConfigurationManager.AppSettings["password"].ToString();
+            string _mPort = ConfigurationManager.AppSettings["port"].ToString();
+
+            string connectionString = "server=" + _mServer +
+                               ";user=" + _mUserName +
+                               ";pwd=" + _mPassword +
+                               ";database=" + _mDBName;
+
+            string path = Environment.CurrentDirectory;
+            if (Directory.Exists(path) == false)
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string file = path + "\\backup_db.sql";
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    using (MySqlBackup mb = new MySqlBackup(cmd))
+                    {
+                        try
+                        {
+                            cmd.Connection = conn;
+                            conn.Open();
+                            mb.ExportToFile(file);
+                            conn.Close();
+                            TConst.MsgInfo("Backup Successful!");
+                            Process.Start("explorer.exe", path);
+                        }
+                        catch(Exception ex)
+                        {
+                            string str = "Backup DB failed. Error = ";
+                            str += ex.Message;
+                            Tlog.GetInstance().WriteLog(str);
+                        }
+                    }
+                }
+            }
+        }
+
         public void DoCloseMenu(object obj)
         {
             Application.Current.Shutdown();
@@ -1011,7 +1063,7 @@ namespace BTea
                 bOrderObj.BOrderName    = bObj.BName;
                 bOrderObj.Type          = bObj.Type;
                 bOrderObj.BOrderIdItem  = bObj.BId;
-                bOrderObj.BOrderBillId  = _billName;
+                bOrderObj.BOrderBillName  = _billName;
                 bOrderObj.BOrderDate    = _billStartDate;
                 bOrderObj.BOrderKmType  = _dataOrderList[i].GetKmType();
                 bOrderObj.BOrderKm      = _dataOrderList[i].GetKmValue();
@@ -1041,7 +1093,7 @@ namespace BTea
                 List<BTeaOrderObject> dbOrderList = DBConnection.GetInstance().GetDataOrderObject();
                 for (int i = 0; i < dbOrderList.Count; i++)
                 {
-                    if (dbOrderList[i].BOrderBillId == _billName)
+                    if (dbOrderList[i].BOrderBillName == _billName)
                     {
                         strOrderItem = strOrderItem + dbOrderList[i].BOrderId + ",";
                     }

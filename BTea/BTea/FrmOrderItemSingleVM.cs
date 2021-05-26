@@ -46,7 +46,7 @@ namespace BTea
                 {
                     ToppingItemCheck item = new ToppingItemCheck();
 
-                    item.Id = Convert.ToInt32(toppingObj.BId);
+                    item.Id = TConst.ConvertInt(toppingObj.BId);
                     item.IsSelected = false;
                     item.Content = toppingObj.BName;
                     _toppingItemList.Add(item);

@@ -143,10 +143,10 @@ namespace BTea
 
         public void DoDeleteOtherFood(object sender)
         {
+            string strQa = "Dữ liệu sẽ được xóa trong Database.";
+            strQa += "\nBạn có chắc chắn muốn xóa sản phẩm này ?";
 
-            string strQa = "Dữ liệu sẽ được xóa trong Database. \nBạn có chắc chắn muốn xóa sản phẩm này ?";
-            string strInFor = "Thông báo";
-            MessageBoxResult msg = MessageBox.Show(strQa, strInFor, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult msg = TConst.MsgYNQ(strQa);
             if (msg == MessageBoxResult.No)
             {
                 return;
@@ -157,16 +157,7 @@ namespace BTea
             {
                 string strId = ofItem.Id;
                 string subId = strId.Replace(CodeOtherFood, "");
-                int nId = 0;
-                try
-                {
-                    nId = Convert.ToInt32(subId);
-                }
-                catch (Exception ex)
-                {
-                    nId = -1;
-                }
-
+                int nId = TConst.ConvertInt(subId);
                 if (nId > 0)
                 {
                     bool bRet = DBConnection.GetInstance().DeleteOtherFoodItem(nId);
@@ -187,6 +178,7 @@ namespace BTea
                 frmOtherFood.DialogResult = true;
             }
         }
+
         public void GetDataOtherFoodFromDB()
         {
             List<OtherFoodObject> data_list = DBConnection.GetInstance().GetDataOtherFood();

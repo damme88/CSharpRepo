@@ -45,11 +45,6 @@ namespace BTea
             SelectedTKMonth = _tkMonth[0];
 
             _tkYear = new List<string>();
-            _tkYear.Add("2015");
-            _tkYear.Add("2016");
-            _tkYear.Add("2017");
-            _tkYear.Add("2018");
-            _tkYear.Add("2019");
             _tkYear.Add("2020");
             _tkYear.Add("2021");
             _tkYear.Add("2022");
@@ -259,34 +254,24 @@ namespace BTea
                     string strTp = "";
 
                     int size = obj.BOrderSize;
-                    string sSize = "";
-                    if (size == 0)
-                    {
-                        sSize = "M";
-                    }
-                    else
-                    {
-                        sSize = "L";
-                    }
+                    if (size == 0) strSizeSI = "Size: M";
+                    else           strSizeSI = "Size: L";
 
                     string sSugar = obj.SugarToString();
                     string sIce = obj.IceToString();
 
-                    strSizeSI = "Size: " + sSize;
                     if (sSugar != string.Empty)
                     {
-                        strSizeSI += ";" + "Đường: " + sSugar;
+                        strSizeSI += ";Đường: " + sSugar;
                     }
 
                     if (sIce != string.Empty)
                     {
-                        strSizeSI += ";" + "Đá: " + sIce;
+                        strSizeSI += ";Đá: " + sIce;
                     }
 
                     strSizeSI += "\n";
-
                     strTp = obj.ToppingToString();
-
                     if (strTp != string.Empty)
                     {
                         objItem.OrderNote = strSizeSI + "Topping: " + strTp;
@@ -407,9 +392,10 @@ namespace BTea
 
         public void DoDeleteBill(object obj)
         {
-            string strQa = "Dữ liệu sẽ được xóa trong Database(xóa vĩnh viễn). \nBạn có chắc chắn muốn xóa hóa đơn này?";
-            string strInFor = "Thông báo";
-            MessageBoxResult msg = MessageBox.Show(strQa, strInFor, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            string sCap = "Dữ liệu sẽ được xóa trong Database(xóa vĩnh viễn).";
+            sCap += "\nBạn có chắc chắn muốn xóa hóa đơn này?";
+
+            MessageBoxResult msg = TConst.MsgYNQ(sCap);
             if (msg == MessageBoxResult.No)
             {
                 return;
