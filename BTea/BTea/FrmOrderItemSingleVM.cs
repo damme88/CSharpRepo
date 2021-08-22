@@ -84,11 +84,13 @@ namespace BTea
             {
                 _kMSVNDType = true;
                 _kMSPercentType = false;
+                _kmType = TConst.K_KM_VND;
             }
             else
             {
                 _kMSVNDType = false;
                 _kMSPercentType = true;
+                _kmType = TConst.K_KM_PERCENT;
             }
         }
 
@@ -216,7 +218,19 @@ namespace BTea
             set
             {
                 string val = value;
-                _orderSingleItemKM = TConst.ConvertMoney(val);
+                int iVal = TConst.ConvertMoney(val);
+                if (_kmType == TConst.K_KM_PERCENT)
+                {
+                    if (iVal >= 0 && iVal <= 100)
+                    {
+                        _orderSingleItemKM = iVal;
+                    }
+                }
+                else
+                {
+                    _orderSingleItemKM = iVal;
+                }
+
                 OnPropertyChange("OrderSingleItemKM");
             }
         }

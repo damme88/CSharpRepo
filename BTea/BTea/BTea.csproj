@@ -143,6 +143,10 @@
     </Compile>
     <Compile Include="FrmToppingMainVM.cs" />
     <Compile Include="FrmToppingVM.cs" />
+    <Compile Include="FrmWaitOrder.xaml.cs">
+      <DependentUpon>FrmWaitOrder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FrmWaitOrderVM.cs" />
     <Compile Include="OtherFoodObject.cs" />
     <Compile Include="TConst.cs" />
     <Compile Include="Tlog.cs" />
@@ -204,6 +208,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FrmToppingMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FrmWaitOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -294,6 +302,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="btea.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\wait_order_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

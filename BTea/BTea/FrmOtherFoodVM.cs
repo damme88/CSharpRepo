@@ -130,11 +130,11 @@ namespace BTea
         {
             if (_ofName != string.Empty)
             {
-                OtherFoodObject tpItem = new OtherFoodObject();
-                tpItem.BName = _ofName;
-                tpItem.BPrice = _ofPrice;
-                tpItem.BNote = _ofNote;
-                bool bRet = DBConnection.GetInstance().AddOtherFoodItem(tpItem);
+                OtherFoodObject otherFoodItem = new OtherFoodObject();
+                otherFoodItem.BName = _ofName;
+                otherFoodItem.BPrice = _ofPrice;
+                otherFoodItem.BNote = _ofNote;
+                bool bRet = DBConnection.GetInstance().AddOtherFoodItem(otherFoodItem);
                 _pOtherFoodMethod.Invoke();
             }
             else

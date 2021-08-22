@@ -27,7 +27,7 @@ namespace BTea
                                ";port=" + _mPort +
                                ";User Id=" + _mUserName +
                                ";password=" + _mPassword +
-                               ";CharSet = utf8";
+                               ";CharSet = utf8mb4";
             try
             {
                 _connection = new MySqlConnection(connectionString);
@@ -488,7 +488,7 @@ namespace BTea
             bool bRet = false;
             if (this.ConnectionDB() == true)
             {
-                MySqlCommand cmd = new MySqlCommand("AddOtherFoodItem", _connection);
+                MySqlCommand cmd = new MySqlCommand("AddOtherFood", _connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new MySqlParameter("inName", otherfoodItem.BName));
@@ -1116,6 +1116,277 @@ namespace BTea
                 catch (System.Exception ex)
                 {
                     Tlog.GetInstance().WriteLog("Delete OrderItem that bai: " + ex.Message);
+                    bRet = false;
+                }
+
+                if (result == 1)
+                {
+                    bRet = true;
+                }
+                else
+                {
+                    bRet = false;
+                }
+            }
+            CloseDB();
+            return bRet;
+        }
+
+        public List<BillObject> GetWaitBillObject()
+        {
+            string query = "SELECT * FROM waitordertbl";
+
+            List<BillObject> billObjectList = new List<BillObject>();
+
+            //Open connection
+            if (this.ConnectionDB() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+
+                try
+                {
+                    //Create a data reader and Execute the command
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                    //Read the data and store them in the list
+                    while (dataReader.Read())
+                    {
+                        string sId = dataReader["Id"] + "";
+                        string sName = dataReader["BName"] + "";
+                        string sPrice = dataReader["BPrice"] + "";
+                        string sOrderItem = dataReader["BOrderItem"] + "";
+
+                        BillObject billObj = new BillObject();
+                        billObj.BillId = TConst.ConvertInt(sId);
+                        billObj.BillName = sName;
+                        billObj.BillPrice = TConst.ConvertInt(sPrice);
+                        billObj.BillOrderItem = sOrderItem;
+                        billObjectList.Add(billObj);
+                    }
+
+                    Tlog.GetInstance().WriteLog("Get Wait Order DB thanh cong.");
+                    //close Data Reader
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    string msg = "Get Wait Order DB that bai. ";
+                    msg += ex;
+
+                    Tlog.GetInstance().WriteLog(msg);
+                    CloseDB();
+                    return billObjectList;
+                }
+                //close Connection
+                CloseDB();
+            }
+            return billObjectList;
+        }
+
+        public bool AddWaitBillItem(BillObject billItem)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("AddWaitOrder", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new MySqlParameter("WName", billItem.BillName));
+                cmd.Parameters.Add(new MySqlParameter("WPrice", billItem.BillPrice));
+                cmd.Parameters.Add(new MySqlParameter("WOrderList", billItem.BillOrderItem));
+                try
+                {
+                    int result = cmd.ExecuteNonQuery();
+                    bRet = true;
+                    Tlog.GetInstance().WriteLog("Luu Tam Hoa Don thanh cong");
+                }
+                catch (System.Exception ex)
+                {
+                    Tlog.GetInstance().WriteLog("Luu Tam Hoa Don that bai");
+                    bRet = false;
+                }
+            }
+
+            CloseDB();
+            return bRet;
+        }
+
+
+        public List<BTeaOrderObject> GetWaitItemObject()
+        {
+            string query = "SELECT * FROM waititemtbl";
+
+            List<BTeaOrderObject> OderList = new List<BTeaOrderObject>();
+
+            //Open connection
+            if (this.ConnectionDB() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+
+                try
+                {
+                    //Create a data reader and Execute the command
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+                    //Read the data and store them in the list
+                    while (dataReader.Read())
+                    {
+                        string sId = dataReader["Id"] + "";
+                        string sIdItem = dataReader["IdItem"] + "";
+                        string sName = dataReader["Name"] + "";
+                        string sNum = dataReader["Number"] + "";
+                        string sPrice = dataReader["Price"] + "";
+                        string sSugar = dataReader["SugarRate"] + "";
+                        string sIce = dataReader["IceRate"] + "";
+                        string sTopping = dataReader["Topping"] + "";
+                        string sBillId = dataReader["BillId"] + "";
+                        string sOrderDate = dataReader["OrderDate"] + "";
+                        string sOrderKm = dataReader["Km"] + "";
+                        string sOrderKmType = dataReader["KmType"] + "";
+
+                        BTeaOrderObject OrderObj = new BTeaOrderObject();
+                        OrderObj.BOrderId = TConst.ConvertInt(sId);
+                        OrderObj.BOrderIdItem = sIdItem;
+                        OrderObj.BOrderName = sName;
+                        OrderObj.BOrderNum = TConst.ConvertInt(sNum);
+                        OrderObj.BOrderPrice = TConst.ConvertMoney(sPrice);
+                        OrderObj.BOrderSugarRate = TConst.ConvertInt(sSugar);
+                        OrderObj.BOrderIceRate = TConst.ConvertInt(sIce);
+                        OrderObj.BOrderTopping = sTopping;
+                        OrderObj.BOrderBillName = sBillId;
+                        OrderObj.BOrderDate = Convert.ToDateTime(sOrderDate);
+                        OrderObj.BOrderKmType = TConst.ConvertInt(sOrderKmType);
+                        if (OrderObj.BOrderKmType == TConst.K_KM_PERCENT)
+                        {
+                            OrderObj.BOrderKm = TConst.ConvertInt(sOrderKm);
+                        }
+                        else
+                        {
+                            OrderObj.BOrderKm = TConst.ConvertMoney(sOrderKm);
+                        }
+
+                        if (sIdItem.Contains("DR"))
+                        {
+                            OrderObj.Type = BTBaseObject.BTeaType.DRINK_TYPE;
+                        }
+                        else if (sIdItem.Contains("TP"))
+                        {
+                            OrderObj.Type = BTBaseObject.BTeaType.TOPPING_TYPE;
+                        }
+                        else if (sIdItem.Contains("OF"))
+                        {
+                            OrderObj.Type = BTBaseObject.BTeaType.OTHER_TYPE;
+                        }
+                        else if (sIdItem.Contains("F") == true && sId.Contains("OF") == false)
+                        {
+                            OrderObj.Type = BTBaseObject.BTeaType.FOOD_TYPE;
+                        }
+
+                        OderList.Add(OrderObj);
+                    }
+                    //close Data Reader
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Tlog.GetInstance().WriteLog("Get Thong tin sp da Order that bai: " + ex.Message);
+                    CloseDB();
+                    return OderList;
+                }
+
+                //close Connection
+                CloseDB();
+            }
+            return OderList;
+        }
+
+        public bool AddWaitItem(BTeaOrderObject bOrderItem)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("AddWaitItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new MySqlParameter("inIdItem", bOrderItem.BOrderIdItem));
+                cmd.Parameters.Add(new MySqlParameter("inName", bOrderItem.BOrderName));
+                cmd.Parameters.Add(new MySqlParameter("inNumber", bOrderItem.BOrderNum));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", bOrderItem.BOrderPrice));
+                cmd.Parameters.Add(new MySqlParameter("inSize", bOrderItem.BOrderSize));
+                cmd.Parameters.Add(new MySqlParameter("inSugarRate", bOrderItem.BOrderSugarRate));
+                cmd.Parameters.Add(new MySqlParameter("inIceRate", bOrderItem.BOrderIceRate));
+                cmd.Parameters.Add(new MySqlParameter("inTopping", bOrderItem.BOrderTopping));
+                cmd.Parameters.Add(new MySqlParameter("inBillId", bOrderItem.BOrderBillName));
+                cmd.Parameters.Add(new MySqlParameter("inOrderDate", bOrderItem.BOrderDate));
+                cmd.Parameters.Add(new MySqlParameter("inKm", bOrderItem.BOrderKm));
+                cmd.Parameters.Add(new MySqlParameter("inKmType", bOrderItem.BOrderKmType));
+                try
+                {
+                    int result = cmd.ExecuteNonQuery();
+                    bRet = true;
+                }
+                catch (System.Exception ex)
+                {
+                    Tlog.GetInstance().WriteLog("Add Wait Item that bai: " + ex.Message);
+                    bRet = false;
+                }
+            }
+
+            CloseDB();
+            return bRet;
+        }
+
+        public bool DeleteWaitItem(int Id)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("DeleteWaitItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new MySqlParameter("inId", Id));
+
+                int result = 0;
+                try
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    Tlog.GetInstance().WriteLog("Delete Wait Item that bai: " + ex.Message);
+                    bRet = false;
+                }
+
+                if (result == 1)
+                {
+                    bRet = true;
+                }
+                else
+                {
+                    bRet = false;
+                }
+            }
+            CloseDB();
+            return bRet;
+        }
+
+        public bool DeleteWaitBillItem(int Id)
+        {
+            bool bRet = false;
+            if (this.ConnectionDB() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("DeleteWaitBillItem", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new MySqlParameter("inId", Id));
+
+                int result = 0;
+                try
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    Tlog.GetInstance().WriteLog("Delete Hoa Don luu tam that bai" + ex.Message);
                     bRet = false;
                 }
 

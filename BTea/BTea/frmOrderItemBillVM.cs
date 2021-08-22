@@ -10,13 +10,22 @@ namespace BTea
 {
     class frmOrderItemBillVM : TBaseVM
     {
-        public frmOrderItemBillVM(List<int> idItems)
+        public frmOrderItemBillVM(List<int> idItems, int type)
         {
+            type_data_ = type;
             _idItemList = idItems;
 
             _billOrderList = new ObservableCollection<BTeaOrderItems>();
             List<BTeaOrderObject> billItems = new List<BTeaOrderObject>();
-            List<BTeaOrderObject> listOrder = DBConnection.GetInstance().GetDataOrderObject();
+            List<BTeaOrderObject> listOrder = null;
+            if (type_data_ == 0)
+            {
+                listOrder = DBConnection.GetInstance().GetDataOrderObject();
+            }
+            else
+            {
+                listOrder = DBConnection.GetInstance().GetWaitItemObject(); 
+            }
 
             for (int i = 0; i < _idItemList.Count; i++)
             {
@@ -103,9 +112,19 @@ namespace BTea
         private ObservableCollection<BTeaOrderItems> _billOrderList;
         private BTeaOrderItems _billOrderSelectedItem;
         private List<int> _idItemList;
+        private int type_data_; // 0 Order, 1 wait order
         #endregion
 
         #region PROPERTY
+        public int TypeData
+        {
+            get { return type_data_; }
+            set
+            {
+                type_data_ = value;
+            }
+        }
+
         public string OrderItemNumber { set; get; }
         public string OrderItemPrice { set; get; }
 

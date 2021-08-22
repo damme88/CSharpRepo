@@ -90,6 +90,14 @@
                                 Command="{Binding BillCmd}">
                             <Image Source="/Images/bill_icon.png"></Image>
                         </Button>
+                        <Button Width="32" Height="32" 
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Margin="1"
+                                ToolTip="Hóa đơn luu tam "
+                                Command="{Binding WaitBillCmd}">
+                            <Image Source="/Images/wait_order_icon.png"></Image>
+                        </Button>
                     </ToolBar>
                 </ToolBarTray>
             </DockPanel>
@@ -170,7 +178,7 @@
                         <TextBlock Text="Số lượng:" FontSize="14" Margin="5" HorizontalAlignment="Left"></TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <Button Command="{Binding OrderItemMinusCmd}" IsEnabled="{Binding StateMinus}" Width="30" Height="30" Content="-" FontWeight="Bold" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5"></Button>
-                            <TextBox Text="{Binding OrderItemNum}" FontSize="14" FontWeight="Bold" Width="50" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBox>
+                            <TextBox Text="{Binding OrderItemNum, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox"  FontSize="14" FontWeight="Bold" Width="50" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBox>
                             <Button Command="{Binding OrderItemPlusCmd}" Width="30" Height="30" Content="+" FontSize="20" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5"></Button>
                         </StackPanel>
                         <StackPanel Orientation="Vertical">
@@ -229,7 +237,7 @@
                                    ScrollViewer.CanContentScroll="False">
                                 <ListView.View>
                                     <GridView ColumnHeaderContainerStyle="{StaticResource GrdViewHeaderStyle}">
-                                        <GridViewColumn Header="Tên" Width="150">
+                                        <GridViewColumn Header="Tên" Width="130">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock  Text="{Binding OrderName}" TextWrapping="Wrap" FontSize="12"/>
@@ -243,10 +251,10 @@
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
-                                        <GridViewColumn Header="Giá" Width="60">
+                                        <GridViewColumn Header="Don Giá" Width="80">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock  Text="{Binding OrderPrice}" FontSize="12"/>
+                                                    <TextBlock  Text="{Binding OrderBasePrice}" FontSize="12"/>
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
@@ -260,7 +268,14 @@
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
-                                        <GridViewColumn Header="Ghi Chú" Width="350">
+                                        <GridViewColumn Header="Thanh Tien" Width="90">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock  Text="{Binding OrderPrice}" FontSize="12"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Ghi Chú" Width="380">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding OrderNote}" FontSize="12"
@@ -276,7 +291,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Tổng Giá Trị (VND):" Margin="5" FontFamily="Aria" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
-                            <TextBox Text="{Binding BillSumPrice, StringFormat='#,##0.0000;(#,##0.0000)'}"  Width="150" Height="30" IsReadOnly="True" Margin="10,0,0,0"></TextBox>
+                            <TextBox Text="{Binding BillSumPrice}"  Width="150" Height="30" IsReadOnly="True" Margin="10,0,0,0"></TextBox>
                             <TextBlock Text="KM:"  FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="35,5,5,5"></TextBlock>
                             <TextBox Width="120" Height="30" FontSize="12" Text="{Binding KMSumBill, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                             <StackPanel Orientation="Vertical">
@@ -329,7 +344,7 @@
                     <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3">
                         <Button Style="{StaticResource BtnBase}" Content="Tạo Hóa Đơn" Command="{Binding MakeBillCmd}"/>
                         <Button Style="{StaticResource BtnBase}" Content="Xóa Hóa Đơn" Command="{Binding ClearBillCmd}"/>
-                        <Button Style="{StaticResource BtnBase}" Content="Lưu Tạm" IsEnabled="False" Command="{Binding SaveBillCmd}"/>
+                        <Button Style="{StaticResource BtnBase}" Content="Lưu Tạm" Command="{Binding SaveBillCmd}"/>
                         <Button Style="{StaticResource BtnBase}" Content="In" Command="{Binding PrintBillCmd}"/>
                     </StackPanel>
                 </Grid>
