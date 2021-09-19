@@ -69,7 +69,7 @@
                         <GridViewColumn Header="Tỉ lệ đường" Width="100" DisplayMemberBinding="{Binding OrderItemSRate, Converter={StaticResource SugarConvert}}"/>
                         <GridViewColumn Header="Tỉ lệ đá" Width="100" DisplayMemberBinding="{Binding OrderItemIRate, Converter={StaticResource IceConvert}}"/>
                         <GridViewColumn Header="Topping" Width="120" DisplayMemberBinding="{Binding OrderItemTopping}"/>
-                        <GridViewColumn Header="Ten hóa đơn" Width="150" DisplayMemberBinding="{Binding OrderItemBillName}"/>
+                        <GridViewColumn Header="Tên hóa đơn" Width="150" DisplayMemberBinding="{Binding OrderItemBillName}"/>
                         <GridViewColumn Header="Ngày tạo" Width="150" DisplayMemberBinding="{Binding OrderItemOrderDate}"/>
                         <GridViewColumn Header="KM" Width="50" DisplayMemberBinding="{Binding OrderItemKM}"/>
                         <GridViewColumn Header="Loại KM" Width="50" DisplayMemberBinding="{Binding OrderItemKMType}"/>

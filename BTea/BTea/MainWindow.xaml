@@ -31,9 +31,9 @@
                     </MenuItem>
                     <MenuItem Header="Tài liệu">
                         <MenuItem Header="Hướng dẫn sử dụng" Command="{Binding FileGuideCmd}"></MenuItem>
-                        <MenuItem Header="Ebook KT Sinh To" Command="{Binding FileEB1Cmd}"></MenuItem>
+                        <MenuItem Header="Ebook KT Sinh Tố" Command="{Binding FileEB1Cmd}"></MenuItem>
                         <MenuItem Header="Ebook 460 Cocktail" Command="{Binding FileEB2Cmd}"></MenuItem>
-                        <MenuItem Header="Ebook Tra Sua 1" Command="{Binding FileEB3Cmd}"></MenuItem>
+                        <MenuItem Header="Ebook Trà sữa 1" Command="{Binding FileEB3Cmd}"></MenuItem>
                     </MenuItem>
                 </Menu>
             </DockPanel>
@@ -251,7 +251,7 @@
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
-                                        <GridViewColumn Header="Don Giá" Width="80">
+                                        <GridViewColumn Header="Đơn giá" Width="80">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock  Text="{Binding OrderBasePrice}" FontSize="12"/>
@@ -268,7 +268,7 @@
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
-                                        <GridViewColumn Header="Thanh Tien" Width="90">
+                                        <GridViewColumn Header="Thành Tiền" Width="90">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock  Text="{Binding OrderPrice}" FontSize="12"/>
@@ -290,14 +290,16 @@
                             </ListView>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Tổng Giá Trị (VND):" Margin="5" FontFamily="Aria" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
-                            <TextBox Text="{Binding BillSumPrice}"  Width="150" Height="30" IsReadOnly="True" Margin="10,0,0,0"></TextBox>
+                            <TextBlock Text="Tổng giá(VND):" Margin="5" FontFamily="Aria" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                            <TextBox Text="{Binding BillSumPriceNoKM}"  Width="100" Height="30" IsReadOnly="True" Margin="10,0,0,0"></TextBox>
                             <TextBlock Text="KM:"  FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="35,5,5,5"></TextBlock>
-                            <TextBox Width="120" Height="30" FontSize="12" Text="{Binding KMSumBill, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                            <TextBox Width="50" Height="30" FontSize="12" Text="{Binding KMSumBill, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                             <StackPanel Orientation="Vertical">
                                 <RadioButton GroupName="KMTotalGroup" IsChecked="{Binding KMTotalPercentType}" Content=" %"  VerticalAlignment="Center" Margin="2"></RadioButton>
                                 <RadioButton GroupName="KMTotalGroup" IsChecked="{Binding KMTotalVNDType}" Content="VND"  VerticalAlignment="Center" Margin="2"></RadioButton>
                             </StackPanel>
+                            <TextBlock Text="Thành tiền(VND):"  Foreground="Red" Margin="5" FontFamily="Aria" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                            <TextBox Text="{Binding BillSumPrice}"  Width="100" Height="30" IsReadOnly="True" Margin="10,0,0,0"></TextBox>
                         </StackPanel>
                     </StackPanel>
                 </Grid>

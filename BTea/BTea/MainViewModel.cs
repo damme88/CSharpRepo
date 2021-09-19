@@ -216,8 +216,8 @@ namespace BTea
                     if (drObj.DrinkSize == TConst.K_SIZE_L)
                     {
                         dPrice += lPrice;
-                        OrderBasePrice = dPrice.ToString(TConst.K_MONEY_FORMAT);
                     }
+                    OrderBasePrice = dPrice.ToString(TConst.K_MONEY_FORMAT);
 
                     // Offset sumPrice with KM value
                     int kmValue = TConst.ConvertMoney(OrderKm);
@@ -483,6 +483,8 @@ namespace BTea
             _selectedIceItem = _iceItems[0];
 
             _billPrice = "0.0000";
+            _billPriceNoKM = _billPrice;
+
             _toppingItemList = new List<ToppingItemCheck>();
 
             Tlog.GetInstance().WriteLog("Start:Get topping Order Drink");
@@ -535,6 +537,7 @@ namespace BTea
             {
                 IsEnableOrderItem = false;
                 BillSumPrice = "0.0000";
+                BillSumPriceNoKM = "0.0000";
                 KMSumBill = "0.0";
             }
 
@@ -668,6 +671,7 @@ namespace BTea
         private bool _billMoreInfo;
         private string _billName;
         private string _billPrice;
+        private string _billPriceNoKM;
         private string _billCreator;
         private DateTime _billStartDate;
         private string _billTableNumber;
@@ -704,6 +708,7 @@ namespace BTea
                 sumPrice += oPrice;
             }
 
+            BillSumPriceNoKM = sumPrice.ToString(TConst.K_MONEY_FORMAT);
             if (_kmTotalType == TConst.K_KM_VND)
             {
                 int billPriceEnd = sumPrice - _kMSumBill;
@@ -993,12 +998,14 @@ namespace BTea
             }
 
             _billPrice = sumPrice.ToString(TConst.K_MONEY_FORMAT);
+            _billPriceNoKM = _billPrice;
             IsEnableOrderItem = true;
 
             //Update GUI
             OnPropertyChange("DataOrderList");
             OnPropertyChange("BTeaOrderSelectedItem");
             OnPropertyChange("BillSumPrice");
+            OnPropertyChange("BillSumPriceNoKM");
         }
 
         public void PrintBill(object obj)
@@ -1066,7 +1073,7 @@ namespace BTea
                 totalNumber += orderNum;
                 _printVM.AddData(dataItem);
 
-
+                //  Add price of topping list
                 if (bDrink)
                 {
                     BTBaseObject bObj = orderItem.OrderObject;
@@ -1259,6 +1266,7 @@ namespace BTea
             DataOrderList.Clear();
             BillPhone = BillAddress = BillNote = "";
             BillSumPrice = "0.0000";
+            BillSumPriceNoKM = "0.0000";
             BillTableNumber = "";
             KMSumBill = "0";
             KMTotalVNDType = false;
@@ -1304,6 +1312,7 @@ namespace BTea
                     DataOrderList.Clear();
                     KMSumBill = "0";
                     BillSumPrice = "0.0000";
+                    BillSumPriceNoKM = "0.0000";
                     BillMoreInfo = false;
                 }
             }
@@ -1391,6 +1400,7 @@ namespace BTea
             DataOrderList.Clear();
             BillPhone = BillAddress = BillNote = "";
             BillSumPrice = "0.0000";
+            BillSumPriceNoKM = "0.0000";
             BillStartDate = DateTime.Now;
         }
 
@@ -1519,6 +1529,7 @@ namespace BTea
                 OnPropertyChange("DataOrderList");
                 OnPropertyChange("BTeaOrderSelectedItem");
                 OnPropertyChange("BillSumPrice");
+                OnPropertyChange("BillSumPriceNoKM");
             }
             else
             {
@@ -1545,6 +1556,7 @@ namespace BTea
                     CollectionViewSource.GetDefaultView(_dataOrderList).Refresh();
                     OnPropertyChange("DataOrderList");
                     OnPropertyChange("BillSumPrice");
+                    OnPropertyChange("BillSumPriceNoKM");
                 }
             }
             ResetOrderInfo();
@@ -1914,6 +1926,20 @@ namespace BTea
                 OnPropertyChange("BillSumPrice");
             }
         }
+
+        public string BillSumPriceNoKM
+        {
+            get
+            {
+                return _billPriceNoKM;
+            }
+            set
+            {
+                _billPriceNoKM = value;
+                OnPropertyChange("BillSumPriceNoKM");
+            }
+        }
+
         public ObservableCollection<BTeaOrderItems> DataOrderList
         {
             get { return _dataOrderList; }

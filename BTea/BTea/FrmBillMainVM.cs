@@ -351,6 +351,31 @@ namespace BTea
                 }
 
                 _printVM.AddData(dataItem);
+
+                // Print topping list
+                int orderNum = Convert.ToInt32(orderItem.OrderNum);
+
+                BTBaseObject bObj = orderItem.OrderObject;
+                DrinkObject dObj = bObj as DrinkObject;
+                if (dObj != null)
+                {
+                    if (dObj.TPListObj.Count > 0)
+                    {
+                        for (int ii = 0; ii < dObj.TPListObj.Count; ii++)
+                        {
+                            ToppingObject tpObj = dObj.TPListObj[ii];
+                            if (tpObj != null)
+                            {
+                                PrintBillIData dItem = new PrintBillIData();
+                                //dItem.NumberProduct = orderItem.OrderNum;
+                                dItem.SumPrice = (tpObj.BPrice * orderNum).ToString(TConst.K_MONEY_FORMAT);
+                                dItem.BasePriceProduct = tpObj.BPrice.ToString(TConst.K_MONEY_FORMAT);
+                                dItem.NameProduct = " +" + tpObj.BName;
+                                _printVM.AddData(dItem);
+                            }
+                        }
+                    }
+                }
             }
 
             if (_printVM.PrintBillItemsDrink.Count == 0)
