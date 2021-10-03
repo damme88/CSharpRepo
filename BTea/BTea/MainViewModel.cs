@@ -415,6 +415,7 @@ namespace BTea
             EditOrderItemCmd = new RelayCommand(new Action<object>(DoEditOderItem));
             RemoveOrderItemCmd = new RelayCommand(new Action<object>(DoRemoveOderItem));
 
+            CmdRefresh = new RelayCommand(new Action<object>(DoRefreshData));
             //Command for file menu
             FileAboutCmd  = new RelayCommand(new Action<object>(DoAboutMenu));
             FileSettingCmd = new RelayCommand(new Action<object>(DoSettingMenu));
@@ -637,6 +638,7 @@ namespace BTea
         public RelayCommand FileEB1Cmd { set; get; }
         public RelayCommand FileEB2Cmd { set; get; }
         public RelayCommand FileEB3Cmd { set; get; }
+        public RelayCommand CmdRefresh { set; get; }
 
         private int _orderItemNum;
         private FrmDrinkMainVM _frmDrinkVm;
@@ -1477,6 +1479,20 @@ namespace BTea
 
             return btObject;
         }
+
+
+        public void DoRefreshData(object obj)
+        {
+            // Todo refresh data
+            if (_dataList.Count() > 0)
+            {
+                _dataList.Clear();
+            }
+
+            _dataList = GetDataList();
+            OnPropertyChange("DataList");
+        }
+
         public void DoSelectItem(object obj)
         {
             if (_bTeaSelectedItem == null)

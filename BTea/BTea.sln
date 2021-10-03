@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTea", "BTea\BTea.csproj", "{FB621974-42AD-4A73-96EE-B5823E2E9904}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BTeaInstaller", "BTeaInstaller\BTeaInstaller.vdproj", "{34E33833-A71B-4710-80A6-17165CE6F7BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{FB621974-42AD-4A73-96EE-B5823E2E9904}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB621974-42AD-4A73-96EE-B5823E2E9904}.Release|x64.ActiveCfg = Release|x64
 		{FB621974-42AD-4A73-96EE-B5823E2E9904}.Release|x64.Build.0 = Release|x64
+		{34E33833-A71B-4710-80A6-17165CE6F7BF}.Debug|Any CPU.ActiveCfg = Debug
+		{34E33833-A71B-4710-80A6-17165CE6F7BF}.Debug|x64.ActiveCfg = Debug
+		{34E33833-A71B-4710-80A6-17165CE6F7BF}.Release|Any CPU.ActiveCfg = Release
+		{34E33833-A71B-4710-80A6-17165CE6F7BF}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
