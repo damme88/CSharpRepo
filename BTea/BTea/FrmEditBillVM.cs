@@ -16,6 +16,9 @@ namespace BTea
             RemoveOrderItemCmd = new RelayCommand(new Action<object>(RemoveItemBill));
             EditOrderItemCmd = new RelayCommand(new Action<object>(EditItemBill));
             EditBillCmd = new RelayCommand(new Action<object>(EDitBill));
+
+            delList = new List<int>();
+
             _pItemMethod = parentAction;
             _ekmTotalVNDType = false;
             _ekmTotalPercentType = true;
@@ -33,6 +36,8 @@ namespace BTea
         private int _kmTotalType;
         FrmOrderItemSingle _frmItemSingle;
         FrmOrderItemSingleVM _frmItemSingleVM;
+
+        private List<int> delList;   // store item that's deleted.
         #endregion
 
 
@@ -182,6 +187,11 @@ namespace BTea
 
 
         #region METHOD
+        public void FreeDelList()
+        {
+            delList.Clear();
+        }
+
         void UpdateTotalPriceByKM()
         {
             int sumPrice = 0;
@@ -231,6 +241,8 @@ namespace BTea
             {
                 if (_dataOrderList[i] == _bteaOderItem)
                 {
+                    int id = _bteaOderItem.OrderId;
+                    delList.Add(id);
                     _dataOrderList.RemoveAt(i);
                 }
             }
@@ -260,6 +272,7 @@ namespace BTea
             else
             {
                 _ebillSumprice = "0.0000";
+                OnPropertyChange("EBillSumPrice");
             }
 
             OnPropertyChange("EDataOrderList");
@@ -529,7 +542,7 @@ namespace BTea
             billObj.BillId = _billId;
             billObj.BillName = _ebillName;
             billObj.BillCreator = _ebillCreator;
-            billObj.BillPrice = TConst.ConvertMoney(_ebillSumprice);
+            billObj.BillPrice = 0;
             billObj.BillTableNumber = _ebillTable;
             billObj.BillDate = _ebillDate;
             billObj.BillPhone = _ebillPhone;
@@ -547,57 +560,78 @@ namespace BTea
                 billObj.KMType = 1;
             }
 
-            string strOrderItem = "";
-            for (int i = 0; i < _dataOrderList.Count; i++)
+            for (int i = 0; i < delList.Count; i++)
             {
-                BTBaseObject orderBaseObj = _dataOrderList[i].OrderObject;
-                BTeaOrderObject orderObject = new BTeaOrderObject();
-
-                orderObject.BOrderId = _dataOrderList[i].OrderId;
-                orderObject.BOrderIdItem = orderBaseObj.BId;
-                orderObject.BOrderName = orderBaseObj.BName;
-                orderObject.BOrderPrice = _dataOrderList[i].MakeSummaryPrice();
-                orderObject.BOrderNum = TConst.ConvertInt(_dataOrderList[i].OrderNum);
-                strOrderItem = strOrderItem + _dataOrderList[i].OrderId + ",";
-                orderObject.Type = orderBaseObj.Type;
-                if (orderBaseObj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
+                int delId = delList[i];
+                bool bRet = DBConnection.GetInstance().DeleteOrderItem(delId);
+                if (bRet == false)
                 {
-                    DrinkObject drObj = orderBaseObj as DrinkObject;
-                    if (drObj != null)
-                    {
-                        orderObject.BOrderSize = drObj.DrinkSize;
-                        orderObject.BOrderSugarRate = drObj.SugarRate;
-                        orderObject.BOrderIceRate = drObj.IceRate;
-
-                        string strTp = "";
-                        for (int ii = 0; ii < drObj.TPListObj.Count; ii++)
-                        {
-                            string strId = drObj.TPListObj[ii].BId;
-                            strTp = strTp + strId + ",";
-                        }
-                        orderObject.BOrderTopping = strTp;
-                    }
+                    Tlog.GetInstance().WriteLog("Delete item in Order Bill was failed");
                 }
-
-                orderObject.BOrderBillName = _ebillName;
-                orderObject.BOrderDate = _ebillDate;
-                if (_dataOrderList[i].OrderKmType == " ")
-                {
-                    orderObject.BOrderKmType = TConst.K_KM_VND;
-                    orderObject.BOrderKm = TConst.ConvertMoney(_dataOrderList[i].OrderKm);
-                }
-                else
-                {
-                    orderObject.BOrderKmType = TConst.K_KM_PERCENT;
-                    orderObject.BOrderKm = TConst.ConvertInt(_dataOrderList[i].OrderKm);
-                }
-
-                bool bRet2 = DBConnection.GetInstance().EditOrderItem(orderObject);
-
-                billObj.BillOrderItem = strOrderItem;
-                DBConnection.GetInstance().EditBillItem(billObj);
-                _pItemMethod.Invoke();
             }
+
+            string strOrderItem = "";
+            int sumBillPrice = 0;
+            if (_dataOrderList.Count == 0)
+            {
+                sumBillPrice = 0;
+            }
+            else
+            {
+                for (int i = 0; i < _dataOrderList.Count; i++)
+                {
+                    BTBaseObject orderBaseObj = _dataOrderList[i].OrderObject;
+                    BTeaOrderObject orderObject = new BTeaOrderObject();
+
+                    orderObject.BOrderId = _dataOrderList[i].OrderId;
+                    orderObject.BOrderIdItem = orderBaseObj.BId;
+                    orderObject.BOrderName = orderBaseObj.BName;
+                    orderObject.BOrderPrice = _dataOrderList[i].MakeSummaryPrice();
+                    sumBillPrice += orderObject.BOrderPrice;
+                    orderObject.BOrderNum = TConst.ConvertInt(_dataOrderList[i].OrderNum);
+                    strOrderItem = strOrderItem + _dataOrderList[i].OrderId + ",";
+                    orderObject.Type = orderBaseObj.Type;
+                    if (orderBaseObj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
+                    {
+                        DrinkObject drObj = orderBaseObj as DrinkObject;
+                        if (drObj != null)
+                        {
+                            orderObject.BOrderSize = drObj.DrinkSize;
+                            orderObject.BOrderSugarRate = drObj.SugarRate;
+                            orderObject.BOrderIceRate = drObj.IceRate;
+
+                            string strTp = "";
+                            for (int ii = 0; ii < drObj.TPListObj.Count; ii++)
+                            {
+                                string strId = drObj.TPListObj[ii].BId;
+                                strTp = strTp + strId + ",";
+                            }
+                            orderObject.BOrderTopping = strTp;
+                        }
+                    }
+
+                    orderObject.BOrderBillName = _ebillName;
+                    orderObject.BOrderDate = _ebillDate;
+                    if (_dataOrderList[i].OrderKmType == " ")
+                    {
+                        orderObject.BOrderKmType = TConst.K_KM_VND;
+                        orderObject.BOrderKm = TConst.ConvertMoney(_dataOrderList[i].OrderKm);
+                    }
+                    else
+                    {
+                        orderObject.BOrderKmType = TConst.K_KM_PERCENT;
+                        orderObject.BOrderKm = TConst.ConvertInt(_dataOrderList[i].OrderKm);
+                    }
+
+                    bool bRet2 = DBConnection.GetInstance().EditOrderItem(orderObject);
+
+                    billObj.BillOrderItem = strOrderItem;
+                }
+            }
+
+            billObj.BillPrice = TConst.ConvertMoney(sumBillPrice.ToString());
+            DBConnection.GetInstance().EditBillItem(billObj);
+            _pItemMethod.Invoke();
         }
 
         #endregion

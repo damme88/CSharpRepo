@@ -26,6 +26,11 @@ namespace BTea
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            FrmEditBillVM pVm = DataContext as FrmEditBillVM;
+            if (pVm != null)
+            {
+                pVm.FreeDelList();
+            }
             this.Close();
         }
     }

@@ -310,36 +310,51 @@ namespace BTea
                 BTeaOrderItems orderItem = _dataOrderList[i];
                 PrintBillIData dataItem = new PrintBillIData();
                 dataItem.NumberProduct = orderItem.OrderNum;
-                dataItem.SumPrice = orderItem.OrderPrice;
-                dataItem.NameProduct = orderItem.MakePrintDescription();
-                dataItem.BasePriceProduct = orderItem.OrderObject.BPrice.ToString();
-
+                orderItem.MakeSummaryPrice();
+                bool bDrink = false;
                 if (orderItem.OrderObject.Type == BTBaseObject.BTeaType.DRINK_TYPE)
                 {
-                    PrintBillIData dataItemDrink = new PrintBillIData();
-                    dataItemDrink.NumberProduct = orderItem.OrderNum;
-                    dataItemDrink.SumPrice = orderItem.OrderPrice;
-                    dataItemDrink.NameProduct = orderItem.MakePrintDescription();
-                    try
-                    {
-                        totalNumDrink += Convert.ToInt32(orderItem.OrderNum);
-                    }
-                    catch
-                    {
-                        totalNumDrink = 0;
-                    }
-
-                    try
-                    {
-                        totalPriceDrink += Convert.ToDouble(orderItem.OrderPrice);
-                    }
-                    catch
-                    {
-                        totalPriceDrink = 0.0;
-                    }
-
-                    _printVM.AddDataDrink(dataItemDrink);
+                    bDrink = true;
                 }
+
+                if (bDrink)
+                {
+                    dataItem.SumPrice = orderItem.DrinkPriceNoToping;
+                }
+                else
+                {
+                    dataItem.SumPrice = orderItem.OrderPrice;
+                }
+
+                dataItem.NameProduct = orderItem.MakePrintDescription();
+                dataItem.BasePriceProduct = orderItem.OrderObject.BPrice.ToString(TConst.K_MONEY_FORMAT);
+
+                //if (orderItem.OrderObject.Type == BTBaseObject.BTeaType.DRINK_TYPE)
+                //{
+                //    PrintBillIData dataItemDrink = new PrintBillIData();
+                //    dataItemDrink.NumberProduct = orderItem.OrderNum;
+                //    dataItemDrink.SumPrice = orderItem.OrderPrice;
+                //    dataItemDrink.NameProduct = orderItem.MakePrintDescription();
+                //    try
+                //    {
+                //        totalNumDrink += Convert.ToInt32(orderItem.OrderNum);
+                //    }
+                //    catch
+                //    {
+                //        totalNumDrink = 0;
+                //    }
+
+                //    try
+                //    {
+                //        totalPriceDrink += Convert.ToDouble(orderItem.OrderPrice);
+                //    }
+                //    catch
+                //    {
+                //        totalPriceDrink = 0.0;
+                //    }
+
+                //    //_printVM.AddDataDrink(dataItemDrink);
+                //}
 
                 try
                 {
@@ -376,11 +391,6 @@ namespace BTea
                         }
                     }
                 }
-            }
-
-            if (_printVM.PrintBillItemsDrink.Count == 0)
-            {
-                _printVM.SetHideDrinkBill();
             }
 
             string billName = _selectedBillItem.BillName;
@@ -429,7 +439,6 @@ namespace BTea
             BillItem bItem = _selectedBillItem;
             if (bItem != null)
             {
-                string billName = bItem.BillName;
                 List<int> orderList = bItem.OrderItemList;
                 for (int i = 0; i < orderList.Count; ++i)
                 {
@@ -444,8 +453,18 @@ namespace BTea
                 {
                     bool bRet = DBConnection.GetInstance().DeleteBillItem(nId);
                 }
-            }
 
+                List<BTeaOrderObject> dbOrderList = DBConnection.GetInstance().GetDataOrderObject();
+                for (int i = 0; i < dbOrderList.Count; ++i)
+                {
+                    BTeaOrderObject objData = dbOrderList[i];
+                    if (objData.BOrderBillName == bItem.BillName)
+                    {
+                        int id = objData.BOrderId;
+                        bool bRet = DBConnection.GetInstance().DeleteBillItem(nId);
+                    }
+                }
+            }
             DoTKBill(null);
         }
         public void DoFilterByDay()

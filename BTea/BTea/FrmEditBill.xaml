@@ -120,7 +120,7 @@
         </Grid>
         <Grid Grid.Row="2">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="5,20,5,5">
-                <Button Style="{StaticResource BtnBase180}" FontWeight="Bold" FontSize="16" Content="Sửa" Command="{Binding EditBillCmd}"/>
+                <Button Style="{StaticResource BtnBase180}" FontWeight="Bold" FontSize="16" Content="Ok" Command="{Binding EditBillCmd}"/>
                 <Button Style="{StaticResource BtnBase180}" FontWeight="Bold" FontSize="16" Content="Hủy Bỏ" Click="Button_Click"/>
             </StackPanel>
         </Grid>

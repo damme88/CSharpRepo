@@ -279,15 +279,15 @@ namespace BTea
                     string sugaS = dObj.SugarToString();
                     string IceS = dObj.IceToString();
                     string strNote = "";
-                    strNote += "\nSize: " + szS + "\n";
+                    strNote += "\nSize: " + szS;
                     if (sugaS != string.Empty)
                     {
-                        strNote += "Đường: " + sugaS + "\n";
+                        strNote += "\nĐường: " + sugaS;
                     }
 
                     if (IceS != string.Empty)
                     { 
-                       strNote += "Đá: " + IceS + "\n";
+                       strNote += "\nĐá: " + IceS;
                     }
 
                     //string strTopping = dObj.ToppingToStringSingleLine();
@@ -392,6 +392,9 @@ namespace BTea
 
     class MainViewModel : TBaseVM
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public MainViewModel()
         {
             _statusBarText = "Ready";
@@ -486,26 +489,7 @@ namespace BTea
             _billPrice = "0.0000";
             _billPriceNoKM = _billPrice;
 
-            _toppingItemList = new List<ToppingItemCheck>();
-
-            Tlog.GetInstance().WriteLog("Start:Get topping Order Drink");
-
-            List<ToppingObject> data_topping = DBConnection.GetInstance().GetDataTopping();
-            for (int i = 0; i < data_topping.Count; ++i)
-            {
-                ToppingObject toppingObj = data_topping[i];
-                if (toppingObj != null)
-                {
-                    ToppingItemCheck item = new ToppingItemCheck();
-
-                    item.Id = Convert.ToInt32(toppingObj.BId);
-                    item.IsSelected = false;
-                    item.Content = toppingObj.BName;
-                    _toppingItemList.Add(item);
-                }
-            }
-
-            Tlog.GetInstance().WriteLog("End: Get topping Order Drink");
+            _toppingItemList = GetToppingList();
 
             _billMoreInfo = false;
             _billCreator = ConfigurationManager.AppSettings["shopname"].ToString();
@@ -1030,6 +1014,7 @@ namespace BTea
                 BTeaOrderItems orderItem = _dataOrderList[i];
                 PrintBillIData dataItem = new PrintBillIData();
                 dataItem.NumberProduct = orderItem.OrderNum;
+                orderItem.MakeSummaryPrice();
                 bool bDrink = false;
                 if (orderItem.OrderObject.Type == BTBaseObject.BTeaType.DRINK_TYPE)
                 {
@@ -1059,15 +1044,11 @@ namespace BTea
                                 string slPrice = ConfigurationManager.AppSettings["lprice"].ToString();
                                 int lPrice = TConst.ConvertMoney(slPrice);
                                 basePrice += lPrice;
-                                dataItem.BasePriceProduct = basePrice.ToString(TConst.K_MONEY_FORMAT);
                             }
                         }
                     }
-                    else
-                    {
-                        dataItem.BasePriceProduct = orderItem.OrderObject.BPrice.ToString(TConst.K_MONEY_FORMAT);
-                    }
-                    
+
+                    dataItem.BasePriceProduct = basePrice.ToString(TConst.K_MONEY_FORMAT);
                 }
                 dataItem.KMProduct = orderItem.MakeKMPrint();
 
@@ -1093,7 +1074,16 @@ namespace BTea
                                     //dItem.NumberProduct = orderItem.OrderNum;
                                     dItem.SumPrice = (tpObj.BPrice * orderNum).ToString(TConst.K_MONEY_FORMAT);
                                     dItem.BasePriceProduct = tpObj.BPrice.ToString(TConst.K_MONEY_FORMAT);
-                                    dItem.NameProduct = " +" + tpObj.BName;
+
+                                    if (ii == dObj.TPListObj.Count - 1)
+                                    {
+                                        dItem.NameProduct = " +" + tpObj.BName + "\n";
+                                    }
+                                    else
+                                    {
+                                        dItem.NameProduct = " +" + tpObj.BName;
+                                    }
+                                    
                                     _printVM.AddData(dItem);
                                 }
                             }
@@ -1158,7 +1148,7 @@ namespace BTea
             
 
             _printVM.SetInfo(_billName, _billTableNumber, _billCreator, 
-                            _billStartDate.ToString(), billKm, _billPrice,
+                            _billStartDate.ToString("dd-MM-yyyy HH:mm:ss"), billKm, _billPrice,
                             totalNumber.ToString());
             printDlg.DataContext = _printVM;
             printDlg.ShowDialog();
@@ -1491,6 +1481,15 @@ namespace BTea
 
             _dataList = GetDataList();
             OnPropertyChange("DataList");
+
+            // refresh topping list
+            if (_toppingItemList.Count > 0)
+            {
+                _toppingItemList.Clear();
+            }
+
+            _toppingItemList = GetToppingList();
+            OnPropertyChange("ToppingItems");
         }
 
         public void DoSelectItem(object obj)
@@ -1576,6 +1575,29 @@ namespace BTea
                 }
             }
             ResetOrderInfo();
+        }
+
+        public List<ToppingItemCheck> GetToppingList()
+        {
+            Tlog.GetInstance().WriteLog("Start:Get topping Order Drink");
+            List<ToppingItemCheck> listTopping = new List<ToppingItemCheck>();
+            List<ToppingObject> data_topping = DBConnection.GetInstance().GetDataTopping();
+            for (int i = 0; i < data_topping.Count; ++i)
+            {
+                ToppingObject toppingObj = data_topping[i];
+                if (toppingObj != null)
+                {
+                    ToppingItemCheck item = new ToppingItemCheck();
+
+                    item.Id = Convert.ToInt32(toppingObj.BId);
+                    item.IsSelected = false;
+                    item.Content = toppingObj.BName;
+                    listTopping.Add(item);
+                }
+            }
+            Tlog.GetInstance().WriteLog("End: Get topping Order Drink");
+
+            return listTopping;
         }
 
         public ObservableCollection<BTeaItem> GetDataList()

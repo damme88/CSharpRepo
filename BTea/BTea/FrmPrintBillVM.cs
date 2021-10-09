@@ -36,26 +36,25 @@ namespace BTea
         public FrmPrintBillVM()
         {
             _printBillItems = new ObservableCollection<PrintBillIData>();
-            _printBillItemsDrink = new ObservableCollection<PrintBillIData>();
+            //_printBillItemsDrink = new ObservableCollection<PrintBillIData>();
             _printBillName = "";
             _printBillTableNumber = "";
             _printBillCreator = "";
             _printBillDate = "";
             _isPrintDouble = 1;
-            //_isPrintDrinkBill = 1;
-            //if (_isPrintDrinkBill == 1)
-            //{
-            //    _isVisibleDrinkBill = Visibility.Visible;
-            //}
-            //else
-            //{
-            //    _isVisibleDrinkBill = Visibility.Hidden;
-            //}
+            if (_isPrintDouble == 1)
+            {
+                _isVisibleBteaBill = Visibility.Visible;
+            }
+            else
+            {
+                _isVisibleBteaBill = Visibility.Hidden;
+            }
         }
 
         #region MEMBERS
         private ObservableCollection<PrintBillIData> _printBillItems;
-        private ObservableCollection<PrintBillIData> _printBillItemsDrink;
+        //private ObservableCollection<PrintBillIData> _printBillItemsDrink;
         #endregion
 
 
@@ -65,10 +64,10 @@ namespace BTea
             _printBillItems.Add(item);
         }
 
-        public void AddDataDrink(PrintBillIData item)
-        {
-            _printBillItemsDrink.Add(item);
-        }
+        //public void AddDataDrink(PrintBillIData item)
+        //{
+        //    _printBillItemsDrink.Add(item);
+        //}
 
         public void SetInfoDrink(int numberDrink, double priceDrink)
         {
@@ -78,7 +77,7 @@ namespace BTea
 
         public void SetHideDrinkBill()
         {
-            _isVisibleDrinkBill = Visibility.Collapsed;
+            _isVisibleBteaBill = Visibility.Collapsed;
         }
 
         public void SetInfo(string pName, 
@@ -120,18 +119,18 @@ namespace BTea
             }
         }
 
-        public ObservableCollection<PrintBillIData> PrintBillItemsDrink
-        {
-            get
-            {
-                return _printBillItemsDrink;
-            }
-            set
-            {
-                _printBillItemsDrink = value;
-                OnPropertyChange("PrintBillItemsDrink");
-            }
-        }
+        //public ObservableCollection<PrintBillIData> PrintBillItemsDrink
+        //{
+        //    get
+        //    {
+        //        return _printBillItemsDrink;
+        //    }
+        //    set
+        //    {
+        //        _printBillItemsDrink = value;
+        //        OnPropertyChange("PrintBillItemsDrink");
+        //    }
+        //}
 
         private string _printBillName;
         public string PrintBillName
@@ -191,14 +190,14 @@ namespace BTea
                 _isPrintDouble = value;
                 OnPropertyChange("IsPrintDrinkBill");
 
-                //if (_isPrintDrinkBill == 1)
-                //{
-                //   IsVisibleDrinkBill = Visibility.Visible;
-                //}
-                //else
-                //{
-                //    IsVisibleDrinkBill = Visibility.Hidden;
-                //}
+                if (_isPrintDouble == 1)
+                {
+                    IsVisibleBteaBill = Visibility.Visible;
+                }
+                else
+                {
+                    IsVisibleBteaBill = Visibility.Hidden;
+                }
             }
             get
             {
@@ -206,14 +205,14 @@ namespace BTea
             }
         }
 
-        private Visibility _isVisibleDrinkBill;
-        public Visibility IsVisibleDrinkBill
+        private Visibility _isVisibleBteaBill;
+        public Visibility IsVisibleBteaBill
         {
-            get { return _isVisibleDrinkBill; }
+            get { return _isVisibleBteaBill; }
             set
             {
-                _isVisibleDrinkBill = value;
-                OnPropertyChange("IsVisibleDrinkBill");
+                _isVisibleBteaBill = value;
+                OnPropertyChange("IsVisibleBteaBill");
             }
         }
 

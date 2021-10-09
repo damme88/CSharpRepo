@@ -12,7 +12,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
-                <!--<RowDefinition Height="*"></RowDefinition>-->
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <StackPanel Orientation="Horizontal">
@@ -30,7 +30,7 @@
                     <Grid Grid.Row="0">
                         <StackPanel Orientation="Horizontal" Margin="5">
                             <Image Source="/Images/logo.png" Width="100" Height="100" VerticalAlignment="Center"/>
-                            <TextBlock Text="Hóa Đơn" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+                            <TextBlock Margin="5" Text="HÓA ĐƠN" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="1">
@@ -74,7 +74,7 @@
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="SL" Width="40">
+                                                <GridViewColumn Header="SL" Width="30">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBlock  Text="{Binding NumberProduct}" FontSize="9"/>
@@ -88,14 +88,7 @@
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="TT" Width="50">
-                                                    <GridViewColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock  Text="{Binding SumPrice}" FontSize="9"/>
-                                                        </DataTemplate>
-                                                    </GridViewColumn.CellTemplate>
-                                                </GridViewColumn>
-                                                <GridViewColumn Header="KM" Width="50">
+                                                <GridViewColumn Header="KM" Width="40">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <StackPanel Orientation="Horizontal">
@@ -104,29 +97,16 @@
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
+                                                <GridViewColumn Header="TT" Width="40">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock  Text="{Binding SumPrice}" FontSize="9"/>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
-                                    <!--<ListBox Name="BillList" ItemsSource="{Binding PrintBillItems}">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="120" />
-                                                        <ColumnDefinition Width="25"/>
-                                                        <ColumnDefinition Width="50"/>
-                                                        <ColumnDefinition Width="50"/>
-                                                        <ColumnDefinition Width="50"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" Margin="2" FontSize="9" Text="{Binding NameProduct}" TextWrapping="Wrap" HorizontalAlignment="Left" />
-                                                    <TextBlock Grid.Column="1" Margin="5" FontSize="9" Text="{Binding NumberProduct}" HorizontalAlignment="Center" />
-                                                    <TextBlock Grid.Column="2" Margin="2" FontSize="9" Text="{Binding BasePriceProduct}" HorizontalAlignment="Left" />
-                                                    <TextBlock Grid.Column="3" Margin="5" FontSize="9" Text="{Binding KMProduct}" HorizontalAlignment="Center" />
-                                                    <TextBlock Grid.Column="4" Margin="15,5,5,5" FontSize="9" Text="{Binding SumPrice}" HorizontalAlignment="Center"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>-->
                                 </StackPanel>
                             </Grid>
                             <Grid Grid.Row="1">
@@ -134,9 +114,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Tổng số lượng:" Margin="5" FontWeight="Bold"></TextBlock>
                                         <TextBlock Text="{Binding PrintTotalNumber}" Margin="5" FontWeight="Bold"></TextBlock>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="KM:" Margin="5" FontWeight="Bold"></TextBlock>
+                                        <TextBlock Text="KM:" Margin="45,5,5,5" FontWeight="Bold"></TextBlock>
                                         <TextBlock Text="{Binding PrintTotalKM}" Margin="5" FontWeight="Bold"></TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -153,14 +131,14 @@
                                     </StackPanel>
                                     <TextBlock Margin="5" Text="{Binding BillShopAddress}"></TextBlock>
                                     <TextBlock Margin="5" Text="{Binding BillShopFanpge}"></TextBlock>
-                                    <TextBlock Margin="5" Text="{Binding BillMsgInfo}" HorizontalAlignment="Center"></TextBlock>
+                                    <TextBlock Margin="80,5,5,5" Text="{Binding BillMsgInfo}" HorizontalAlignment="Left"></TextBlock>
                                 </StackPanel>
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
             </ScrollViewer>
-            <!--<ScrollViewer Grid.Row="2" Name="myScrollViewer2">
+            <ScrollViewer Grid.Row="2" Name="myScrollViewer2" Visibility="{Binding IsVisibleBteaBill}">
                 <Grid  x:Name="printBill2" Margin="5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -170,7 +148,7 @@
                     <Grid Grid.Row="0">
                         <StackPanel Orientation="Horizontal" Margin="5">
                             <Image Source="/Images/logo.png" Width="100" Height="100" VerticalAlignment="Center"/>
-                            <TextBlock Text="Hóa Đơn Đồ Uống" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+                            <TextBlock Text="HÓA ĐƠN ORDER" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="1">
@@ -202,27 +180,28 @@
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="0">
                                 <StackPanel Orientation="Vertical">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Tên sản phẩm" Width="80" Margin="5"></TextBlock>
-                                        <TextBlock Text="Số lượng" Width="50" Margin="15,5,5,5"></TextBlock>
-                                        <TextBlock Text="Giá(VND)" Width="80" Margin="5"></TextBlock>
-                                    </StackPanel>
-                                    <ListBox Name="BillList2" ItemsSource="{Binding PrintBillItemsDrink}">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="120" />
-                                                        <ColumnDefinition Width="20"/>
-                                                        <ColumnDefinition Width="80"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" Margin="2" FontSize="9" Text="{Binding NameProduct}" HorizontalAlignment="Left" />
-                                                    <TextBlock Grid.Column="1" Margin="5" FontSize="9" Text="{Binding NumberProduct}" HorizontalAlignment="Center" />
-                                                    <TextBlock Grid.Column="2" Margin="15,5,5,5" FontSize="9" Text="{Binding SumPrice}" HorizontalAlignment="Center"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
+                                    <ListView Margin="2" Name="BillList2" HorizontalAlignment="Left"
+                                   ItemsSource="{Binding PrintBillItems}">
+                                        <ListView.View>
+                                            <GridView ColumnHeaderContainerStyle="{StaticResource GrdViewHeaderStyle}">
+                                                <GridViewColumn Header="Tên" Width="150">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding NameProduct}" FontSize="14"
+                                                         TextWrapping="Wrap"/>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="SL" Width="50">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock  Text="{Binding NumberProduct}" FontSize="14"/>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
                                 </StackPanel>
                             </Grid>
                             <Grid Grid.Row="1">
@@ -231,10 +210,10 @@
                                         <TextBlock Text="Tổng số lượng:" Margin="5" FontWeight="Bold"></TextBlock>
                                         <TextBlock Text="{Binding PrintTotalNumberDrink}" Margin="5" FontWeight="Bold"></TextBlock>
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
+                                    <!--<StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Tổng giá trị (VND):" Margin="5" FontWeight="Bold"></TextBlock>
                                         <TextBlock Text="{Binding PrintTotalPriceDrink}" Margin="5" FontWeight="Bold"></TextBlock>
-                                    </StackPanel>
+                                    </StackPanel>-->
                                 </StackPanel>
                             </Grid>
                             <Grid Grid.Row="2">
@@ -250,7 +229,7 @@
                         </Grid>
                     </Grid>
                 </Grid>
-            </ScrollViewer>-->
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Window>
