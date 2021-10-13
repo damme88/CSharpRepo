@@ -69,12 +69,6 @@ namespace BTea
         //    _printBillItemsDrink.Add(item);
         //}
 
-        public void SetInfoDrink(int numberDrink, double priceDrink)
-        {
-            _printTotalPriceDrink = priceDrink.ToString(TConst.K_MONEY_FORMAT);
-            PrintTotalNumberDrink = numberDrink.ToString();
-        }
-
         public void SetHideDrinkBill()
         {
             _isVisibleBteaBill = Visibility.Collapsed;
@@ -174,14 +168,6 @@ namespace BTea
             set { _printTotalKM = value; OnPropertyChange("PrintTotalKM"); }
         }
 
-
-        private string _printTotalPriceDrink;
-        public string PrintTotalPriceDrink
-        {
-            get { return _printTotalPriceDrink; }
-            set { _printTotalPriceDrink = value; OnPropertyChange("PrintTotalPriceDrink"); }
-        }
-
         private int _isPrintDouble;
         public int IsPrintDouble
         {
@@ -218,8 +204,6 @@ namespace BTea
 
 
         public string PrintTotalNumber { set; get; }
-
-        public string PrintTotalNumberDrink { set; get; }
 
         public string BillShopName { set; get; }
 

@@ -1153,12 +1153,12 @@ namespace BTea
             printDlg.DataContext = _printVM;
             printDlg.ShowDialog();
 
-            string sCap = "Hóa đơn chưa lưu vào DB.\nBạn có muốn lưu không ?";
-            MessageBoxResult msg = TConst.MsgYNQ(sCap);
-            if (msg == MessageBoxResult.Yes)
-            {
-                DoMakeBill(obj);
-            }
+            //string sCap = "Hóa đơn chưa lưu vào DB.\nBạn có muốn lưu không ?";
+            //MessageBoxResult msg = TConst.MsgYNQ(sCap);
+            //if (msg == MessageBoxResult.Yes)
+            //{
+            DoMakeBill(obj);
+            //}
         }
 
         public void DoRevenue(object obj)
@@ -1243,13 +1243,13 @@ namespace BTea
 
                 if (bAddBill == true)
                 {
-                    TConst.MsgInfo("Thành công!");
+                    TConst.MsgInfo("Lưu Vào DB Thành công!");
                     CreateBillName();
                     OnPropertyChange("BillName");
                 }
                 else
                 {
-                    TConst.MsgError("Thất bại!");
+                    TConst.MsgError("Lưu Vào DB Thất bại!");
                     return;
                 }
             }

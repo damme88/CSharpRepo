@@ -114,7 +114,9 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Tổng số lượng:" Margin="5" FontWeight="Bold"></TextBlock>
                                         <TextBlock Text="{Binding PrintTotalNumber}" Margin="5" FontWeight="Bold"></TextBlock>
-                                        <TextBlock Text="KM:" Margin="45,5,5,5" FontWeight="Bold"></TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="KM:" Margin="5" FontWeight="Bold"></TextBlock>
                                         <TextBlock Text="{Binding PrintTotalKM}" Margin="5" FontWeight="Bold"></TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -208,7 +210,7 @@
                                 <StackPanel Orientation="Vertical">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Tổng số lượng:" Margin="5" FontWeight="Bold"></TextBlock>
-                                        <TextBlock Text="{Binding PrintTotalNumberDrink}" Margin="5" FontWeight="Bold"></TextBlock>
+                                        <TextBlock Text="{Binding PrintTotalNumber}" Margin="5" FontWeight="Bold"></TextBlock>
                                     </StackPanel>
                                     <!--<StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Tổng giá trị (VND):" Margin="5" FontWeight="Bold"></TextBlock>

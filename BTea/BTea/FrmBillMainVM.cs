@@ -419,8 +419,6 @@ namespace BTea
             _printVM.SetInfo(billName, billNumber, billCreator,
                             billDate, billKm, billPrice,
                             totalNumber.ToString());
-
-            _printVM.SetInfoDrink(totalNumDrink, totalPriceDrink);
             printDlg.DataContext = _printVM;
             printDlg.ShowDialog();
         }
