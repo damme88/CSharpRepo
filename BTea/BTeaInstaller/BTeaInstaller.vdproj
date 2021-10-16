@@ -21,6 +21,24 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_032FADCE88A9448B8155AE029ED2B4B8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_073BC135A765458095A0360497D54F39"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_20A9CB70F11E47D492589AE010A5ED4E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_2131B38A3B3B7B481EF165DE3F449C80"
         "OwnerKey" = "8:_B154FD7B1E7943B7805E5FD9010A3F38"
         "MsmSig" = "8:_UNDEFINED"
@@ -33,7 +51,61 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_43FE60C8C73F419B963016B40215819A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_45469B5284F744FDB8A2583C23451BDF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_477362E05ABA4123B3BC8068190C3C37"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_63AE8CC04FB246A1A303AD1E9574B22B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6A90C35DE4DB43ABBD61CE26ABF9ECE8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_77C74FD8A81942B8BA8CB89648BF31DF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_7E8753A4EBA84717954750A903DD7273"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_88D3399604634779B48D9416E8406F41"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A02772EA78C24D16B95D88F0300426F4"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_AC1302A932784FF4AB13712B2E06617D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -45,14 +117,44 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_B19AD8D06C484C68B273D22A96C71E4F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CF0AED0EFA9B4F7F82F8F0F196C346B6"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D6E67EB809571E9DBAAC0FAF3A5747D4"
         "OwnerKey" = "8:_B154FD7B1E7943B7805E5FD9010A3F38"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D6E67EB809571E9DBAAC0FAF3A5747D4"
+        "MsmKey" = "8:_DDDBC75D5BE440E483309B3B9D67B252"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E1E98D9B52FD4156815BEB2C50E9D2B5"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FE096B084E444FB4BD2174EB7727BA62"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FF8ACAED200F45159E88C8E3B963A9FF"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -73,6 +175,12 @@
         "OwnerKey" = "8:_2131B38A3B3B7B481EF165DE3F449C80"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D6E67EB809571E9DBAAC0FAF3A5747D4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -91,6 +199,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -107,6 +223,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -167,6 +291,66 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_032FADCE88A9448B8155AE029ED2B4B8"
+            {
+            "SourcePath" = "8:..\\ebook\\Kỹ thuật chế biến các món lẩu sốt súp.pdf"
+            "TargetName" = "8:Kỹ thuật chế biến các món lẩu sốt súp.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_073BC135A765458095A0360497D54F39"
+            {
+            "SourcePath" = "8:..\\ebook\\Ebook_KT_Sinh_To.pdf"
+            "TargetName" = "8:Ebook_KT_Sinh_To.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_20A9CB70F11E47D492589AE010A5ED4E"
+            {
+            "SourcePath" = "8:..\\ebook\\Ky_thuat_che_bien_trai_cay.pdf"
+            "TargetName" = "8:Ky_thuat_che_bien_trai_cay.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2131B38A3B3B7B481EF165DE3F449C80"
             {
             "AssemblyRegister" = "3:1"
@@ -198,12 +382,232 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_43FE60C8C73F419B963016B40215819A"
+            {
+            "SourcePath" = "8:..\\ebook\\Cac_mon_che_va_banh_truyen_thong.pdf"
+            "TargetName" = "8:Cac_mon_che_va_banh_truyen_thong.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_45469B5284F744FDB8A2583C23451BDF"
+            {
+            "SourcePath" = "8:..\\ebook\\Ebook_Tra_Sua_1.pdf"
+            "TargetName" = "8:Ebook_Tra_Sua_1.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_477362E05ABA4123B3BC8068190C3C37"
+            {
+            "SourcePath" = "8:..\\ebook\\30-Mẹo-chụp-ảnh-đồ-ăn-1-1.pdf"
+            "TargetName" = "8:30-Mẹo-chụp-ảnh-đồ-ăn-1-1.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_63AE8CC04FB246A1A303AD1E9574B22B"
+            {
+            "SourcePath" = "8:..\\ebook\\120-mon-xup-bo-duong-cho-tre-em-nguoi-benh.pdf"
+            "TargetName" = "8:120-mon-xup-bo-duong-cho-tre-em-nguoi-benh.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6A90C35DE4DB43ABBD61CE26ABF9ECE8"
+            {
+            "SourcePath" = "8:..\\ebook\\Chế biến món ăn bằng lò vi sóng - món điểm tâm.pdf"
+            "TargetName" = "8:Chế biến món ăn bằng lò vi sóng - món điểm tâm.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_77C74FD8A81942B8BA8CB89648BF31DF"
+            {
+            "SourcePath" = "8:..\\ebook\\555 mon an viet nam.pdf"
+            "TargetName" = "8:555 mon an viet nam.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7E8753A4EBA84717954750A903DD7273"
             {
             "SourcePath" = "8:C:\\Users\\passionpham\\Desktop\\btea.ico"
             "TargetName" = "8:btea.ico"
             "Tag" = "8:"
             "Folder" = "8:_4F945EA908B64D029CDAEA22A9D2A952"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_88D3399604634779B48D9416E8406F41"
+            {
+            "SourcePath" = "8:..\\ebook\\30 mon chay giau dinh duong.pdf"
+            "TargetName" = "8:30 mon chay giau dinh duong.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A02772EA78C24D16B95D88F0300426F4"
+            {
+            "SourcePath" = "8:..\\ebook\\Nau mon an han quoc that de.pdf"
+            "TargetName" = "8:Nau mon an han quoc that de.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AC1302A932784FF4AB13712B2E06617D"
+            {
+            "SourcePath" = "8:..\\ebook\\Banh Tay phuong.pdf"
+            "TargetName" = "8:Banh Tay phuong.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B19AD8D06C484C68B273D22A96C71E4F"
+            {
+            "SourcePath" = "8:..\\ebook\\84-mon-nhau-doc-dao-viet-nam.pdf"
+            "TargetName" = "8:84-mon-nhau-doc-dao-viet-nam.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CF0AED0EFA9B4F7F82F8F0F196C346B6"
+            {
+            "SourcePath" = "8:..\\ebook\\150-mon-an-ngon-cho-be-pdf.pdf"
+            "TargetName" = "8:150-mon-an-ngon-cho-be-pdf.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -249,6 +653,86 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DDDBC75D5BE440E483309B3B9D67B252"
+            {
+            "SourcePath" = "8:..\\ebook\\100-Mon-Ngon-Christine-Ha.pdf"
+            "TargetName" = "8:100-Mon-Ngon-Christine-Ha.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E1E98D9B52FD4156815BEB2C50E9D2B5"
+            {
+            "SourcePath" = "8:..\\ebook\\EBook_460_Cocktail.pdf"
+            "TargetName" = "8:EBook_460_Cocktail.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FE096B084E444FB4BD2174EB7727BA62"
+            {
+            "SourcePath" = "8:..\\ebook\\Nau an cho nguoi gia.pdf"
+            "TargetName" = "8:Nau an cho nguoi gia.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FF8ACAED200F45159E88C8E3B963A9FF"
+            {
+            "SourcePath" = "8:..\\ebook\\13. 170-mon-an-chay-HHG.pdf"
+            "TargetName" = "8:13. 170-mon-an-chay-HHG.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5FEB4B008CC43AAA3DE5D40F038217B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -265,6 +749,17 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_C5FEB4B008CC43AAA3DE5D40F038217B"
+                    {
+                    "Name" = "8:Ebook"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_93182F9072234E6A9FB121CC5F8AFDBC"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_742F174DF9B846BFA327B00CEB836FE2"
@@ -855,7 +1350,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B154FD7B1E7943B7805E5FD9010A3F38"
             {
-            "SourcePath" = "8:..\\BTea\\obj\\x64\\Release\\BTea.exe"
+            "SourcePath" = "8:..\\BTea\\obj\\x64\\Debug\\BTea.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_4F945EA908B64D029CDAEA22A9D2A952"

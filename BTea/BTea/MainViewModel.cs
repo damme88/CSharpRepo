@@ -427,6 +427,9 @@ namespace BTea
             FileEB1Cmd = new RelayCommand(new Action<object>(DoEbook1Menu));
             FileEB2Cmd = new RelayCommand(new Action<object>(DoEbook2Menu));
             FileEB3Cmd = new RelayCommand(new Action<object>(DoEbook3Menu));
+            FileCakeCmd = new RelayCommand(new Action<object>(DoEbookCakeMenu));
+            FileFjuitsCmd = new RelayCommand(new Action<object>(DoEbookFruitsMenu));
+            FileOtherCmd = new RelayCommand(new Action<object>(DoEBookOtherMenu));
 
             _kmVNDType = false;
             _kmPercentType = true;
@@ -501,6 +504,55 @@ namespace BTea
             _orderItemNum = 1;
             _stateMinus = false;
             CreateBillName();
+
+            // Make directory image
+            string path = Environment.CurrentDirectory + "\\img_data\\";
+            if (Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
+        private void DoEBookOtherMenu(object obj)
+        {
+            string path = Environment.CurrentDirectory;
+            path += "\\ebook\\";
+            if (path != "")
+            {
+                if (Directory.Exists(path) == true)
+                {
+                    Process.Start("explorer.exe", path);
+                    return;
+                }
+            }
+        }
+
+        private void DoEbookFruitsMenu(object obj)
+        {
+            string path = Environment.CurrentDirectory;
+            path += "\\ebook\\Ky_thuat_che_bien_trai_cay.pdf";
+            try
+            {
+                System.Diagnostics.Process.Start(path);
+            }
+            catch
+            {
+                TConst.MsgError("EBook bị lỗi.");
+            }
+        }
+
+        private void DoEbookCakeMenu(object obj)
+        {
+            string path = Environment.CurrentDirectory;
+            path += "\\ebook\\Cac_mon_che_va_banh_truyen_thong.pdf";
+            try
+            {
+                System.Diagnostics.Process.Start(path);
+            }
+            catch
+            {
+                TConst.MsgError("EBook bị lỗi.");
+            }
         }
 
         public void DoRemoveOderItem(object obj)
@@ -622,6 +674,10 @@ namespace BTea
         public RelayCommand FileEB1Cmd { set; get; }
         public RelayCommand FileEB2Cmd { set; get; }
         public RelayCommand FileEB3Cmd { set; get; }
+        public RelayCommand FileCakeCmd { set; get; }
+        public RelayCommand FileFjuitsCmd { set; get; }
+        public RelayCommand FileOtherCmd { set; get; }
+
         public RelayCommand CmdRefresh { set; get; }
 
         private int _orderItemNum;

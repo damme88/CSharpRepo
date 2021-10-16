@@ -9,7 +9,7 @@
         ResizeMode="CanResize"
         Icon="btea.ico"
         WindowStartupLocation="CenterScreen" 
-        Title="BTea" Height="780" Width="1360">
+        Title="BTea" Height="780" Width="1380">
     <Window.Resources>
         <local2:ImgConvert x:Key="ImgConvert"/>
     </Window.Resources>
@@ -33,7 +33,10 @@
                         <MenuItem Header="Hướng dẫn sử dụng" Command="{Binding FileGuideCmd}"></MenuItem>
                         <MenuItem Header="Ebook KT Sinh Tố" Command="{Binding FileEB1Cmd}"></MenuItem>
                         <MenuItem Header="Ebook 460 Cocktail" Command="{Binding FileEB2Cmd}"></MenuItem>
-                        <MenuItem Header="Ebook Trà sữa 1" Command="{Binding FileEB3Cmd}"></MenuItem>
+                        <MenuItem Header="Ebook Trà sữa" Command="{Binding FileEB3Cmd}"></MenuItem>
+                        <MenuItem Header="Ebook Chè và bánh truyền thống" Command="{Binding FileCakeCmd}"></MenuItem>
+                        <MenuItem Header="Ebook KT chế biến trái cây" Command="{Binding FileFjuitsCmd}"></MenuItem>
+                        <MenuItem Header="Ebook Khác" Command="{Binding FileOtherCmd}"></MenuItem>
                     </MenuItem>
                 </Menu>
             </DockPanel>
@@ -147,7 +150,7 @@
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
-                                        <GridViewColumn Header="Tên" Width="200">
+                                        <GridViewColumn Header="Tên" Width="220">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock  Text="{Binding Name}" FontSize="14" FontWeight="Bold" Foreground="Blue" />
