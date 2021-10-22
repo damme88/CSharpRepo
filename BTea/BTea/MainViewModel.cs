@@ -424,6 +424,7 @@ namespace BTea
             FileSettingCmd = new RelayCommand(new Action<object>(DoSettingMenu));
             FileBackupDBCmd = new RelayCommand(new Action<object>(DoBackupDB));
             FileCloseCmd = new RelayCommand(new Action<object>(DoCloseMenu));
+            FileGuideCmd = new RelayCommand(new Action<object>(DoGuide));
             FileEB1Cmd = new RelayCommand(new Action<object>(DoEbook1Menu));
             FileEB2Cmd = new RelayCommand(new Action<object>(DoEbook2Menu));
             FileEB3Cmd = new RelayCommand(new Action<object>(DoEbook3Menu));
@@ -507,7 +508,7 @@ namespace BTea
 
             // Make directory image
             string path = Environment.CurrentDirectory + "\\img_data\\";
-            if (Directory.Exists(path))
+            if (Directory.Exists(path) == false)
             {
                 Directory.CreateDirectory(path);
             }
@@ -671,6 +672,8 @@ namespace BTea
         public RelayCommand FileSettingCmd { set; get; }
         public RelayCommand FileBackupDBCmd { set; get; }
         public RelayCommand FileCloseCmd { set; get; }
+
+        public RelayCommand FileGuideCmd { set; get; }
         public RelayCommand FileEB1Cmd { set; get; }
         public RelayCommand FileEB2Cmd { set; get; }
         public RelayCommand FileEB3Cmd { set; get; }
@@ -838,6 +841,14 @@ namespace BTea
         public void DoCloseMenu(object obj)
         {
             Application.Current.Shutdown();
+        }
+
+        public void DoGuide(object obj)
+        {
+            // Sinh to
+            string path = Environment.CurrentDirectory;
+            path += "\\ebook\\Btea_Guide.docx";
+            System.Diagnostics.Process.Start(path);
         }
 
         public void DoEbook1Menu(object obj)

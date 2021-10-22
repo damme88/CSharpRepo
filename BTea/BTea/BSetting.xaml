@@ -28,7 +28,7 @@
                 <TextBox Text="{Binding ShopPhone}" Style="{StaticResource TB200_25_F12}" HorizontalAlignment="Left"></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Dia chi:" Margin="5" Width="100"></TextBlock>
+                <TextBlock Text="Địa chỉ:" Margin="5" Width="100"></TextBlock>
                 <TextBox Text="{Binding ShopAddress}" Style="{StaticResource TB200_25_F12}"  HorizontalAlignment="Left"></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
