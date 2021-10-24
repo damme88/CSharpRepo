@@ -84,7 +84,10 @@ namespace BTea
         public BTBaseObject OrderObject
         {
             get { return _orderObject; }
-            set { _orderObject = value; }
+            set
+            {
+                _orderObject = value;
+            }
         }
 
         public string OrderName { set; get; }
@@ -243,22 +246,72 @@ namespace BTea
                     sumPrice = dPrice * number;
                 }
             }
-            else
+            else if (_orderObject.Type == BTBaseObject.BTeaType.FOOD_TYPE)
             {
-                int sPrice = _orderObject.BPrice;
-                // Offset sumPrice with KM value
-                int kmValue = TConst.ConvertMoney(OrderKm);
-                if (OrderKmType == "%")
+                FoodObject foodObj = _orderObject as FoodObject;
+                if (foodObj != null)
                 {
-                    int offVal = sPrice * kmValue / 100;
-                    sPrice = sPrice - offVal;
-                }
-                else
-                {
-                    sPrice = sPrice - kmValue;
-                }
+                    int sPrice = foodObj.BPrice;
+                    OrderBasePrice = sPrice.ToString(TConst.K_MONEY_FORMAT);
+                    // Offset sumPrice with KM value
+                    int kmValue = TConst.ConvertMoney(OrderKm);
+                    if (OrderKmType == "%")
+                    {
+                        int offVal = sPrice * kmValue / 100;
+                        sPrice = sPrice - offVal;
+                    }
+                    else
+                    {
+                        sPrice = sPrice - kmValue;
+                    }
 
-                sumPrice = sPrice * number;
+                    sumPrice = sPrice * number;
+                }
+                
+            }
+            else if (_orderObject.Type == BTBaseObject.BTeaType.OTHER_TYPE)
+            {
+                OtherFoodObject ofObj = _orderObject as OtherFoodObject;
+                if (ofObj != null)
+                {
+                    int sPrice = ofObj.BPrice;
+                    OrderBasePrice = sPrice.ToString(TConst.K_MONEY_FORMAT);
+                    // Offset sumPrice with KM value
+                    int kmValue = TConst.ConvertMoney(OrderKm);
+                    if (OrderKmType == "%")
+                    {
+                        int offVal = sPrice * kmValue / 100;
+                        sPrice = sPrice - offVal;
+                    }
+                    else
+                    {
+                        sPrice = sPrice - kmValue;
+                    }
+
+                    sumPrice = sPrice * number;
+                }
+            }
+            else if (_orderObject.Type == BTBaseObject.BTeaType.TOPPING_TYPE)
+            {
+                ToppingObject tpObj = _orderObject as ToppingObject;
+                if (tpObj != null)
+                {
+                    int sPrice = tpObj.BPrice;
+                    OrderBasePrice = sPrice.ToString(TConst.K_MONEY_FORMAT);
+                    // Offset sumPrice with KM value
+                    int kmValue = TConst.ConvertMoney(OrderKm);
+                    if (OrderKmType == "%")
+                    {
+                        int offVal = sPrice * kmValue / 100;
+                        sPrice = sPrice - offVal;
+                    }
+                    else
+                    {
+                        sPrice = sPrice - kmValue;
+                    }
+
+                    sumPrice = sPrice * number;
+                }
             }
 
             OrderPrice = sumPrice.ToString(TConst.K_MONEY_FORMAT);
@@ -1518,20 +1571,55 @@ namespace BTea
                 if (_foodCheck == true)
                 {
                     btObject = new FoodObject();
+
+                    btObject.BId = _bTeaSelectedItem.ImgId;
+                    btObject.BName = _bTeaSelectedItem.Name;
+                    btObject.BNote = _bTeaSelectedItem.Note;
+
+                    List<FoodObject> foodDb = DBConnection.GetInstance().GetDataFood();
+                    string id = btObject.BId.Replace("F", "");
+                    FoodObject fdObj = foodDb.Find(x => x.BId == id);
+                    if (fdObj != null)
+                    {
+                        // get origin price
+                        btObject.BPrice = fdObj.BPrice;
+                    }
                 }
                 else if (_foodOtherCheck == true)
                 {
                     btObject = new OtherFoodObject();
+
+                    btObject.BId = _bTeaSelectedItem.ImgId;
+                    btObject.BName = _bTeaSelectedItem.Name;
+                    btObject.BNote = _bTeaSelectedItem.Note;
+
+                    List<OtherFoodObject> otherFoodDb = DBConnection.GetInstance().GetDataOtherFood();
+                    string id = btObject.BId.Replace("OF", "");
+                    OtherFoodObject ofObj = otherFoodDb.Find(x => x.BId == id);
+                    if (ofObj != null)
+                    {
+                        // get origin price
+                        btObject.BPrice = ofObj.BPrice;
+                    }
                 }
                 else if (_toppingCheck == true)
                 {
                     btObject = new ToppingObject();
-                }
 
-                btObject.BId = _bTeaSelectedItem.ImgId;
-                btObject.BName = _bTeaSelectedItem.Name;
-                btObject.BPrice = TConst.ConvertMoney(_bTeaSelectedItem.Price);
-                btObject.BNote = _bTeaSelectedItem.Note;
+                    btObject.BId = _bTeaSelectedItem.ImgId;
+                    btObject.BName = _bTeaSelectedItem.Name;
+                    btObject.BNote = _bTeaSelectedItem.Note;
+
+                    List<ToppingObject> tpDb = DBConnection.GetInstance().GetDataTopping();
+
+                    string id = btObject.BId.Replace("TP", "");
+                    ToppingObject tpObj = tpDb.Find(x => x.BId == id);
+                    if (tpObj != null)
+                    {
+                        // get origin price
+                        btObject.BPrice = tpObj.BPrice;
+                    }
+                }
             }
 
             return btObject;

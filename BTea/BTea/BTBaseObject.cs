@@ -47,7 +47,7 @@ namespace BTea
             }
         }
 
-        public int BPrice
+        public int BPrice  // gia goc 1 sp (base price)
         {
             get { return bPrice; }
             set

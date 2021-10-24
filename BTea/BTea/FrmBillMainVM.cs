@@ -310,6 +310,11 @@ namespace BTea
                 BTeaOrderItems orderItem = _dataOrderList[i];
                 PrintBillIData dataItem = new PrintBillIData();
                 dataItem.NumberProduct = orderItem.OrderNum;
+                if (orderItem.OrderKm != string.Empty)
+                {
+                    dataItem.KMProduct = orderItem.OrderKm + orderItem.OrderKmType;
+                }
+                
                 orderItem.MakeSummaryPrice();
                 bool bDrink = false;
                 if (orderItem.OrderObject.Type == BTBaseObject.BTeaType.DRINK_TYPE)
@@ -328,34 +333,6 @@ namespace BTea
 
                 dataItem.NameProduct = orderItem.MakePrintDescription();
                 dataItem.BasePriceProduct = orderItem.OrderObject.BPrice.ToString(TConst.K_MONEY_FORMAT);
-
-                //if (orderItem.OrderObject.Type == BTBaseObject.BTeaType.DRINK_TYPE)
-                //{
-                //    PrintBillIData dataItemDrink = new PrintBillIData();
-                //    dataItemDrink.NumberProduct = orderItem.OrderNum;
-                //    dataItemDrink.SumPrice = orderItem.OrderPrice;
-                //    dataItemDrink.NameProduct = orderItem.MakePrintDescription();
-                //    try
-                //    {
-                //        totalNumDrink += Convert.ToInt32(orderItem.OrderNum);
-                //    }
-                //    catch
-                //    {
-                //        totalNumDrink = 0;
-                //    }
-
-                //    try
-                //    {
-                //        totalPriceDrink += Convert.ToDouble(orderItem.OrderPrice);
-                //    }
-                //    catch
-                //    {
-                //        totalPriceDrink = 0.0;
-                //    }
-
-                //    //_printVM.AddDataDrink(dataItemDrink);
-                //}
-
                 try
                 {
                     totalNumber += Convert.ToInt32(orderItem.OrderNum);

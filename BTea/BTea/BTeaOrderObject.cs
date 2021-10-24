@@ -133,7 +133,14 @@ namespace BTea
                 FoodObject fObject = new FoodObject();
                 fObject.BId = BOrderIdItem;
                 fObject.BName = BOrderName;
-                fObject.BPrice = BOrderPrice;
+
+                List<FoodObject> baseList = DBConnection.GetInstance().GetDataFood();
+                string id = fObject.BId.Replace("F", "");
+                FoodObject baseObj = baseList.Find(x => x.BId == id);
+                if (baseObj != null)
+                {
+                    fObject.BPrice = baseObj.BPrice;
+                }
                 btObject = fObject;
                 btObject.Type = BTBaseObject.BTeaType.FOOD_TYPE;
             }
@@ -142,7 +149,15 @@ namespace BTea
                 OtherFoodObject ofObject = new OtherFoodObject();
                 ofObject.BId = BOrderIdItem;
                 ofObject.BName = BOrderName;
-                ofObject.BPrice = BOrderPrice;
+
+                List<OtherFoodObject> baseList = DBConnection.GetInstance().GetDataOtherFood();
+                string id = ofObject.BId.Replace("OF", "");
+                OtherFoodObject baseObj = baseList.Find(x => x.BId == id);
+                if (baseObj != null)
+                {
+                    ofObject.BPrice = baseObj.BPrice;
+                }
+
                 btObject = ofObject;
                 btObject.Type = BTBaseObject.BTeaType.OTHER_TYPE;
             }
@@ -151,7 +166,15 @@ namespace BTea
                 ToppingObject tpObject = new ToppingObject();
                 tpObject.BId = BOrderIdItem;
                 tpObject.BName = BOrderName;
-                tpObject.BPrice = BOrderPrice;
+
+                List<ToppingObject> baseList = DBConnection.GetInstance().GetDataTopping();
+                string id = tpObject.BId.Replace("TP", "");
+                ToppingObject baseObj = baseList.Find(x => x.BId == id);
+                if (baseObj != null)
+                {
+                    tpObject.BPrice = baseObj.BPrice;
+                }
+
                 btObject = tpObject;
                 btObject.Type = BTBaseObject.BTeaType.TOPPING_TYPE;
             }
