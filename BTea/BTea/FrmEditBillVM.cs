@@ -629,6 +629,16 @@ namespace BTea
                 }
             }
 
+            if (billObj.KMType == TConst.K_KM_PERCENT)
+            {
+                int kVal = billObj.KMValue;
+                sumBillPrice = sumBillPrice - sumBillPrice * kVal / 100;
+            }
+            else
+            {
+                sumBillPrice = sumBillPrice - billObj.KMValue;
+            }
+
             billObj.BillPrice = TConst.ConvertMoney(sumBillPrice.ToString());
             DBConnection.GetInstance().EditBillItem(billObj);
             _pItemMethod.Invoke();

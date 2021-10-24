@@ -868,7 +868,7 @@ namespace BTea
                 cmd.Parameters.Add(new MySqlParameter("inAddress", billItem.BillAddress));
                 cmd.Parameters.Add(new MySqlParameter("inOrderItem", billItem.BillOrderItem));
                 cmd.Parameters.Add(new MySqlParameter("inNote", billItem.BillNote));
-                cmd.Parameters.Add(new MySqlParameter("inKm", billItem.KMType));
+                cmd.Parameters.Add(new MySqlParameter("inKm", billItem.KMValue));
                 cmd.Parameters.Add(new MySqlParameter("inKmType", billItem.KMType));
                 int result = 0;
                 try

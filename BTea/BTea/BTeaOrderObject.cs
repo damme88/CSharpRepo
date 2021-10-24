@@ -17,7 +17,7 @@ namespace BTea
         public string BOrderIdItem { set; get; }
         public string BOrderName { set; get; }
         public int BOrderNum { set; get; }
-        public int BOrderPrice { set; get; }
+        public int BOrderPrice { set; get; }  // giá = đơn giá * số lượng
         public int BOrderSize { set; get; }
         public int BOrderSugarRate { set; get; }
         public int BOrderIceRate { set; get; }

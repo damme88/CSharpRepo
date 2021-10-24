@@ -234,7 +234,7 @@ namespace BTea
                         dPrice = dPrice - kmValue;
                     }
 
-                    DrinkPriceNoToping = (dPrice*number).ToString(TConst.K_MONEY_FORMAT);
+                    DrinkPriceNoToping = (dPrice * number).ToString(TConst.K_MONEY_FORMAT);
 
                     // Get price of Topping Items
                     for (int ii = 0; ii < drObj.TPListObj.Count; ++ii)
@@ -246,72 +246,23 @@ namespace BTea
                     sumPrice = dPrice * number;
                 }
             }
-            else if (_orderObject.Type == BTBaseObject.BTeaType.FOOD_TYPE)
+            else
             {
-                FoodObject foodObj = _orderObject as FoodObject;
-                if (foodObj != null)
+                int sPrice = _orderObject.BPrice;
+                OrderBasePrice = sPrice.ToString(TConst.K_MONEY_FORMAT);
+                // Offset sumPrice with KM value
+                int kmValue = TConst.ConvertMoney(OrderKm);
+                if (OrderKmType == "%")
                 {
-                    int sPrice = foodObj.BPrice;
-                    OrderBasePrice = sPrice.ToString(TConst.K_MONEY_FORMAT);
-                    // Offset sumPrice with KM value
-                    int kmValue = TConst.ConvertMoney(OrderKm);
-                    if (OrderKmType == "%")
-                    {
-                        int offVal = sPrice * kmValue / 100;
-                        sPrice = sPrice - offVal;
-                    }
-                    else
-                    {
-                        sPrice = sPrice - kmValue;
-                    }
-
-                    sumPrice = sPrice * number;
+                    int offVal = sPrice * kmValue / 100;
+                    sPrice = sPrice - offVal;
                 }
-                
-            }
-            else if (_orderObject.Type == BTBaseObject.BTeaType.OTHER_TYPE)
-            {
-                OtherFoodObject ofObj = _orderObject as OtherFoodObject;
-                if (ofObj != null)
+                else
                 {
-                    int sPrice = ofObj.BPrice;
-                    OrderBasePrice = sPrice.ToString(TConst.K_MONEY_FORMAT);
-                    // Offset sumPrice with KM value
-                    int kmValue = TConst.ConvertMoney(OrderKm);
-                    if (OrderKmType == "%")
-                    {
-                        int offVal = sPrice * kmValue / 100;
-                        sPrice = sPrice - offVal;
-                    }
-                    else
-                    {
-                        sPrice = sPrice - kmValue;
-                    }
-
-                    sumPrice = sPrice * number;
+                    sPrice = sPrice - kmValue;
                 }
-            }
-            else if (_orderObject.Type == BTBaseObject.BTeaType.TOPPING_TYPE)
-            {
-                ToppingObject tpObj = _orderObject as ToppingObject;
-                if (tpObj != null)
-                {
-                    int sPrice = tpObj.BPrice;
-                    OrderBasePrice = sPrice.ToString(TConst.K_MONEY_FORMAT);
-                    // Offset sumPrice with KM value
-                    int kmValue = TConst.ConvertMoney(OrderKm);
-                    if (OrderKmType == "%")
-                    {
-                        int offVal = sPrice * kmValue / 100;
-                        sPrice = sPrice - offVal;
-                    }
-                    else
-                    {
-                        sPrice = sPrice - kmValue;
-                    }
 
-                    sumPrice = sPrice * number;
-                }
+                sumPrice = sPrice * number;
             }
 
             OrderPrice = sumPrice.ToString(TConst.K_MONEY_FORMAT);
@@ -1301,9 +1252,11 @@ namespace BTea
             for (int i = 0; i < _dataOrderList.Count; i++)
             {
                 // Include information of OrderObject
+                // Đại diện cho 1 sản phẩm (số lượng 1, đơn giá)
                 BTBaseObject bObj = _dataOrderList[i].OrderObject;
 
                 // write to data base
+                //BTeaOrderObject đại diện cho 1 option bao gồm nhiều sản phẩm, giá tổng.
                 BTeaOrderObject bOrderObj = new BTeaOrderObject();
 
                 bOrderObj.BOrderPrice   = _dataOrderList[i].MakeSummaryPrice();
