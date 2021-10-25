@@ -66,20 +66,23 @@ namespace BTea
             BillItem bItem = _selectedBillItem;
             if (bItem != null)
             {
-                string billName = bItem.BillName;
-                List<int> orderList = bItem.OrderItemList;
-                for (int i = 0; i < orderList.Count; ++i)
-                {
-                    int id = orderList[i];
-                    bool bRet = DBConnection.GetInstance().DeleteWaitItem(id);
-                }
-
                 string strBillId = bItem.BillId;
                 strBillId = strBillId.Replace("WB", "");
                 int nId = TConst.ConvertInt(strBillId);
                 if (nId > 0)
                 {
                     bool bRet = DBConnection.GetInstance().DeleteWaitBillItem(nId);
+                }
+
+                List<BTeaOrderObject> dbOrderList = DBConnection.GetInstance().GetWaitItemObject();
+                for (int i = 0; i < dbOrderList.Count; ++i)
+                {
+                    BTeaOrderObject objData = dbOrderList[i];
+                    if (objData.BOrderBillName == bItem.BillName)
+                    {
+                        int id = objData.BOrderId;
+                        bool bRet = DBConnection.GetInstance().DeleteWaitItem(nId);
+                    }
                 }
             }
 
@@ -106,8 +109,24 @@ namespace BTea
 
                 bItem.BillId = "WB" + billObject.BillId;
                 bItem.BillName = billObject.BillName;
+                bItem.BillCreator = billObject.BillCreator;
+                bItem.BillDate = billObject.BillDate.ToString("dd-MMM-yyyy");
+                bItem.BillTableNumber = billObject.BillTableNumber;
+                bItem.BillPhone = billObject.BillPhone;
+                bItem.BillAddress = billObject.BillAddress;
+                bItem.BillNote = billObject.BillNote;
                 bItem.BillPrice = billObject.BillPrice.ToString(TConst.K_MONEY_FORMAT);
                 bItem.TypeData = 1;
+                bItem.BillKM = billObject.KMValue.ToString();
+
+                if(billObject.KMType == TConst.K_KM_PERCENT)
+                {
+                    bItem.BillKMType = "%";
+                }
+                else
+                {
+                    bItem.BillKMType = "đ";
+                }
 
                 string strItemOrder = billObject.BillOrderItem;
                 string[] itemsArr = strItemOrder.Split(',');
@@ -149,6 +168,93 @@ namespace BTea
             return strName;
         }
 
+        public string GetBillCreator()
+        {
+            string strCreator = "";
+            if (_selectedBillItem != null)
+            {
+                strCreator = _selectedBillItem.BillCreator;
+            }
+
+            return strCreator;
+        }
+
+        public string GetBillDate()
+        {
+            string date= "";
+            if (_selectedBillItem != null)
+            {
+                date = _selectedBillItem.BillDate;
+            }
+
+            return date;
+        }
+
+        public string GetTable()
+        {
+            string sTable = "";
+            if (_selectedBillItem != null)
+            {
+                sTable = _selectedBillItem.BillTableNumber;
+            }
+
+            return sTable;
+        }
+
+        public string GetPhone()
+        {
+            string sPhone = "";
+            if (_selectedBillItem != null)
+            {
+                sPhone = _selectedBillItem.BillPhone;
+            }
+
+            return sPhone;
+        }
+
+        public string GetAddress()
+        {
+            string sAddress = "";
+            if (_selectedBillItem != null)
+            {
+                sAddress = _selectedBillItem.BillAddress;
+            }
+
+            return sAddress;
+        }
+
+        public string GetNote()
+        {
+            string sNote = "";
+            if (_selectedBillItem != null)
+            {
+                sNote = _selectedBillItem.BillNote;
+            }
+
+            return sNote;
+        }
+
+        public string GetKMType()
+        {
+            string sKMType = "";
+            if (_selectedBillItem != null)
+            {
+                sKMType = _selectedBillItem.BillKMType;
+            }
+
+            return sKMType;
+        }
+
+        public string GetKMValue()
+        {
+            string sKMVal= "";
+            if (_selectedBillItem != null)
+            {
+                sKMVal = _selectedBillItem.BillKM;
+            }
+
+            return sKMVal;
+        }
 
         public List<BTeaOrderObject> GetListOrderItem()
         {
@@ -173,6 +279,29 @@ namespace BTea
 
             return billItemsObj;
         }
-        #endregion
+
+        public void RemoveOrderItem()
+        {
+            BillItem bItem = _selectedBillItem;
+            if (bItem != null)
+            {
+                string billName = bItem.BillName;
+                List<int> orderList = bItem.OrderItemList;
+                for (int i = 0; i < orderList.Count; ++i)
+                {
+                    int id = orderList[i];
+                    bool bRet = DBConnection.GetInstance().DeleteWaitItem(id);
+                }
+
+                string strBillId = bItem.BillId;
+                strBillId = strBillId.Replace("WB", "");
+                int nId = TConst.ConvertInt(strBillId);
+                if (nId > 0)
+                {
+                    bool bRet = DBConnection.GetInstance().DeleteWaitBillItem(nId);
+                }
+            }
+        }
+#endregion
     }
 }

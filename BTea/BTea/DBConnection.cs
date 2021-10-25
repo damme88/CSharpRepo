@@ -1135,15 +1135,12 @@ namespace BTea
         public List<BillObject> GetWaitBillObject()
         {
             string query = "SELECT * FROM waitordertbl";
-
             List<BillObject> billObjectList = new List<BillObject>();
-
             //Open connection
             if (this.ConnectionDB() == true)
             {
                 //Create Command
                 MySqlCommand cmd = new MySqlCommand(query, _connection);
-
                 try
                 {
                     //Create a data reader and Execute the command
@@ -1153,25 +1150,49 @@ namespace BTea
                     while (dataReader.Read())
                     {
                         string sId = dataReader["Id"] + "";
-                        string sName = dataReader["BName"] + "";
-                        string sPrice = dataReader["BPrice"] + "";
-                        string sOrderItem = dataReader["BOrderItem"] + "";
+                        string sName = dataReader["Name"] + "";
+                        string sPrice = dataReader["Price"] + "";
+                        string sCreator = dataReader["Creator"] + "";
+                        string sDate = dataReader["Date"] + "";
+                        string sTableNum = dataReader["TableNumber"] + "";
+                        string sPhone = dataReader["Phone"] + "";
+                        string sAddress = dataReader["Address"] + "";
+                        string sOrderItem = dataReader["OrderItem"] + "";
+                        string sNote = dataReader["Note"] + "";
+                        string sKm = dataReader["KM"] + "";
+                        string sKmType = dataReader["KMType"] + "";
 
                         BillObject billObj = new BillObject();
                         billObj.BillId = TConst.ConvertInt(sId);
                         billObj.BillName = sName;
                         billObj.BillPrice = TConst.ConvertInt(sPrice);
+                        billObj.BillCreator = sCreator;
+                        billObj.BillDate = Convert.ToDateTime(sDate);
+                        billObj.BillTableNumber = sTableNum;
+                        billObj.BillPhone = sPhone;
+                        billObj.BillAddress = sAddress;
+                        billObj.BillNote = sNote;
+                        billObj.KMType = TConst.ConvertInt(sKmType);
+                        if (billObj.KMType == TConst.K_KM_PERCENT)
+                        {
+                            billObj.KMValue = TConst.ConvertInt(sKm);
+                        }
+                        else
+                        {
+                            billObj.KMValue = TConst.ConvertMoney(sKm);
+                        }
+
                         billObj.BillOrderItem = sOrderItem;
                         billObjectList.Add(billObj);
                     }
 
-                    Tlog.GetInstance().WriteLog("Get Wait Order DB thanh cong.");
+                    Tlog.GetInstance().WriteLog("Get DB Hoa Don Luu tam thanh cong.");
                     //close Data Reader
                     dataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    string msg = "Get Wait Order DB that bai. ";
+                    string msg = "Get DB Hoa Don luu tam that bai. ";
                     msg += ex;
 
                     Tlog.GetInstance().WriteLog(msg);
@@ -1192,9 +1213,18 @@ namespace BTea
                 MySqlCommand cmd = new MySqlCommand("AddWaitOrder", _connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new MySqlParameter("WName", billItem.BillName));
-                cmd.Parameters.Add(new MySqlParameter("WPrice", billItem.BillPrice));
-                cmd.Parameters.Add(new MySqlParameter("WOrderList", billItem.BillOrderItem));
+                cmd.Parameters.Add(new MySqlParameter("inName", billItem.BillName));
+                cmd.Parameters.Add(new MySqlParameter("inPrice", billItem.BillPrice));
+                cmd.Parameters.Add(new MySqlParameter("inCreator", billItem.BillCreator));
+                cmd.Parameters.Add(new MySqlParameter("inDate", billItem.BillDate));
+                cmd.Parameters.Add(new MySqlParameter("inTableNumber", billItem.BillTableNumber));
+                cmd.Parameters.Add(new MySqlParameter("inPhone", billItem.BillPhone));
+                cmd.Parameters.Add(new MySqlParameter("inAddress", billItem.BillAddress));
+                cmd.Parameters.Add(new MySqlParameter("inOrderItem", billItem.BillOrderItem));
+                cmd.Parameters.Add(new MySqlParameter("inNote", billItem.BillNote));
+                cmd.Parameters.Add(new MySqlParameter("inKM", billItem.KMValue));
+                cmd.Parameters.Add(new MySqlParameter("inKMType", billItem.KMType));
+                cmd.Parameters.Add(new MySqlParameter("inOrderList", billItem.BillOrderItem));
                 try
                 {
                     int result = cmd.ExecuteNonQuery();

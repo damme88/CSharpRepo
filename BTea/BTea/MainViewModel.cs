@@ -934,7 +934,7 @@ namespace BTea
 
             UpdateTotalPriceByKM();
         }
-
+        
         public void DoMinusOrderItem(object obj)
         {
             if (_orderItemNum > 1)
@@ -1056,6 +1056,29 @@ namespace BTea
 
             _billPrice = sumPrice.ToString(TConst.K_MONEY_FORMAT);
             _billPriceNoKM = _billPrice;
+            _billCreator = _frmWaitVM.GetBillCreator();
+            _billStartDate = DateTime.Parse(_frmWaitVM.GetBillDate());
+            _billTableNumber = _frmWaitVM.GetTable();
+            _billPhone = _frmWaitVM.GetPhone();
+            _billAddress = _frmWaitVM.GetAddress();
+            _billNote = _frmWaitVM.GetNote();
+            if (_frmWaitVM.GetKMType() == "%")
+            {
+                KMTotalPercentType = true;
+            }
+            else
+            {
+                KMTotalVNDType = true;
+            }
+
+            _kMSumBill = TConst.ConvertInt(_frmWaitVM.GetKMValue());
+
+            if (_billPhone != string.Empty || _billAddress != string.Empty || _billNote != string.Empty)
+            {
+                BillMoreInfo = true;
+            }
+
+
             IsEnableOrderItem = true;
 
             //Update GUI
@@ -1063,6 +1086,14 @@ namespace BTea
             OnPropertyChange("BTeaOrderSelectedItem");
             OnPropertyChange("BillSumPrice");
             OnPropertyChange("BillSumPriceNoKM");
+            OnPropertyChange("BillTableNumber");
+            OnPropertyChange("BillPhone");
+            OnPropertyChange("BillAddress");
+            OnPropertyChange("BillNote");
+            OnPropertyChange("KMSumBill");
+
+            _frmWaitVM.RemoveOrderItem();
+            UpdateTotalPriceByKM();
         }
 
         public void PrintBill(object obj)
@@ -1413,6 +1444,7 @@ namespace BTea
                 bOrderObj.BOrderDate = _billStartDate;
                 bOrderObj.BOrderKmType = _dataOrderList[i].GetKmType();
                 bOrderObj.BOrderKm = _dataOrderList[i].GetKmValue();
+                
 
                 if (bObj.Type == BTBaseObject.BTeaType.DRINK_TYPE)
                 {
@@ -1448,6 +1480,14 @@ namespace BTea
                 BillObject billObject = new BillObject();
                 billObject.BillName = _billName;
                 billObject.BillPrice = TConst.ConvertMoney(_billPrice);
+                billObject.BillCreator = _billCreator;
+                billObject.BillDate = _billStartDate;
+                billObject.BillPhone = _billPhone;
+                billObject.BillAddress = _billAddress;
+                billObject.BillNote = _billNote;
+                billObject.KMValue = _kMSumBill;
+                billObject.BillTableNumber = _billTableNumber;
+                billObject.KMType = _kmTotalType;
                 billObject.BillOrderItem = strOrderItem;
                 bool bAddBill = DBConnection.GetInstance().AddWaitBillItem(billObject);
 
@@ -1462,6 +1502,11 @@ namespace BTea
             }
 
             //Reset data then make bill
+            KMTotalPercentType = true;
+            KMTotalVNDType = false;
+            KMSumBill = "";
+            BillMoreInfo = false;
+            BillTableNumber = "";
             DataOrderList.Clear();
             BillPhone = BillAddress = BillNote = "";
             BillSumPrice = "0.0000";

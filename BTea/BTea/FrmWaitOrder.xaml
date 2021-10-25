@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BTea"
         mc:Ignorable="d"
-        Title="Danh sach luu tam" Height="650" Width="650">
+        Title="Danh sach luu tam" Height="650" Width="1280">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -18,7 +18,7 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <ListView Width="600" Height="500" 
+            <ListView Width="1200" Height="500" 
                       ItemsSource="{Binding BillItems}" 
                       SelectedItem="{Binding SelectedBillItem}"
                       Margin="5" HorizontalAlignment="Left" 
@@ -30,6 +30,22 @@
                         <GridViewColumn Header="Mã" Width="50" DisplayMemberBinding="{Binding BillId}"/>
                         <GridViewColumn Header="Tên" Width="150" DisplayMemberBinding="{Binding BillName}"/>
                         <GridViewColumn Header="Giá" Width="80" DisplayMemberBinding="{Binding BillPrice}"/>
+                        <GridViewColumn Header="Người tạo" Width="80" DisplayMemberBinding="{Binding BillCreator}"/>
+                        <GridViewColumn Header="Ngày tạo" Width="100" DisplayMemberBinding="{Binding BillDate}"/>
+                        <GridViewColumn Header="Số bàn" Width="50" DisplayMemberBinding="{Binding BillTableNumber}"/>
+                        <GridViewColumn Header="Sdt khách" Width="100" DisplayMemberBinding="{Binding BillPhone}"/>
+                        <GridViewColumn Header="Địa chỉ khách" Width="150" DisplayMemberBinding="{Binding BillAddress}"/>
+                        <GridViewColumn Header="Ghi chú" Width="100" DisplayMemberBinding="{Binding BillNote}"/>
+                        <GridViewColumn Header="KM" Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding BillKM}"></TextBlock>
+                                        <TextBlock Text="{Binding BillKMType}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn Header="Danh sách Order" Width="150">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
