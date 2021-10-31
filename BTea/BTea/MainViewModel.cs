@@ -786,7 +786,8 @@ namespace BTea
         }
         public void DoAboutMenu(object obj)
         {
-
+            string strInfo = "Product Name: BTea Tool version 1.0. \nDate Release: 11-2021.\nNet Framework: 4.0. \nPlatform: Windows 7, Windows 10. \nCreator: Tpham \nTechnology: C# & WPF";
+            MessageBox.Show(strInfo, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         public void DoSettingMenu(object obj)
         {
